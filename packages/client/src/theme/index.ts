@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material'
-import { themeOptions } from './themeOptions'
+import { createTheme } from '@mui/material';
+import { themeOptions } from './themeOptions';
 
-export const theme = createTheme(themeOptions)
+export const theme = createTheme(themeOptions);

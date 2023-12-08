@@ -9,4 +9,4 @@ export const secondary = {
   700: '#e1b02b',
   800: '#de9a22',
   900: '#d87412',
-}
+};

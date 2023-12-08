@@ -1,9 +1,9 @@
-import * as React from 'react'
-import Grid from '@mui/material/Grid'
-import styles from './image-layout.module.scss'
+import * as React from 'react';
+import Grid from '@mui/material/Grid';
+import styles from './image-layout.module.scss';
 
 interface ImageLayoutProps {
-  urlBackgroundImage: string
+  urlBackgroundImage: string;
 }
 
 export const ImageLayout: React.FC<
@@ -23,4 +23,4 @@ export const ImageLayout: React.FC<
       {children}
     </Grid>
   </Grid>
-)
+);

@@ -1,5 +1,5 @@
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default {
   preset: 'ts-jest',
@@ -11,4 +11,4 @@ export default {
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/__mocks__/styleMock.js'
   }
-}
+};

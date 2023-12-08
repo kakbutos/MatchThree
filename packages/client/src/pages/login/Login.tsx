@@ -1,20 +1,20 @@
-import * as React from 'react'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import styles from './login.module.scss'
-import { Box } from '@mui/material'
-import { ImageLayout } from '../../widgets/image-layout'
+import { FormEvent } from 'react';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import styles from './login.module.scss';
+import { Box } from '@mui/material';
+import { ImageLayout } from '../../widgets/image-layout';
 
 export const LoginPage = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
     console.log({
       login: data.get('login'),
       password: data.get('password'),
-    })
-  }
+    });
+  };
 
   return (
     <ImageLayout urlBackgroundImage="/src/assets/images/racket.svg">
@@ -52,5 +52,5 @@ export const LoginPage = () => {
         </Box>
       </form>
     </ImageLayout>
-  )
-}
+  );
+};

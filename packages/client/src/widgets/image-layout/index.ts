@@ -1,1 +1,1 @@
-export { ImageLayout } from './ImageLayout'
+export { ImageLayout } from './ImageLayout';
