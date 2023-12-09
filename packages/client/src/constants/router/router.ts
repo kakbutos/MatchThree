@@ -1,20 +1,21 @@
 export enum AppRoutes {
-  MAIN = 'main',
-  LOGIN = 'login',
-  REGISTRATION = 'reg',
-  PROFILE = 'profile',
-  GAME = 'game',
-  LEADER_BOARD = 'Leader_board',
-  FORUM = 'forum',
-  FORUM_TOPIC = 'forum_topic',
-  NOT_FOUND = 'not_found',
+  MAIN = '/',
+  LOGIN = '/login',
+  REGISTRATION = '/reg',
+  PROFILE = '/profile',
+  GAME = '/game',
+  LEADER_BOARD = '/leaderboard',
+  FORUM = '/forum',
+  FORUM_TOPIC = '/forum/topic',
+  NOT_FOUND = '/not_found',
 }
 
-export const getRouteMain = () => '/';
-export const getRouteLogin = () => '/login';
-export const getRouteRegistration = () => '/reg';
-export const getRouteProfile = (id: string) => `/profile/${id}`;
-export const getRouteGame = () => '/game';
-export const getRouteLeaderBoard = () => 'leaderboard';
-export const getRouteForum = () => '/forum';
-export const getRouteForumTopic = (id: string) => `/forum/topic/${id}`;
+export const getRouteMain = () => AppRoutes.MAIN;
+export const getRouteLogin = () => AppRoutes.LOGIN;
+export const getRouteRegistration = () => AppRoutes.REGISTRATION;
+export const getRouteProfile = (id: string) => `${AppRoutes.PROFILE}/${id}`;
+export const getRouteGame = () => AppRoutes.GAME;
+export const getRouteLeaderBoard = () => AppRoutes.LEADER_BOARD;
+export const getRouteForum = () => AppRoutes.FORUM;
+export const getRouteForumTopic = (id: string) =>
+  `${AppRoutes.FORUM_TOPIC}/${id}`;
