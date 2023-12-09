@@ -4,6 +4,8 @@ import './fonts/fonts';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '../theme';
 import { LoginPage } from '../pages/login';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { GamePage } from '@/pages/game';
 
 function App() {
   useEffect(() => {
@@ -20,7 +22,12 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <LoginPage />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="game" element={<GamePage />} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </>
   );
