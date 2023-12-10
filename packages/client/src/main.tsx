@@ -1,7 +1,10 @@
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app';
+import ErrorBoundary from './app/providers/error-boundary/ErrorBoundary';
+import { theme } from './theme';
 
 const container = document.getElementById('root');
 
@@ -16,7 +19,12 @@ const root = createRoot(container);
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </ThemeProvider>
     </BrowserRouter>
   </StrictMode>
 );

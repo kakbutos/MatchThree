@@ -1,6 +1,4 @@
 import { Suspense, useEffect } from 'react';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from '../theme';
 import AppRouter from './providers/router/AppRouter';
 
 import './styles/index.scss';
@@ -18,12 +16,9 @@ function App() {
     fetchServerData();
   }, []);
   return (
-    <ThemeProvider theme={theme}>
-      <Suspense fallback="">
-        <CssBaseline />
-        <AppRouter />
-      </Suspense>
-    </ThemeProvider>
+    <Suspense fallback="">
+      <AppRouter />
+    </Suspense>
   );
 }
 
