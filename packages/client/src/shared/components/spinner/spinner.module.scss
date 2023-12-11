@@ -12,11 +12,11 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    -webkit-animation: stars-rotate-reverse 2s ease infinite;
-    animation: stars-rotate-reverse 2s ease infinite;
+    -webkit-animation: starsRotateReverse 2s ease infinite;
+    animation: starsRotateReverse 2s ease infinite;
 }
 
-.loader_star {
+.loaderStar {
     position: absolute;
     top: calc(50% - 12px);
 }
@@ -37,8 +37,8 @@
     -webkit-transform: scale(0.8);
     -ms-transform: scale(0.8);
         transform: scale(0.8);
-    -webkit-animation: stars-catch 2s 0.1s ease infinite;
-    animation: stars-catch 2s 0.1s ease infinite;
+    -webkit-animation: starsCatch 2s 0.1s ease infinite;
+    animation: starsCatch 2s 0.1s ease infinite;
 }
 
 .loader .star3 {
@@ -48,8 +48,8 @@
     -webkit-transform: scale(0.7);
     -ms-transform: scale(0.7);
         transform: scale(0.7);
-    -webkit-animation: stars-catch 2s 0.15s ease infinite;
-    animation: stars-catch 2s 0.15s ease infinite;
+    -webkit-animation: starsCatch 2s 0.15s ease infinite;
+    animation: starsCatch 2s 0.15s ease infinite;
 }
 
 .loader .star4 {
@@ -59,8 +59,8 @@
     -webkit-transform: scale(0.6);
     -ms-transform: scale(0.6);
         transform: scale(0.6);
-    -webkit-animation: stars-catch 2s 0.2s ease infinite;
-    animation: stars-catch 2s 0.2s ease infinite;
+    -webkit-animation: starsCatch 2s 0.2s ease infinite;
+    animation: starsCatch 2s 0.2s ease infinite;
 }
 
 .loader .star5 {
@@ -70,8 +70,8 @@
     -webkit-transform: scale(0.5);
     -ms-transform: scale(0.5);
         transform: scale(0.5);
-    -webkit-animation: stars-catch 2s 0.25s ease infinite;
-    animation: stars-catch 2s 0.25s ease infinite;
+    -webkit-animation: starsCatch 2s 0.25s ease infinite;
+    animation: starsCatch 2s 0.25s ease infinite;
 }
 
 .loader .star6 {
@@ -81,11 +81,11 @@
     -webkit-transform: scale(0.4);
     -ms-transform: scale(0.4);
         transform: scale(0.4);
-    -webkit-animation: stars-catch 2s 0.3s ease infinite;
-    animation: stars-catch 2s 0.3s ease infinite;
+    -webkit-animation: starsCatch 2s 0.3s ease infinite;
+    animation: starsCatch 2s 0.3s ease infinite;
 }
 
-@-webkit-keyframes stars-rotate-reverse {
+@-webkit-keyframes starsRotateReverse {
     0% {
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
@@ -96,7 +96,7 @@
     }
 }
 
-@keyframes stars-rotate-reverse {
+@keyframes starsRotateReverse {
     0% {
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
@@ -107,7 +107,7 @@
     }
 }
 
-@-webkit-keyframes stars-catch {
+@-webkit-keyframes starsCatch {
     0% {}
     25% {}
     50% {}
@@ -119,7 +119,7 @@
     100% {}
 }
 
-@keyframes stars-catch {
+@keyframes starsCatch {
     0% {}
     25% {}
     50% {}

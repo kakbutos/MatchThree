@@ -4,7 +4,7 @@ export const Spinner = () => (
   <div className={styles.container}>
     <div className={`${styles.loader}`}>
       <svg
-        className={`${styles.loader_star} ${styles.star1}`}
+        className={`${styles.loaderStar} ${styles.star1}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -15,7 +15,7 @@ export const Spinner = () => (
         <polygon points="11.586,0 8.864,8.9 0,8.9 7.193,14.447 4.471,23.346 11.586,17.84 18.739,23.346 16.77,14.985 23.172,8.9 14.306,8.9" />
       </svg>
       <svg
-        className={`${styles.loader_star} ${styles.star2}`}
+        className={`${styles.loaderStar} ${styles.star2}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -26,7 +26,7 @@ export const Spinner = () => (
         <polygon points="11.586,0 8.864,8.9 0,8.9 7.193,14.447 4.471,23.346 11.586,17.84 18.739,23.346 16.77,14.985 23.172,8.9 14.306,8.9" />
       </svg>
       <svg
-        className={`${styles.loader_star} ${styles.star3}`}
+        className={`${styles.loaderStar} ${styles.star3}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -37,7 +37,7 @@ export const Spinner = () => (
         <polygon points="11.586,0 8.864,8.9 0,8.9 7.193,14.447 4.471,23.346 11.586,17.84 18.739,23.346 16.77,14.985 23.172,8.9 14.306,8.9" />
       </svg>
       <svg
-        className={`${styles.loader_star} ${styles.star4}`}
+        className={`${styles.loaderStar} ${styles.star4}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -48,7 +48,7 @@ export const Spinner = () => (
         <polygon points="11.586,0 8.864,8.9 0,8.9 7.193,14.447 4.471,23.346 11.586,17.84 18.739,23.346 16.77,14.985 23.172,8.9 14.306,8.9" />
       </svg>
       <svg
-        className={`${styles.loader_star} ${styles.star5}`}
+        className={`${styles.loaderStar} ${styles.star5}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
@@ -59,7 +59,7 @@ export const Spinner = () => (
         <polygon points="11.586,0 8.864,8.9 0,8.9 7.193,14.447 4.471,23.346 11.586,17.84 18.739,23.346 16.77,14.985 23.172,8.9 14.306,8.9" />
       </svg>
       <svg
-        className={`${styles.loader_star} ${styles.star6}`}
+        className={`${styles.loaderStar} ${styles.star6}`}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
