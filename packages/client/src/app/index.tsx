@@ -1,6 +1,5 @@
 import { Suspense, useEffect } from 'react';
 import AppRouter from './providers/router/AppRouter';
-
 import './styles/index.scss';
 import './fonts/fonts';
 
