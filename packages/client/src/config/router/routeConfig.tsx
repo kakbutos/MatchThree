@@ -11,6 +11,7 @@ import {
 } from '../../constants/router/router';
 import { AppRoutesProps } from '../../types/router/router';
 import { LoginPage } from '../../pages/login';
+import { ErrorPage } from '../../pages/error/ErrorPage';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
@@ -48,6 +49,6 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
 
   [AppRoutes.NOT_FOUND]: {
     path: '*',
-    element: <></>,
+    element: <ErrorPage text={'Страница не найдена'} showNavigateBtn={true} />,
   },
 };
