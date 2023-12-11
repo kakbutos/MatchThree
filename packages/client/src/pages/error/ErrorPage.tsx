@@ -5,7 +5,7 @@ import styles from './error-page.module.scss';
 
 interface ErrorPageProps {
   text?: string;
-  showReloadBtn?: boolean;
+  showNavigateBtn?: boolean;
 }
 
 const LAYERS = 5;
@@ -53,11 +53,10 @@ const renderLayers = () => {
   return layers;
 };
 
-export const ErrorPage = ({ text, showReloadBtn = true }: ErrorPageProps) => {
-  const reloadPage = () => {
-    window.location.reload();
-  };
-
+export const ErrorPage = ({
+  text,
+  showNavigateBtn = false,
+}: ErrorPageProps) => {
   return (
     <div className={styles.errorPage}>
       <GlobalStyles
@@ -70,14 +69,14 @@ export const ErrorPage = ({ text, showReloadBtn = true }: ErrorPageProps) => {
         <Typography component="h1" className={styles.text} gutterBottom>
           {text ?? 'Произошла непредвиденая ошибка'}
         </Typography>
-        {showReloadBtn && (
+        {showNavigateBtn && (
           <Button
             variant="contained"
             size="large"
-            onClick={reloadPage}
             fullWidth
+            href="/"
             sx={{ backgroundColor: theme => theme.palette.text.secondary }}>
-            Обновить страницу
+            На главную
           </Button>
         )}
       </div>

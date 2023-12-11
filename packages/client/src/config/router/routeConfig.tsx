@@ -49,6 +49,6 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
 
   [AppRoutes.NOT_FOUND]: {
     path: '*',
-    element: <ErrorPage text={'Страница не найдена'} showReloadBtn={false} />,
+    element: <ErrorPage text={'Страница не найдена'} showNavigateBtn={true} />,
   },
 };
