@@ -1,33 +1,33 @@
 .backgroundContainer {
-    background-color: var(--primary-color);
-    position: relative;
+  background-color: var(--primary-color);
+  position: relative;
 }
 
 .imageContainer {
-    padding: 10% 0px;
-    position: absolute;
+  padding: 10% 0px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  .backgroundImg {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
     height: 100%;
     width: 100%;
-
-    .backgroundImg {
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: right;
-        height: 100%;
-        width: 100%;
-    }
+  }
 }
 
 .emptyBackground {
-    width: 20%;
-    height: 100%;
-    float: right;
-    background-color: white;
+  width: 20%;
+  height: 100%;
+  float: right;
+  background-color: white;
 }
 
 .formContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }

@@ -1,11 +1,9 @@
-import { useEffect } from 'react';
-import './styles/index.scss';
-import './fonts/fonts';
+import { Suspense, useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '../theme';
-import { LoginPage } from '../pages/login';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { GamePage } from '@/pages/game';
+import AppRouter from './providers/router/AppRouter';
+import './styles/index.scss';
+import './fonts/fonts';
 
 function App() {
   useEffect(() => {
@@ -19,17 +17,12 @@ function App() {
     fetchServerData();
   }, []);
   return (
-    <>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Suspense fallback="">
         <CssBaseline />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="game" element={<GamePage />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
-    </>
+        <AppRouter />
+      </Suspense>
+    </ThemeProvider>
   );
 }
 
