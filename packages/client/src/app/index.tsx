@@ -2,7 +2,6 @@ import { Suspense, useEffect } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '../theme';
 import AppRouter from './providers/router/AppRouter';
-
 import './styles/index.scss';
 import './fonts/fonts';
 
