@@ -1,12 +1,12 @@
 export enum AppRoutes {
-  MAIN = '/main',
+  MAIN = '/',
   LOGIN = '/login',
   REGISTRATION = '/reg',
   PROFILE = '/profile',
   GAME = '/game',
-  LEADER_BOARD = '/Leader_board',
+  LEADER_BOARD = '/leaderboard',
   FORUM = '/forum',
-  FORUM_TOPIC = '/forum_topic',
+  FORUM_TOPIC = '/forum/topic',
   MENU = '/menu',
   NOT_FOUND = '/not_found',
 }
