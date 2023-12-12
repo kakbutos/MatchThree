@@ -4,7 +4,7 @@ class HTTPTransport {
   static API_URL = 'https://ya-praktikum.tech/api/v2';
   static instance: AxiosInstance;
 
-  protected endpoint = '';
+  protected endpoint: string;
 
   constructor(endpoint: string) {
     this.endpoint = endpoint;
