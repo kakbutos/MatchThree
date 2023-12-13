@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth/auth';
 
 // TODO COD-14 Временная заглушка для меню с кнопкой для выхода из аккаунта
-export const MenuPage = () => {
+export const MenuPage: React.FC = () => {
   const navigate = useNavigate();
   const [logout] = useApiCall(authApi.logout);
   const exit = async () => {

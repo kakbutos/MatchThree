@@ -1,14 +1,14 @@
 import { Typography, TextField, Box, Button } from '@mui/material';
 import { FormEvent } from 'react';
-import { useApiCall } from '../../hooks/useApiCall';
-import { authApi } from '../../services/api/auth/auth-api';
+import { useApiCall } from '@/hooks/useApiCall';
+import { authApi } from '@/services/api/auth/auth-api';
 import styles from './auth-form.module.scss';
-import { Spinner } from '../../shared/components/spinner/Spinner';
+import { Spinner } from '@/shared/components/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { getRouteMenu } from '../../constants/router/router';
-import { AuthService } from '../../services/auth/auth';
+import { getRouteMenu } from '@/constants/router/router';
+import { AuthService } from '@/services/auth/auth';
 
-export const AuthForm = () => {
+export const AuthForm: React.FC = () => {
   const navigate = useNavigate();
   const [signin, isLoading] = useApiCall(authApi.signIn);
 
