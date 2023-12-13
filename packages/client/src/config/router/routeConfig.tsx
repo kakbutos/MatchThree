@@ -14,6 +14,7 @@ import { AppRoutesProps } from '../../types/router/router';
 import { LoginPage } from '../../pages/login';
 import { MenuPage } from '../../pages/menu';
 import { ErrorPage } from '../../pages/error/ErrorPage';
+import { GamePage } from '@/pages/game';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
@@ -35,7 +36,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.GAME]: {
     path: getRouteGame(),
-    element: <></>,
+    element: <GamePage />,
     authOnly: true,
   },
   [AppRoutes.LEADER_BOARD]: {
