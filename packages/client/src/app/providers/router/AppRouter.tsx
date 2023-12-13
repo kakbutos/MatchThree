@@ -1,15 +1,13 @@
 import { memo, Suspense, useCallback } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
 import { RequireAuth } from './RequireAuth';
 import { routeConfig } from '../../../config/router/routeConfig';
 import { AppRoutesProps } from '../../../types/router/router';
+import { Spinner } from '../../../shared/components/spinner/Spinner';
 
 const AppRouter = () => {
   const renderWithWrapper = useCallback((route: AppRoutesProps) => {
-    const element = (
-      <Suspense fallback={<CircularProgress />}>{route.element}</Suspense>
-    );
+    const element = <Suspense fallback={<Spinner />}>{route.element}</Suspense>;
 
     return (
       <Route
