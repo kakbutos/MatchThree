@@ -2,6 +2,7 @@ import { ThemeOptions } from '@mui/material/styles';
 import { secondary } from './palette/secondary';
 import { primary } from './palette/primary';
 import { palette } from './palette';
+import { components } from './components';
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -23,4 +24,5 @@ export const themeOptions: ThemeOptions = {
       disabled: palette.greyLight,
     },
   },
+  components,
 };

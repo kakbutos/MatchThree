@@ -9,10 +9,7 @@ export const Start: FC = () => {
       {started ? (
         <CountDown />
       ) : (
-        <Button
-          onClick={() => setStarted(true)}
-          variant="contained"
-          className={s.btn}>
+        <Button onClick={() => setStarted(true)} className={s.btn}>
           НАЧАТЬ ИГРУ
         </Button>
       )}
