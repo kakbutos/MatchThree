@@ -16,6 +16,7 @@ import { MenuPage } from '@/pages/menu';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { Forum } from '@/pages/forum/Forum';
 import { TopicPage } from '@/pages/topic/Topic';
+import { RegistrationPage } from '@/pages/registration';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
@@ -28,7 +29,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.REGISTRATION]: {
     path: getRouteRegistration(),
-    element: <></>,
+    element: <RegistrationPage />,
   },
   [AppRoutes.PROFILE]: {
     path: getRouteProfile(':id'),
