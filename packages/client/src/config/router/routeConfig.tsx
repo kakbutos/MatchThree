@@ -15,6 +15,7 @@ import { LoginPage } from '../../pages/login';
 import { MenuPage } from '../../pages/menu';
 import { ErrorPage } from '../../pages/error/ErrorPage';
 import { GamePage } from '@/pages/game';
+import { LeaderBoardPage } from '@/pages/leaderboard';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
@@ -41,7 +42,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.LEADER_BOARD]: {
     path: getRouteLeaderBoard(),
-    element: <></>,
+    element: <LeaderBoardPage />,
     authOnly: true,
   },
   [AppRoutes.FORUM]: {
