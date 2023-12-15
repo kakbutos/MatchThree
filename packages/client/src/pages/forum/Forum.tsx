@@ -6,13 +6,13 @@ import { useState } from 'react';
 import { mockThemeList } from './theme-list.mock';
 import { useNavigate } from 'react-router-dom';
 import { getRouteMenu } from '@/constants/router/router';
-import { Topic } from './components/topic/Topic';
+import { Topic } from '@/widgets/topic/Topic';
 import { ForumLayout } from '@/widgets/forum-layout/ForumLayout';
 import {
   CreateThemeDialog,
   CreateThemeRequest,
-} from './components/create-theme-dialog/CreateThemeDialog';
-import { ITopic } from './types/topic';
+} from '@/widgets/create-theme-dialog/CreateThemeDialog';
+import { ITopic } from '@/types/topic';
 
 export const Forum: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ export const Forum: React.FC = () => {
   };
 
   const handleCloseDialog = (value?: CreateThemeRequest) => {
+    // TODO добавить запрос на создание топика
     console.log(value);
     setIsOpenDialog(false);
   };

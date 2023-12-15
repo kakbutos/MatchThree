@@ -5,8 +5,8 @@ import { mockCommentList } from './comment-list.mock';
 import { useState } from 'react';
 import { getRouteForum } from '@/constants/router/router';
 import { useNavigate } from 'react-router-dom';
-import { CommentForm } from './components/comment-form/CommentForm';
-import { Comment } from './components/comment/Comment';
+import { CommentForm } from '@/widgets/comment-form/CommentForm';
+import { Comment } from '@/widgets/comment/Comment';
 import { ForumLayout } from '@/widgets/forum-layout/ForumLayout';
 
 export const TopicPage: React.FC = () => {
