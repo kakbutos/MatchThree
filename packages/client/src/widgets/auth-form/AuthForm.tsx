@@ -30,14 +30,13 @@ export const AuthForm: React.FC = () => {
   return (
     <Box position="relative">
       {isLoading && <Spinner />}
-      <form noValidate onSubmit={handleSubmit} className={styles.formFields}>
+      <form onSubmit={handleSubmit} className={styles.formFields}>
         <Typography component="h1" variant="h5">
           Вход
         </Typography>
         <TextField
           margin="normal"
           required
-          fullWidth
           id="login"
           label="Логин"
           name="login"
@@ -48,7 +47,6 @@ export const AuthForm: React.FC = () => {
         <TextField
           margin="normal"
           required
-          fullWidth
           name="password"
           label="Пароль"
           type="password"
@@ -57,11 +55,7 @@ export const AuthForm: React.FC = () => {
           disabled={isLoading}
         />
         <Box display="flex" gap={1}>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={isLoading}>
+          <Button type="submit" sx={{ mt: 3, mb: 2 }} disabled={isLoading}>
             Авторизоваться
           </Button>
           <Button

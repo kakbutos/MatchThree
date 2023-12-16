@@ -71,7 +71,6 @@ export const ErrorPage = ({
         </Typography>
         {showNavigateBtn && (
           <Button
-            variant="contained"
             size="large"
             fullWidth
             href="/"

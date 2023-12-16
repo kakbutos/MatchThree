@@ -9,11 +9,13 @@ import {
   getRouteForum,
   getRouteForumTopic,
   getRouteMenu,
-} from '../../constants/router/router';
-import { AppRoutesProps } from '../../types/router/router';
-import { LoginPage } from '../../pages/login';
-import { MenuPage } from '../../pages/menu';
-import { ErrorPage } from '../../pages/error/ErrorPage';
+} from '@/constants/router/router';
+import { AppRoutesProps } from '@/types/router/router';
+import { LoginPage } from '@/pages/login';
+import { MenuPage } from '@/pages/menu';
+import { ErrorPage } from '@/pages/error/ErrorPage';
+import { Forum } from '@/pages/forum/Forum';
+import { TopicPage } from '@/pages/topic/Topic';
 import { GamePage } from '@/pages/game';
 import { LeaderBoardPage } from '@/pages/leaderboard';
 
@@ -47,7 +49,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.FORUM]: {
     path: getRouteForum(),
-    element: <></>,
+    element: <Forum />,
     authOnly: true,
   },
   [AppRoutes.MENU]: {
@@ -57,7 +59,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.FORUM_TOPIC]: {
     path: getRouteForumTopic(':id'),
-    element: <></>,
+    element: <TopicPage />,
     authOnly: true,
   },
 
