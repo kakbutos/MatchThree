@@ -1,24 +1,27 @@
-import { Typography, TextField, Box, Button } from '@mui/material';
-import { FormEvent } from 'react';
+import { Typography, Box, Button } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { useApiCall } from '@/hooks/useApiCall';
 import { authApi } from '@/services/api/auth/auth-api';
 import styles from './auth-form.module.scss';
 import { Spinner } from '@/shared/components/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { getRouteMenu } from '@/constants/router/router';
+import { getRouteMenu, getRouteRegistration } from '@/constants/router/router';
 import { AuthService } from '@/services/auth/auth';
+import { FormInputText } from '@/shared/components/form-fields/FormInputText';
+import { AuthRequest } from '@/types/auth-request';
 
 export const AuthForm: React.FC = () => {
+  const { handleSubmit, control } = useForm<AuthRequest>({
+    defaultValues: {
+      login: '',
+      password: '',
+    },
+  });
   const navigate = useNavigate();
   const [signin, isLoading] = useApiCall(authApi.signIn);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const res = await signin({
-      login: data.get('login') as string,
-      password: data.get('password') as string,
-    });
+  const onSubmit = async (data: AuthRequest) => {
+    const res = await signin(data);
     if (typeof res === 'string' && res === 'OK') {
       AuthService.setLogged();
       navigate(getRouteMenu(), {
@@ -27,42 +30,46 @@ export const AuthForm: React.FC = () => {
     }
   };
 
+  const goToReg = () => {
+    navigate(getRouteRegistration(), {
+      replace: true,
+    });
+  };
+
   return (
     <Box position="relative">
       {isLoading && <Spinner />}
-      <form onSubmit={handleSubmit} className={styles.formFields}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.formFields}>
         <Typography component="h1" variant="h5">
           Вход
         </Typography>
-        <TextField
-          margin="normal"
-          required
-          id="login"
-          label="Логин"
-          name="login"
-          autoComplete="login"
-          autoFocus
-          disabled={isLoading}
-        />
-        <TextField
-          margin="normal"
-          required
-          name="password"
-          label="Пароль"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          disabled={isLoading}
-        />
+        <Box>
+          <FormInputText
+            control={control}
+            name="login"
+            label="Логин"
+            autoFocus
+            disabled={isLoading}
+            rules={{
+              required: 'Поле обязательно для заполнения',
+            }}
+          />
+          <FormInputText
+            control={control}
+            name="password"
+            label="Пароль"
+            type="password"
+            disabled={isLoading}
+            rules={{
+              required: 'Поле обязательно для заполнения',
+            }}
+          />
+        </Box>
         <Box display="flex" gap={1}>
-          <Button type="submit" sx={{ mt: 3, mb: 2 }} disabled={isLoading}>
+          <Button type="submit" disabled={isLoading}>
             Авторизоваться
           </Button>
-          <Button
-            type="submit"
-            variant="outlined"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={isLoading}>
+          <Button variant="outlined" disabled={isLoading} onClick={goToReg}>
             Нет аккаунта?
           </Button>
         </Box>
