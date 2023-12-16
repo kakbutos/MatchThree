@@ -16,6 +16,8 @@ import { MenuPage } from '@/pages/menu';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { Forum } from '@/pages/forum/Forum';
 import { TopicPage } from '@/pages/topic/Topic';
+import { GamePage } from '@/pages/game';
+import { LeaderBoardPage } from '@/pages/leaderboard';
 import { RegistrationPage } from '@/pages/registration';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
@@ -38,12 +40,12 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.GAME]: {
     path: getRouteGame(),
-    element: <></>,
+    element: <GamePage />,
     authOnly: true,
   },
   [AppRoutes.LEADER_BOARD]: {
     path: getRouteLeaderBoard(),
-    element: <></>,
+    element: <LeaderBoardPage />,
     authOnly: true,
   },
   [AppRoutes.FORUM]: {

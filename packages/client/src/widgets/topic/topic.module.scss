@@ -1,28 +1,28 @@
 .themeContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    background-color: rgba($color: #ffffff, $alpha: 0.1);
-    color: #ffffff;
-    border-radius: 14px;
-    padding: 8px 22px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  background-color: rgba($color: #ffffff, $alpha: 0.1);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 8px 22px;
+  cursor: pointer;
 
-    &:hover {
-        background-color: rgba($color: #ffffff, $alpha: 0.2);
-    }
+  &:hover {
+    background-color: rgba($color: #ffffff, $alpha: 0.2);
+  }
 }
 
 .themeInfoBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .comment {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    justify-content: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: end;
 }
