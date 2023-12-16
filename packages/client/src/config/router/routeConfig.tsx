@@ -19,11 +19,13 @@ import { TopicPage } from '@/pages/topic/Topic';
 import { GamePage } from '@/pages/game';
 import { LeaderBoardPage } from '@/pages/leaderboard';
 import { RegistrationPage } from '@/pages/registration';
+import { MainPage } from '@/pages/main';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
     path: getRouteMain(),
-    element: <></>,
+    element: <MainPage />,
+    // authOnly: true,
   },
   [AppRoutes.LOGIN]: {
     path: getRouteLogin(),

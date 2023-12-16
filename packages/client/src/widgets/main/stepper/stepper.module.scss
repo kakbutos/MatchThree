@@ -1,0 +1,15 @@
+.label {
+  & :global(.MuiStepLabel-label) {
+    font-size: 1.3rem;
+  }
+}
+
+.wr {
+  background-image: url('/src/assets/images/start-bg.png');
+  background-repeat: repeat no-repeat;
+  background-size: contain;
+  margin: 0 auto;
+  & :global(.MuiPaper-root) {
+    background-color: transparent;
+  }
+}
