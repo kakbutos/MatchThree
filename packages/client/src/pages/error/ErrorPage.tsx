@@ -67,7 +67,7 @@ export const ErrorPage = ({
       />
       <div className={styles.content}>
         <Typography component="h1" className={styles.text} gutterBottom>
-          {text ?? 'Произошла непредвиденая ошибка'}
+          {text ?? 'Произошла непредвиденная ошибка'}
         </Typography>
         {showNavigateBtn && (
           <Button
