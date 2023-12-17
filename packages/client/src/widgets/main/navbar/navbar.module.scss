@@ -1,0 +1,7 @@
+.nav {
+  & :global(.MuiToolbar-root) {
+    & svg {
+      max-height: 20px;
+    }
+  }
+}
