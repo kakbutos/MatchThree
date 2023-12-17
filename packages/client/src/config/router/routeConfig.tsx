@@ -20,6 +20,7 @@ import { GamePage } from '@/pages/game';
 import { LeaderBoardPage } from '@/pages/leaderboard';
 import { RegistrationPage } from '@/pages/registration';
 import { MainPage } from '@/pages/main';
+import { Profile } from '@/pages/profile/Profile';
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
@@ -37,8 +38,8 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   },
   [AppRoutes.PROFILE]: {
     path: getRouteProfile(':id'),
-    element: <></>,
-    authOnly: true,
+    element: <Profile />,
+    authOnly: false,
   },
   [AppRoutes.GAME]: {
     path: getRouteGame(),

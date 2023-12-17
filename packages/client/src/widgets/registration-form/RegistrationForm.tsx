@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useApiCall } from '@/hooks/useApiCall';
 import { authApi } from '@/services/api/auth/auth-api';
 import styles from './registration-form.module.scss';
-import { Spinner } from '@/shared/components/spinner/Spinner';
+import { Spinner } from '@/shared/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { getRouteLogin, getRouteMenu } from '@/constants/router/router';
 import { AuthService } from '@/services/auth/auth';
-import { SignupRequest } from '@/types/signup-request';
-import { FormInputText } from '@/shared/components/form-fields/FormInputText';
+import { SignupRequest } from '@/types/auth/auth';
+import { FormInputText } from '@/shared/form-fields/FormInputText';
 import {
   emailValidate,
   passwordValidate,

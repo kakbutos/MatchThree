@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form';
 import { useApiCall } from '@/hooks/useApiCall';
 import { authApi } from '@/services/api/auth/auth-api';
 import styles from './auth-form.module.scss';
-import { Spinner } from '@/shared/components/spinner/Spinner';
+import { Spinner } from '@/shared/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { getRouteMenu, getRouteRegistration } from '@/constants/router/router';
 import { AuthService } from '@/services/auth/auth';
-import { FormInputText } from '@/shared/components/form-fields/FormInputText';
-import { AuthRequest } from '@/types/auth-request';
+import { FormInputText } from '@/shared/form-fields/FormInputText';
+import { AuthRequest } from '@/types/auth/auth';
 
 export const AuthForm: React.FC = () => {
   const { handleSubmit, control } = useForm<AuthRequest>({

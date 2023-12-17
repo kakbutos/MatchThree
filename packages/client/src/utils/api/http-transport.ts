@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { API_URL } from '@/constants';
 
 class HTTPTransport {
-  static API_URL = 'https://ya-praktikum.tech/api/v2';
   static instance: AxiosInstance;
 
   protected endpoint: string;
@@ -10,7 +10,7 @@ class HTTPTransport {
     this.endpoint = endpoint;
     HTTPTransport.instance = axios.create({
       withCredentials: true,
-      baseURL: HTTPTransport.API_URL,
+      baseURL: API_URL,
     });
   }
 
