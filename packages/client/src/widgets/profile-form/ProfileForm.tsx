@@ -46,7 +46,7 @@ export const ProfileForm: React.FC = () => {
   const [canEdit, setCanEdit] = useState(false);
   const [changeProfile, isLoading] = useApiCall(userApi.changeProfile);
 
-  const { authUser } = useContext(AuthUserContext);
+  const authUser = useContext(AuthUserContext);
   const { handleSubmit, control, reset } = useForm({
     defaultValues: INITIAL_AUTH_USER,
   });
@@ -72,13 +72,12 @@ export const ProfileForm: React.FC = () => {
 
     if (isAuthUser && userId && authUser.id === +userId) {
       setCanEdit(true);
-      reset({
-        ...userById,
-        phone: authUser.phone || '',
-        email: authUser.email || '',
-        login: authUser.login || '',
-        display_name: authUser.display_name || '',
-      });
+      reset(
+        sanitizeObject({
+          ...userById,
+          ...authUser,
+        })
+      );
     }
   }, [authUser]);
 
@@ -182,7 +181,7 @@ export const ProfileForm: React.FC = () => {
           onClose={() => setShowTip(false)}
           severity="success"
           sx={{ width: '100%' }}>
-          Изображение успешно загружено
+          Данные профиля изменены
         </Alert>
       </Snackbar>
 

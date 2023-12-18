@@ -6,7 +6,7 @@ class UserApi extends BaseApi {
     super('user/');
   }
 
-  getUser = (id: number) => this.http.get<undefined, User>(`${id}`);
+  getUser = (id: number) => this.http.get<undefined, User>(String(id));
 
   changeProfile = (data: ChangeProfileData) =>
     this.http.put<ChangeProfileData, User>('profile', data);

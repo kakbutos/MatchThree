@@ -39,7 +39,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.PROFILE]: {
     path: getRouteProfile(':id'),
     element: <Profile />,
-    authOnly: false,
+    authOnly: true,
   },
   [AppRoutes.GAME]: {
     path: getRouteGame(),

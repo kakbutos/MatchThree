@@ -8,10 +8,10 @@ import { Spinner } from '@/shared/spinner/Spinner';
 import { User } from '@/types/user';
 
 // TODO DELETE
-export const AuthUserContext = createContext({} as any);
+export const AuthUserContext = createContext<User | null>(null);
 
 export const Profile: React.FC = () => {
-  const [authUser, setAuthUser] = useState<User | Record<string, never>>({});
+  const [authUser, setAuthUser] = useState<User | null>(null);
   const [authUserApi, isLoading] = useApiCall(authApi.getCurrent);
 
   // TODO DELETE - потом при ините страницы эти данные в redux будут
@@ -27,9 +27,9 @@ export const Profile: React.FC = () => {
   }, []);
 
   return (
-    <AuthUserContext.Provider value={{ authUser, setAuthUser }}>
-      {isLoading && <Spinner />}
+    <AuthUserContext.Provider value={authUser}>
       <ImageLayout BackgroundImage={Racket}>
+        {isLoading && <Spinner />}
         <ProfileForm />
       </ImageLayout>
     </AuthUserContext.Provider>

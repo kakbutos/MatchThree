@@ -8,28 +8,16 @@ import {
   Snackbar,
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { styled } from '@mui/material/styles';
 import { getResourceLink } from '@/constants';
 import { useForm } from 'react-hook-form';
 import { useApiCall } from '@/hooks/useApiCall';
 import { userApi } from '@/services/api/user/user-api';
+import styles from './avatar-form.module.scss';
 
 interface Props {
   icon: string;
   canEdit: boolean;
 }
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 export const AvatarForm: React.FC<Props> = ({ icon, canEdit }) => {
   const { register, handleSubmit } = useForm();
@@ -72,7 +60,8 @@ export const AvatarForm: React.FC<Props> = ({ icon, canEdit }) => {
               variant="contained"
               startIcon={<CloudUploadIcon />}>
               Загрузите изображение
-              <VisuallyHiddenInput
+              <input
+                className={styles.avatarFile}
                 ref={register}
                 name="avatar"
                 type="file"
