@@ -5,7 +5,7 @@ import { authApi } from '@/services/api/auth/auth-api';
 import styles from './registration-form.module.scss';
 import { Spinner } from '@/shared/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { getRouteLogin, getRouteMenu } from '@/constants/router/router';
+import { getRouteLogin, getRouteMain } from '@/constants/router/router';
 import { AuthService } from '@/services/auth/auth';
 import { SignupRequest } from '@/types/auth/auth';
 import { FormInputText } from '@/shared/form-fields/FormInputText';
@@ -54,7 +54,7 @@ export const RegistrationForm: React.FC = () => {
     const res = await signup(formValue);
     if (res?.id) {
       AuthService.setLogged();
-      navigate(getRouteMenu(), {
+      navigate(getRouteMain(), {
         replace: true,
       });
     }

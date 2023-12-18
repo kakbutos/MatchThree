@@ -8,9 +8,7 @@ class AuthApi extends BaseApi {
   }
 
   signIn = (data: AuthRequest) =>
-    this.http.post<AuthRequest, string>('signin', data, {
-      withCredentials: false,
-    });
+    this.http.post<AuthRequest, string>('signin', data);
   signUp = (data: SignupRequest) =>
     this.http.post<SignupRequest, { id: string }>('signup', data, {
       withCredentials: false,
