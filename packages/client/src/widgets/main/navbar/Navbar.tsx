@@ -18,18 +18,17 @@ import {
   getRouteForum,
   getRouteGame,
   getRouteLeaderBoard,
-  getRouteMenu,
+  getRouteLogin,
   getRouteProfile,
 } from '@/constants/router/router';
+import { useApiCall } from '@/hooks/useApiCall';
+import { authApi } from '@/services/api/auth/auth-api';
+import { AuthService } from '@/services/auth/auth';
 
 const pages = [
   { title: 'Игра', routeFn: getRouteGame },
   { title: 'Доска победителей', routeFn: getRouteLeaderBoard },
   { title: 'Форум', routeFn: getRouteForum },
-];
-const settings = [
-  { title: 'Профиль', routeFn: getRouteProfile },
-  { title: 'Выйти', routeFn: getRouteMenu },
 ];
 
 export const Navbar = () => {
@@ -37,6 +36,15 @@ export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
+
+  const [logout] = useApiCall(authApi.logout);
+  const exit = async () => {
+    await logout();
+    AuthService.logout();
+    navigate(getRouteLogin(), {
+      replace: true,
+    });
+  };
 
   const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -151,16 +159,20 @@ export const Navbar = () => {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}>
-              {settings.map((setting, i) => (
-                <MenuItem
-                  key={i}
-                  onClick={() => {
-                    handleCloseUserMenu();
-                    navigate(setting.routeFn('1'));
-                  }}>
-                  <Typography textAlign="center">{setting.title}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem
+                onClick={() => {
+                  handleCloseUserMenu();
+                  navigate(getRouteProfile('1'));
+                }}>
+                <Typography textAlign="center">Профиль</Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCloseUserMenu();
+                  exit();
+                }}>
+                <Typography textAlign="center">Выйти</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

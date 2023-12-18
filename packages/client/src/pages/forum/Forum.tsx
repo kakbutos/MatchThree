@@ -5,7 +5,7 @@ import LeftArrow from '@/assets/icons/arrow-left.svg?react';
 import { useState } from 'react';
 import { mockThemeList } from './theme-list.mock';
 import { useNavigate } from 'react-router-dom';
-import { getRouteMenu } from '@/constants/router/router';
+import { getRouteMain } from '@/constants/router/router';
 import { Topic } from '@/widgets/topic/Topic';
 import { ForumLayout } from '@/widgets/forum-layout/ForumLayout';
 import {
@@ -29,7 +29,7 @@ export const Forum: React.FC = () => {
   };
 
   const goToMenu = () => {
-    navigate(getRouteMenu());
+    navigate(getRouteMain());
   };
 
   const themeList: ITopic[] = mockThemeList;

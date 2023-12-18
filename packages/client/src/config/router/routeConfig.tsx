@@ -8,11 +8,9 @@ import {
   getRouteLeaderBoard,
   getRouteForum,
   getRouteForumTopic,
-  getRouteMenu,
 } from '@/constants/router/router';
 import { AppRoutesProps } from '@/types/router/router';
 import { LoginPage } from '@/pages/login';
-import { MenuPage } from '@/pages/menu';
 import { ErrorPage } from '@/pages/error/ErrorPage';
 import { Forum } from '@/pages/forum/Forum';
 import { TopicPage } from '@/pages/topic/Topic';
@@ -25,7 +23,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {
     path: getRouteMain(),
     element: <MainPage />,
-    // authOnly: true,
+    authOnly: true,
   },
   [AppRoutes.LOGIN]: {
     path: getRouteLogin(),
@@ -53,11 +51,6 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.FORUM]: {
     path: getRouteForum(),
     element: <Forum />,
-    authOnly: true,
-  },
-  [AppRoutes.MENU]: {
-    path: getRouteMenu(),
-    element: <MenuPage />,
     authOnly: true,
   },
   [AppRoutes.FORUM_TOPIC]: {
