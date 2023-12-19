@@ -1,3 +1,8 @@
+export interface AuthRequest {
+  password: string;
+  login: string;
+}
+
 export interface SignupRequest {
   password: string;
   login: string;

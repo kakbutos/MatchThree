@@ -1,6 +1,6 @@
 import { GlobalStyles, Typography, Button } from '@mui/material';
-import { palette } from '../../theme/palette';
-import Star from '../../assets/icons/star.svg?react';
+import { palette } from '@/theme/palette';
+import Star from '@/assets/icons/star.svg?react';
 import styles from './error-page.module.scss';
 
 interface ErrorPageProps {

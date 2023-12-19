@@ -1,6 +1,6 @@
-import { BaseApi } from '../../../utils/base-api';
-import { AuthRequest } from '../../../types/auth-request';
-import { SignupRequest } from '../../../types/signup-request';
+import { BaseApi } from '@/utils/api/base-api';
+import { AuthRequest, SignupRequest } from '@/types/auth/auth';
+import { User } from '@/types/user';
 
 class AuthApi extends BaseApi {
   constructor() {
@@ -14,7 +14,7 @@ class AuthApi extends BaseApi {
       withCredentials: false,
     });
   logout = () => this.http.post<undefined, string>('logout');
-  getCurrent = () => this.http.get<undefined, string>('user');
+  getCurrent = () => this.http.get<undefined, User>('user');
 }
 
 export const authApi = new AuthApi();
