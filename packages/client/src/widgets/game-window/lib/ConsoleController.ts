@@ -44,6 +44,8 @@ export class ConsoleController {
         this.inputElement.value = '';
       }
     });
+
+    this.toggleConsole();
   }
 
   private toggleConsole() {
