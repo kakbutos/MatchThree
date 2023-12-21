@@ -40,11 +40,11 @@ const GameWindow: FC = () => {
 
   return (
     <div className={s.gameWindow}>
-      <div ref={consoleRef} id={s.console} className="hidden">
+      <div className={s.console} ref={consoleRef}>
         <ul className={s.gameWindow__messageList}>{messages}</ul>
         <input
+          className={s.consoleInput}
           ref={inputRef}
-          id={s.consoleInput}
           type="text"
           autoComplete="off"
         />
