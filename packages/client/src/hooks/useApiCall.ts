@@ -7,19 +7,36 @@ interface ResponseError {
   reason: string;
 }
 
-export const useApiCall = <F extends (body: any) => ReturnType<F>>(
+const isAxiosResponse = (value: unknown): value is AxiosResponse => {
+  return value && (value as AxiosResponse).data;
+};
+
+type CallResponseType<F extends (...body: Parameters<F>) => ReturnType<F>> =
+  | (ReturnType<F> extends Promise<AxiosResponse<infer T>>
+      ? T
+      : ReturnType<F> extends Promise<infer T>
+      ? T
+      : ReturnType<F>)
+  | AxiosResponse<ResponseError>
+  | undefined;
+
+export const useApiCall = <F extends (...data: Parameters<F>) => ReturnType<F>>(
   apiCall: F
 ) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const call = async (body: Parameters<F>) => {
-    let res: ReturnType<F> | AxiosResponse<ResponseError> | undefined;
+  const call = async (...body: Parameters<F>) => {
+    let res: CallResponseType<F>;
     try {
       setIsLoading(true);
 
-      const response = await apiCall(body);
-      res = (response as AxiosResponse<ReturnType<F>>).data;
+      const response = await apiCall(...body);
+      if (isAxiosResponse(response)) {
+        res = response.data;
+      } else {
+        res = response as any;
+      }
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError) {
@@ -38,5 +55,8 @@ export const useApiCall = <F extends (body: any) => ReturnType<F>>(
     return res;
   };
 
-  return [call, isLoading] as [F, boolean];
+  return [call, isLoading] as [
+    (...data: Parameters<F>) => Promise<CallResponseType<F>>,
+    boolean
+  ];
 };

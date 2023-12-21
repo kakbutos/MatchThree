@@ -1,9 +1,11 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import App from './app';
 import ErrorBoundary from './app/providers/error-boundary/ErrorBoundary';
 import { theme } from './theme';
+import { store } from '@/store';
 
 const container = document.getElementById('root');
 
@@ -20,7 +22,9 @@ root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ErrorBoundary>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </ErrorBoundary>
     </ThemeProvider>
   </BrowserRouter>

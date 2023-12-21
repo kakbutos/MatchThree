@@ -2,7 +2,7 @@ import { Box, Typography, Button, TextField } from '@mui/material';
 import Reply from '@/assets/icons/reply.svg?react';
 import EmptyAvatarMan from '@/assets/images/empty-avatar-man.svg?react';
 import styles from './comment.module.scss';
-import { IComment } from '@/types/comment';
+import { IComment } from '@/types/forum/comment';
 
 interface CommentProps {
   comment: IComment;

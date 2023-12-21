@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useApiCall } from '@/hooks/useApiCall';
 import { userApi } from '@/services/api/user/user-api';
 import styles from './avatar-form.module.scss';
+import { isUserResponse } from '@/types/user';
 
 interface Props {
   icon: string;
@@ -32,7 +33,7 @@ export const AvatarForm: React.FC<Props> = ({ icon, canEdit }) => {
       formData.append('avatar', data.avatar[0] as File);
       const res = await changeAvatarApi(formData);
 
-      if (res?.avatar) {
+      if (isUserResponse(res) && res?.avatar) {
         setIconSrc(res.avatar);
       }
     }
