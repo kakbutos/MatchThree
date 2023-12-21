@@ -47,9 +47,17 @@ export class ConsoleController {
   }
 
   private toggleConsole() {
-    this.consoleWindow.classList.toggle('hidden');
+    this.toggleVisibility(this.consoleWindow);
     this.inputElement.focus();
     this.inputElement.value = '';
+  }
+
+  private toggleVisibility(element: HTMLElement) {
+    if (element.style.visibility === "hidden") {
+      element.style.visibility = "visible";
+    } else {
+      element.style.visibility = "hidden";
+    }
   }
 
   private addToConsole(
