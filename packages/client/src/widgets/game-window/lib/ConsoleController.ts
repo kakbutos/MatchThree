@@ -55,10 +55,10 @@ export class ConsoleController {
   }
 
   private toggleVisibility(element: HTMLElement) {
-    if (element.style.visibility === "hidden") {
-      element.style.visibility = "visible";
+    if (element.style.visibility === 'hidden') {
+      element.style.visibility = 'visible';
     } else {
-      element.style.visibility = "hidden";
+      element.style.visibility = 'hidden';
     }
   }
 
