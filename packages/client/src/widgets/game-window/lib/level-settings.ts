@@ -5,28 +5,28 @@ export class LevelSettings {
   public y: number;
   public columns: number;
   public rows: number;
-  public tilewidth: number;
-  public tileheight: number;
+  public tileWidth: number;
+  public tileHeight: number;
   public tiles: any;
-  public selectedtile: SelectedTile;
+  public selectedTile: SelectedTile;
 
   constructor(
     x: number,
     y: number,
     columns: number,
     rows: number,
-    tilewidth: number,
-    tileheight: number,
+    tileWidth: number,
+    tileHeight: number,
     tiles: any,
-    selectedtile: SelectedTile
+    selectedTile: SelectedTile
   ) {
     this.x = x;
     this.y = y;
     this.columns = columns;
     this.rows = rows;
-    this.tilewidth = tilewidth;
-    this.tileheight = tileheight;
+    this.tileWidth = tileWidth;
+    this.tileHeight = tileHeight;
     this.tiles = tiles;
-    this.selectedtile = selectedtile;
+    this.selectedTile = selectedTile;
   }
 }

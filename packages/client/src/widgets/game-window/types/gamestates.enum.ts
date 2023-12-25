@@ -1,4 +1,4 @@
-export enum Gamestate {
+export enum GameState {
   INIT,
   READY,
   RESOLVE,

@@ -1,6 +1,6 @@
-import { Animationstate } from '../types/animationstates.enum';
+import { AnimationState } from '../types/animationstates.enum';
 import { Cluster } from './cluster';
-import { Gamestate } from '../types/gamestates.enum';
+import { GameState } from '../types/gamestates.enum';
 import { LevelSettings } from './level-settings';
 import { Move } from './move';
 import { SelectedTile } from './selected-tile';
@@ -24,23 +24,23 @@ export class GameEngine {
   public context: CanvasRenderingContext2D | null;
   public levelSettings: LevelSettings;
 
-  private lastframe: number;
-  private fpstime: number;
-  private framecount: number;
+  private lastFrame: number;
+  private fpsTime: number;
+  private frameCount: number;
   private fps: number;
 
   private isGameover: boolean;
   private score: number;
   private isShowMoves: boolean;
-  private gamestate: Gamestate;
+  private gameState: GameState;
   private moves: Move[];
   private clusters: Cluster[];
-  private tilecolors: Array<Array<number>>;
+  private tileColors: Array<Array<number>>;
   private isDrag: boolean;
-  private currentmove: Move;
+  private currentMove: Move;
 
-  private animationstate: Animationstate;
-  private animationtime: number;
+  private animationState: AnimationState;
+  private animationTime: number;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -48,21 +48,21 @@ export class GameEngine {
     this.isGameover = false;
     this.score = 0;
     this.isShowMoves = false;
-    this.gamestate = Gamestate.INIT;
+    this.gameState = GameState.INIT;
     this.moves = new Array<Move>();
     this.clusters = new Array<Cluster>();
-    this.currentmove = new Move(0, 0, 0, 0);
+    this.currentMove = new Move(0, 0, 0, 0);
 
-    this.lastframe = 0;
-    this.fpstime = 0;
-    this.framecount = 0;
+    this.lastFrame = 0;
+    this.fpsTime = 0;
+    this.frameCount = 0;
     this.fps = 0;
 
-    this.animationstate = Animationstate.FOUND_AND_REMOVED;
-    this.animationtime = 0;
+    this.animationState = AnimationState.FOUND_AND_REMOVED;
+    this.animationTime = 0;
 
     this.isDrag = false;
-    this.tilecolors = TilesThemes.DEFAULT;
+    this.tileColors = TilesThemes.DEFAULT;
     this.levelSettings = new LevelSettings(
       40,
       113,
@@ -100,7 +100,7 @@ export class GameEngine {
 
   public newGame() {
     this.score = 0;
-    this.gamestate = Gamestate.READY;
+    this.gameState = GameState.READY;
     this.isGameover = false;
 
     this.createLevel();
@@ -116,8 +116,8 @@ export class GameEngine {
 
   public stopGame() {
     const levelwidth =
-      this.levelSettings.columns * this.levelSettings.tilewidth;
-    const levelheight = this.levelSettings.rows * this.levelSettings.tileheight;
+      this.levelSettings.columns * this.levelSettings.tileWidth;
+    const levelheight = this.levelSettings.rows * this.levelSettings.tileHeight;
 
     this.context!.fillStyle = 'rgba(0, 0, 0, 0.8)';
     this.context!.fillRect(
@@ -138,23 +138,22 @@ export class GameEngine {
   }
 
   public setBlissTileTheme() {
-    this.tilecolors = TilesThemes.BLISS;
+    this.tileColors = TilesThemes.BLISS;
     this.newGame();
   }
 
   public setVintageTileTheme() {
-    this.tilecolors = TilesThemes.VINTAGE;
+    this.tileColors = TilesThemes.VINTAGE;
     this.newGame();
   }
 
   public setCandyTileTheme() {
-    this.tilecolors = TilesThemes.CANDY;
+    this.tileColors = TilesThemes.CANDY;
     this.newGame();
   }
 
   private updateFoundAndRemovedState() {
-    if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return;
+    if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
     this.findClusters();
 
@@ -165,51 +164,49 @@ export class GameEngine {
 
       this.removeClusters();
 
-      this.animationstate = Animationstate.NEED_TO_BE_SHIFTED;
+      this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
     } else {
-      this.gamestate = Gamestate.READY;
+      this.gameState = GameState.READY;
     }
 
-    this.animationtime = 0;
+    this.animationTime = 0;
   }
 
   private updateNeedToBeShiftedState() {
-    if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return;
+    if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
     this.shiftTiles();
 
-    this.animationstate = Animationstate.FOUND_AND_REMOVED;
-    this.animationtime = 0;
+    this.animationState = AnimationState.FOUND_AND_REMOVED;
+    this.animationTime = 0;
 
     this.findClusters();
 
     if (this.clusters.length <= 0) {
-      this.gamestate = Gamestate.READY;
+      this.gameState = GameState.READY;
     }
   }
 
   private updateSwappingState() {
-    if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return;
+    if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
     this.swap(
-      this.currentmove.columnFrom,
-      this.currentmove.rowFrom,
-      this.currentmove.columnTo,
-      this.currentmove.rowTo
+      this.currentMove.columnFrom,
+      this.currentMove.rowFrom,
+      this.currentMove.columnTo,
+      this.currentMove.rowTo
     );
 
     // Проверка, создал ли свап кластер
     this.findClusters();
 
     if (this.clusters.length > 0) {
-      this.animationstate = Animationstate.FOUND_AND_REMOVED;
-      this.animationtime = 0;
-      this.gamestate = Gamestate.RESOLVE;
+      this.animationState = AnimationState.FOUND_AND_REMOVED;
+      this.animationTime = 0;
+      this.gameState = GameState.RESOLVE;
     } else {
-      this.animationstate = Animationstate.REWIND_SWAPPING;
-      this.animationtime = 0;
+      this.animationState = AnimationState.REWIND_SWAPPING;
+      this.animationTime = 0;
     }
 
     this.findMoves();
@@ -217,43 +214,42 @@ export class GameEngine {
   }
 
   private updateRewindSwappingState() {
-    if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return;
+    if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
     this.swap(
-      this.currentmove.columnFrom,
-      this.currentmove.rowFrom,
-      this.currentmove.columnTo,
-      this.currentmove.rowTo
+      this.currentMove.columnFrom,
+      this.currentMove.rowFrom,
+      this.currentMove.columnTo,
+      this.currentMove.rowTo
     );
 
-    this.gamestate = Gamestate.READY;
+    this.gameState = GameState.READY;
   }
 
   public update(tframe: number) {
-    const dt = (tframe - this.lastframe) / 1000;
-    this.lastframe = tframe;
+    const dt = (tframe - this.lastFrame) / 1000;
+    this.lastFrame = tframe;
 
     this.updateFps(dt);
 
-    if (this.gamestate === Gamestate.READY && this.moves.length <= 0) {
+    if (this.gameState === GameState.READY && this.moves.length <= 0) {
       this.isGameover = true;
     }
 
-    if (this.gamestate === Gamestate.RESOLVE) {
-      this.animationtime += dt;
+    if (this.gameState === GameState.RESOLVE) {
+      this.animationTime += dt;
 
-      switch (this.animationstate) {
-        case Animationstate.FOUND_AND_REMOVED:
+      switch (this.animationState) {
+        case AnimationState.FOUND_AND_REMOVED:
           this.updateFoundAndRemovedState();
           break;
-        case Animationstate.NEED_TO_BE_SHIFTED:
+        case AnimationState.NEED_TO_BE_SHIFTED:
           this.updateNeedToBeShiftedState();
           break;
-        case Animationstate.SWAPPING:
+        case AnimationState.SWAPPING:
           this.updateSwappingState();
           break;
-        case Animationstate.REWIND_SWAPPING:
+        case AnimationState.REWIND_SWAPPING:
           this.updateRewindSwappingState();
           break;
       }
@@ -285,8 +281,8 @@ export class GameEngine {
 
     // Отрисовка фона уровня
     const levelwidth =
-      this.levelSettings.columns * this.levelSettings.tilewidth;
-    const levelheight = this.levelSettings.rows * this.levelSettings.tileheight;
+      this.levelSettings.columns * this.levelSettings.tileWidth;
+    const levelheight = this.levelSettings.rows * this.levelSettings.tileHeight;
     this.context!.fillStyle = BORDER_BOARD_COLOR;
     this.context!.fillRect(
       this.levelSettings.x - 4,
@@ -301,7 +297,7 @@ export class GameEngine {
     if (
       this.isShowMoves &&
       this.clusters.length <= 0 &&
-      this.gamestate === Gamestate.READY
+      this.gameState === GameState.READY
     ) {
       this.renderMoves();
     }
@@ -348,12 +344,12 @@ export class GameEngine {
           i,
           j,
           0,
-          (this.animationtime / TOTAL_TIME_ANIMATION) * shift
+          (this.animationTime / TOTAL_TIME_ANIMATION) * shift
         );
 
         // Проверка, есть ли плитка
         if (this.levelSettings.tiles[i][j].type >= 0) {
-          const rgbColor = this.tilecolors[this.levelSettings.tiles[i][j].type];
+          const rgbColor = this.tileColors[this.levelSettings.tiles[i][j].type];
 
           this.drawTile(
             coord.tilex,
@@ -365,10 +361,10 @@ export class GameEngine {
         }
 
         // Отрисовка выбранной плитки
-        if (this.levelSettings.selectedtile.selected) {
+        if (this.levelSettings.selectedTile.selected) {
           if (
-            this.levelSettings.selectedtile.column === i &&
-            this.levelSettings.selectedtile.row === j
+            this.levelSettings.selectedTile.column === i &&
+            this.levelSettings.selectedTile.row === j
           ) {
             this.drawTile(coord.tilex, coord.tiley, 0, 0, 0, 0.4);
           }
@@ -378,56 +374,56 @@ export class GameEngine {
 
     // Рендеринг свап анимации
     if (
-      this.gamestate === Gamestate.RESOLVE &&
-      (this.animationstate === Animationstate.SWAPPING ||
-        this.animationstate === Animationstate.REWIND_SWAPPING)
+      this.gameState === GameState.RESOLVE &&
+      (this.animationState === AnimationState.SWAPPING ||
+        this.animationState === AnimationState.REWIND_SWAPPING)
     ) {
-      const shiftx = this.currentmove.columnTo - this.currentmove.columnFrom;
-      const shifty = this.currentmove.rowTo - this.currentmove.rowFrom;
+      const shiftx = this.currentMove.columnTo - this.currentMove.columnFrom;
+      const shifty = this.currentMove.rowTo - this.currentMove.rowFrom;
 
       const coord1 = this.getTileCoordinate(
-        this.currentmove.columnFrom,
-        this.currentmove.rowFrom,
+        this.currentMove.columnFrom,
+        this.currentMove.rowFrom,
         0,
         0
       );
       const coord1shift = this.getTileCoordinate(
-        this.currentmove.columnFrom,
-        this.currentmove.rowFrom,
-        (this.animationtime / TOTAL_TIME_ANIMATION) * shiftx,
-        (this.animationtime / TOTAL_TIME_ANIMATION) * shifty
+        this.currentMove.columnFrom,
+        this.currentMove.rowFrom,
+        (this.animationTime / TOTAL_TIME_ANIMATION) * shiftx,
+        (this.animationTime / TOTAL_TIME_ANIMATION) * shifty
       );
       const rgbColor1 =
-        this.tilecolors[
-        this.levelSettings.tiles[this.currentmove.columnFrom][
-          this.currentmove.rowFrom
-        ].type
+        this.tileColors[
+          this.levelSettings.tiles[this.currentMove.columnFrom][
+            this.currentMove.rowFrom
+          ].type
         ];
 
       const coord2 = this.getTileCoordinate(
-        this.currentmove.columnTo,
-        this.currentmove.rowTo,
+        this.currentMove.columnTo,
+        this.currentMove.rowTo,
         0,
         0
       );
       const coord2shift = this.getTileCoordinate(
-        this.currentmove.columnTo,
-        this.currentmove.rowTo,
-        (this.animationtime / TOTAL_TIME_ANIMATION) * -shiftx,
-        (this.animationtime / TOTAL_TIME_ANIMATION) * -shifty
+        this.currentMove.columnTo,
+        this.currentMove.rowTo,
+        (this.animationTime / TOTAL_TIME_ANIMATION) * -shiftx,
+        (this.animationTime / TOTAL_TIME_ANIMATION) * -shifty
       );
       const rgbColor2 =
-        this.tilecolors[
-        this.levelSettings.tiles[this.currentmove.columnTo][
-          this.currentmove.rowTo
-        ].type
+        this.tileColors[
+          this.levelSettings.tiles[this.currentMove.columnTo][
+            this.currentMove.rowTo
+          ].type
         ];
 
       this.drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
       this.drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
 
       // Изменяем порядок в зависимости от состояния анимации
-      if (this.animationstate === Animationstate.SWAPPING) {
+      if (this.animationState === AnimationState.SWAPPING) {
         this.drawTile(
           coord1shift.tilex,
           coord1shift.tiley,
@@ -462,19 +458,19 @@ export class GameEngine {
   }
 
   private updateFps(dt: number) {
-    if (this.fpstime > 0.25) {
-      this.fps = Math.round(this.framecount / this.fpstime);
+    if (this.fpsTime > 0.25) {
+      this.fps = Math.round(this.frameCount / this.fpsTime);
 
-      this.fpstime = 0;
-      this.framecount = 0;
+      this.fpsTime = 0;
+      this.frameCount = 0;
     }
 
-    this.fpstime += dt;
-    this.framecount++;
+    this.fpsTime += dt;
+    this.frameCount++;
   }
 
   private getRandomTile() {
-    return Math.floor(Math.random() * this.tilecolors.length);
+    return Math.floor(Math.random() * this.tileColors.length);
   }
 
   private renderMoves() {
@@ -495,12 +491,12 @@ export class GameEngine {
       this.context!.strokeStyle = MOVE_HINT_COLOR;
       this.context!.beginPath();
       this.context!.moveTo(
-        coord1.tilex + this.levelSettings.tilewidth / 2,
-        coord1.tiley + this.levelSettings.tileheight / 2
+        coord1.tilex + this.levelSettings.tileWidth / 2,
+        coord1.tiley + this.levelSettings.tileHeight / 2
       );
       this.context!.lineTo(
-        coord2.tilex + this.levelSettings.tilewidth / 2,
-        coord2.tiley + this.levelSettings.tileheight / 2
+        coord2.tilex + this.levelSettings.tileWidth / 2,
+        coord2.tiley + this.levelSettings.tileHeight / 2
       );
       this.context!.stroke();
     }
@@ -518,18 +514,18 @@ export class GameEngine {
       if (this.clusters[i].isHorizontal) {
         this.context!.fillStyle = MATCH_HORIZONTAL_COLOR;
         this.context!.fillRect(
-          titleCoordinate.tilex + this.levelSettings.tilewidth / 2,
-          titleCoordinate.tiley + this.levelSettings.tileheight / 2 - 4,
-          (this.clusters[i].length - 1) * this.levelSettings.tilewidth,
+          titleCoordinate.tilex + this.levelSettings.tileWidth / 2,
+          titleCoordinate.tiley + this.levelSettings.tileHeight / 2 - 4,
+          (this.clusters[i].length - 1) * this.levelSettings.tileWidth,
           8
         );
       } else {
         this.context!.fillStyle = MATCH_VERTICAL_COLOR;
         this.context!.fillRect(
-          titleCoordinate.tilex + this.levelSettings.tilewidth / 2 - 4,
-          titleCoordinate.tiley + this.levelSettings.tileheight / 2,
+          titleCoordinate.tilex + this.levelSettings.tileWidth / 2 - 4,
+          titleCoordinate.tiley + this.levelSettings.tileHeight / 2,
           8,
-          (this.clusters[i].length - 1) * this.levelSettings.tileheight
+          (this.clusters[i].length - 1) * this.levelSettings.tileHeight
         );
       }
     }
@@ -538,7 +534,7 @@ export class GameEngine {
   private onMouseMove = (e: MouseEvent) => {
     const mousePosition = this.getMousePos(this.canvas, e);
 
-    if (this.isDrag && this.levelSettings.selectedtile.selected) {
+    if (this.isDrag && this.levelSettings.selectedTile.selected) {
       const currentTile = this.getMouseTile(mousePosition);
 
       if (!currentTile.valid) return;
@@ -547,8 +543,8 @@ export class GameEngine {
         !this.canSwap(
           currentTile.x,
           currentTile.y,
-          this.levelSettings.selectedtile.column,
-          this.levelSettings.selectedtile.row
+          this.levelSettings.selectedTile.column,
+          this.levelSettings.selectedTile.row
         )
       )
         return;
@@ -556,8 +552,8 @@ export class GameEngine {
       this.mouseSwap(
         currentTile.x,
         currentTile.y,
-        this.levelSettings.selectedtile.column,
-        this.levelSettings.selectedtile.row
+        this.levelSettings.selectedTile.column,
+        this.levelSettings.selectedTile.row
       );
     }
   };
@@ -572,41 +568,41 @@ export class GameEngine {
       if (currentTile.valid) {
         let swapped = false;
 
-        if (this.levelSettings.selectedtile.selected) {
+        if (this.levelSettings.selectedTile.selected) {
           if (
-            currentTile.x === this.levelSettings.selectedtile.column &&
-            currentTile.y === this.levelSettings.selectedtile.row
+            currentTile.x === this.levelSettings.selectedTile.column &&
+            currentTile.y === this.levelSettings.selectedTile.row
           ) {
-            this.levelSettings.selectedtile.selected = false;
+            this.levelSettings.selectedTile.selected = false;
             this.isDrag = true;
             return;
           } else if (
             this.canSwap(
               currentTile.x,
               currentTile.y,
-              this.levelSettings.selectedtile.column,
-              this.levelSettings.selectedtile.row
+              this.levelSettings.selectedTile.column,
+              this.levelSettings.selectedTile.row
             )
           ) {
             this.mouseSwap(
               currentTile.x,
               currentTile.y,
-              this.levelSettings.selectedtile.column,
-              this.levelSettings.selectedtile.row
+              this.levelSettings.selectedTile.column,
+              this.levelSettings.selectedTile.row
             );
             swapped = true;
           }
         }
 
         if (!swapped) {
-          this.levelSettings.selectedtile = new SelectedTile(
+          this.levelSettings.selectedTile = new SelectedTile(
             true,
             currentTile.x,
             currentTile.y
           );
         }
       } else {
-        this.levelSettings.selectedtile.selected = false;
+        this.levelSettings.selectedTile.selected = false;
       }
 
       this.isDrag = true;
@@ -645,12 +641,12 @@ export class GameEngine {
     columnTo: number,
     rowTo: number
   ) {
-    this.currentmove = new Move(columnFrom, rowFrom, columnTo, rowTo);
-    this.levelSettings.selectedtile.selected = false;
+    this.currentMove = new Move(columnFrom, rowFrom, columnTo, rowTo);
+    this.levelSettings.selectedTile.selected = false;
 
-    this.animationstate = Animationstate.SWAPPING;
-    this.animationtime = 0;
-    this.gamestate = Gamestate.RESOLVE;
+    this.animationState = AnimationState.SWAPPING;
+    this.animationTime = 0;
+    this.gameState = GameState.RESOLVE;
   }
 
   private swap(x1: number, y1: number, x2: number, y2: number) {
@@ -663,16 +659,18 @@ export class GameEngine {
 
   // Проверка, можно ли выполнить перемещение
   private canSwap(x1: number, y1: number, x2: number, y2: number) {
-    return (Math.abs(x1 - x2) === 1 && y1 === y2) ||
-      (Math.abs(y1 - y2) === 1 && x1 === x2);
+    return (
+      (Math.abs(x1 - x2) === 1 && y1 === y2) ||
+      (Math.abs(y1 - y2) === 1 && x1 === x2)
+    );
   }
 
   private getMouseTile(position: Position) {
     const tileX = Math.floor(
-      (position.x - this.levelSettings.x) / this.levelSettings.tilewidth
+      (position.x - this.levelSettings.x) / this.levelSettings.tileWidth
     );
     const tileY = Math.floor(
-      (position.y - this.levelSettings.y) / this.levelSettings.tileheight
+      (position.y - this.levelSettings.y) / this.levelSettings.tileHeight
     );
 
     if (this.checkIsTileValid(tileX, tileY)) {
@@ -827,7 +825,7 @@ export class GameEngine {
         } else {
           if (
             this.levelSettings.tiles[i][j].type ===
-            this.levelSettings.tiles[i + 1][j].type &&
+              this.levelSettings.tiles[i + 1][j].type &&
             this.levelSettings.tiles[i][j].type != -1
           ) {
             matchLength += 1;
@@ -863,7 +861,7 @@ export class GameEngine {
         } else {
           if (
             this.levelSettings.tiles[i][j].type ===
-            this.levelSettings.tiles[i][j + 1].type &&
+              this.levelSettings.tiles[i][j + 1].type &&
             this.levelSettings.tiles[i][j].type != -1
           ) {
             matchLength += 1;
@@ -909,9 +907,9 @@ export class GameEngine {
   ) {
     const tilex =
       this.levelSettings.x +
-      (column + columnoffset) * this.levelSettings.tilewidth;
+      (column + columnoffset) * this.levelSettings.tileWidth;
     const tiley =
-      this.levelSettings.y + (row + rowoffset) * this.levelSettings.tileheight;
+      this.levelSettings.y + (row + rowoffset) * this.levelSettings.tileHeight;
     return { tilex, tiley };
   }
 
@@ -927,8 +925,8 @@ export class GameEngine {
     this.context!.fillRect(
       x + 2,
       y + 2,
-      this.levelSettings.tilewidth - 4,
-      this.levelSettings.tileheight - 4
+      this.levelSettings.tileWidth - 4,
+      this.levelSettings.tileHeight - 4
     );
   }
 

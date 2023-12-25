@@ -1,4 +1,4 @@
-export enum Animationstate {
+export enum AnimationState {
   FOUND_AND_REMOVED,
   NEED_TO_BE_SHIFTED,
   SWAPPING,
