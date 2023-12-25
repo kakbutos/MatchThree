@@ -154,7 +154,7 @@ export class GameEngine {
 
   private updateFoundAndRemovedState() {
     if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return
+      return;
 
     this.findClusters();
 
@@ -175,7 +175,7 @@ export class GameEngine {
 
   private updateNeedToBeShiftedState() {
     if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return
+      return;
 
     this.shiftTiles();
 
@@ -191,7 +191,7 @@ export class GameEngine {
 
   private updateSwappingState() {
     if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return
+      return;
 
     this.swap(
       this.currentmove.columnFrom,
@@ -218,7 +218,7 @@ export class GameEngine {
 
   private updateRewindSwappingState() {
     if (this.animationtime <= TOTAL_TIME_ANIMATION)
-      return
+      return;
 
     this.swap(
       this.currentmove.columnFrom,
