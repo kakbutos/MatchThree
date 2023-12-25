@@ -104,8 +104,6 @@ export class GameEngine {
     this.isGameover = false;
 
     this.createLevel();
-    this.findMoves();
-    this.findClusters();
   }
 
   // Главный цикл
@@ -154,85 +152,110 @@ export class GameEngine {
     this.newGame();
   }
 
+  private updateFoundAndRemovedState() {
+    if (this.animationtime <= TOTAL_TIME_ANIMATION)
+      return
+
+    this.findClusters();
+
+    if (this.clusters.length > 0) {
+      for (let i = 0; i < this.clusters.length; i++) {
+        this.score += 100 * (this.clusters[i].length - 2);
+      }
+
+      this.removeClusters();
+
+      this.animationstate = Animationstate.NEED_TO_BE_SHIFTED;
+    } else {
+      this.gamestate = Gamestate.READY;
+    }
+
+    this.animationtime = 0;
+  }
+
+  private updateNeedToBeShiftedState() {
+    if (this.animationtime <= TOTAL_TIME_ANIMATION)
+      return
+
+    this.shiftTiles();
+
+    this.animationstate = Animationstate.FOUND_AND_REMOVED;
+    this.animationtime = 0;
+
+    this.findClusters();
+
+    if (this.clusters.length <= 0) {
+      this.gamestate = Gamestate.READY;
+    }
+  }
+
+  private updateSwappingState() {
+    if (this.animationtime <= TOTAL_TIME_ANIMATION)
+      return
+
+    this.swap(
+      this.currentmove.columnFrom,
+      this.currentmove.rowFrom,
+      this.currentmove.columnTo,
+      this.currentmove.rowTo
+    );
+
+    // Проверка, создал ли свап кластер
+    this.findClusters();
+
+    if (this.clusters.length > 0) {
+      this.animationstate = Animationstate.FOUND_AND_REMOVED;
+      this.animationtime = 0;
+      this.gamestate = Gamestate.RESOLVE;
+    } else {
+      this.animationstate = Animationstate.REWIND_SWAPPING;
+      this.animationtime = 0;
+    }
+
+    this.findMoves();
+    this.findClusters();
+  }
+
+  private updateRewindSwappingState() {
+    if (this.animationtime <= TOTAL_TIME_ANIMATION)
+      return
+
+    this.swap(
+      this.currentmove.columnFrom,
+      this.currentmove.rowFrom,
+      this.currentmove.columnTo,
+      this.currentmove.rowTo
+    );
+
+    this.gamestate = Gamestate.READY;
+  }
+
   public update(tframe: number) {
     const dt = (tframe - this.lastframe) / 1000;
     this.lastframe = tframe;
 
     this.updateFps(dt);
 
-    if (this.gamestate === Gamestate.READY) {
-      // Проверка на конец игры
-      if (this.moves.length <= 0) {
-        this.isGameover = true;
-      }
-    } else if (this.gamestate === Gamestate.RESOLVE) {
+    if (this.gamestate === Gamestate.READY && this.moves.length <= 0) {
+      this.isGameover = true;
+    }
+
+    if (this.gamestate === Gamestate.RESOLVE) {
       this.animationtime += dt;
 
-      if (this.animationstate === Animationstate.FOUND_AND_REMOVED) {
-        if (this.animationtime > TOTAL_TIME_ANIMATION) {
-          this.findClusters();
-
-          if (this.clusters.length > 0) {
-            for (let i = 0; i < this.clusters.length; i++) {
-              this.score += 100 * (this.clusters[i].length - 2);
-            }
-
-            this.removeClusters();
-
-            this.animationstate = Animationstate.NEED_TO_BE_SHIFTED;
-          } else {
-            this.gamestate = Gamestate.READY;
-          }
-
-          this.animationtime = 0;
-        }
-      } else if (this.animationstate === Animationstate.NEED_TO_BE_SHIFTED) {
-        if (this.animationtime > TOTAL_TIME_ANIMATION) {
-          this.shiftTiles();
-
-          this.animationstate = Animationstate.FOUND_AND_REMOVED;
-          this.animationtime = 0;
-
-          this.findClusters();
-
-          if (this.clusters.length <= 0) {
-            this.gamestate = Gamestate.READY;
-          }
-        }
-      } else if (this.animationstate === Animationstate.SWAPPING) {
-        if (this.animationtime > TOTAL_TIME_ANIMATION) {
-          this.swap(
-            this.currentmove.columnFrom,
-            this.currentmove.rowFrom,
-            this.currentmove.columnTo,
-            this.currentmove.rowTo
-          );
-
-          // Проверка, создал ли свап кластер
-          this.findClusters();
-
-          if (this.clusters.length > 0) {
-            this.animationstate = Animationstate.FOUND_AND_REMOVED;
-            this.animationtime = 0;
-            this.gamestate = Gamestate.RESOLVE;
-          } else {
-            this.animationstate = Animationstate.REWIND_SWAPPING;
-            this.animationtime = 0;
-          }
-
-          this.findMoves();
-          this.findClusters();
-        }
-      } else if (this.animationstate === Animationstate.REWIND_SWAPPING) {
-        if (this.animationtime > TOTAL_TIME_ANIMATION) {
-          this.swap(
-            this.currentmove.columnFrom,
-            this.currentmove.rowFrom,
-            this.currentmove.columnTo,
-            this.currentmove.rowTo
-          );
-          this.gamestate = Gamestate.READY;
-        }
+      switch (this.animationstate) {
+        case Animationstate.FOUND_AND_REMOVED:
+          this.updateFoundAndRemovedState();
+          break;
+        case Animationstate.NEED_TO_BE_SHIFTED:
+          this.updateNeedToBeShiftedState();
+          break;
+        case Animationstate.SWAPPING:
+          this.updateSwappingState();
+          break;
+        case Animationstate.REWIND_SWAPPING:
+          this.updateRewindSwappingState();
+          break;
       }
 
       this.findMoves();
@@ -376,9 +399,9 @@ export class GameEngine {
       );
       const rgbColor1 =
         this.tilecolors[
-          this.levelSettings.tiles[this.currentmove.columnFrom][
-            this.currentmove.rowFrom
-          ].type
+        this.levelSettings.tiles[this.currentmove.columnFrom][
+          this.currentmove.rowFrom
+        ].type
         ];
 
       const coord2 = this.getTileCoordinate(
@@ -395,9 +418,9 @@ export class GameEngine {
       );
       const rgbColor2 =
         this.tilecolors[
-          this.levelSettings.tiles[this.currentmove.columnTo][
-            this.currentmove.rowTo
-          ].type
+        this.levelSettings.tiles[this.currentmove.columnTo][
+          this.currentmove.rowTo
+        ].type
         ];
 
       this.drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
@@ -594,12 +617,11 @@ export class GameEngine {
     this.isShowMoves = !this.isShowMoves;
   }
 
-  private onMouseUp = (_e: MouseEvent) => {
+  private onMouseUp = () => {
     this.isDrag = false;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private onMouseOut = (_e: MouseEvent) => {
+  private onMouseOut = () => {
     this.isDrag = false;
   };
 
@@ -641,14 +663,8 @@ export class GameEngine {
 
   // Проверка, можно ли выполнить перемещение
   private canSwap(x1: number, y1: number, x2: number, y2: number) {
-    if (
-      (Math.abs(x1 - x2) === 1 && y1 === y2) ||
-      (Math.abs(y1 - y2) === 1 && x1 === x2)
-    ) {
-      return true;
-    }
-
-    return false;
+    return (Math.abs(x1 - x2) === 1 && y1 === y2) ||
+      (Math.abs(y1 - y2) === 1 && x1 === x2);
   }
 
   private getMouseTile(position: Position) {
@@ -811,7 +827,7 @@ export class GameEngine {
         } else {
           if (
             this.levelSettings.tiles[i][j].type ===
-              this.levelSettings.tiles[i + 1][j].type &&
+            this.levelSettings.tiles[i + 1][j].type &&
             this.levelSettings.tiles[i][j].type != -1
           ) {
             matchLength += 1;
@@ -847,7 +863,7 @@ export class GameEngine {
         } else {
           if (
             this.levelSettings.tiles[i][j].type ===
-              this.levelSettings.tiles[i][j + 1].type &&
+            this.levelSettings.tiles[i][j + 1].type &&
             this.levelSettings.tiles[i][j].type != -1
           ) {
             matchLength += 1;
@@ -896,7 +912,7 @@ export class GameEngine {
       (column + columnoffset) * this.levelSettings.tilewidth;
     const tiley =
       this.levelSettings.y + (row + rowoffset) * this.levelSettings.tileheight;
-    return { tilex: tilex, tiley: tiley };
+    return { tilex, tiley };
   }
 
   private drawTile(
