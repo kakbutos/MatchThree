@@ -12,7 +12,7 @@ import { ConsoleMessageProps } from './ConsoleMessage';
 
 const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const consoleRef = useRef<HTMLDivElement | null>(null);
+  const consoleRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState<
     FunctionComponentElement<ConsoleMessageProps>[]
@@ -36,6 +36,10 @@ const GameWindow: FC = () => {
       gameEngine
     );
     consoleController.addEventListeners();
+
+    return () => {
+      consoleController.removeEventListeners();
+    };
   }, []);
 
   return (
