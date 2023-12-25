@@ -37,18 +37,18 @@ export class ConsoleController {
     this.inputElement.addEventListener('keydown', this.handleEnterPress);
 
     this.toggleConsole();
-  }
+  };
 
   public removeEventListeners = () => {
     document.removeEventListener('keydown', this.handleKeyPress);
     this.inputElement.removeEventListener('keydown', this.handleEnterPress);
-  }
+  };
 
   private handleKeyPress = (event: KeyboardEvent) => {
     if (event.code === 'Backquote') {
       this.toggleConsole();
     }
-  }
+  };
 
   private handleEnterPress = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
@@ -57,13 +57,13 @@ export class ConsoleController {
       this.executeCommand(command);
       this.inputElement.value = '';
     }
-  }
+  };
 
   private toggleConsole = () => {
     this.toggleVisibility(this.consoleWindow);
     this.inputElement.focus();
     this.inputElement.value = '';
-  }
+  };
 
   private toggleVisibility(element: HTMLElement) {
     if (element.style.visibility === 'hidden') {
