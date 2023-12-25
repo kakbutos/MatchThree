@@ -1,4 +1,4 @@
-import React, { FunctionComponentElement, MutableRefObject } from 'react';
+import React, { FunctionComponentElement, RefObject } from 'react';
 import ConsoleMessage, { ConsoleMessageProps } from '../ConsoleMessage';
 import { MessageTypes } from '../types/message-types.enum';
 import { GameEngine } from './GameEngine';
@@ -13,42 +13,53 @@ export class ConsoleController {
   private consoleHistory: string[];
 
   constructor(
-    consoleWindow: MutableRefObject<HTMLDivElement>,
-    inputElement: MutableRefObject<HTMLInputElement>,
+    consoleWindow: RefObject<HTMLDivElement>,
+    inputElement: RefObject<HTMLInputElement>,
     addMesageHandler: (
       message: FunctionComponentElement<ConsoleMessageProps>
     ) => void,
     gameEngine: GameEngine
   ) {
+    if (!consoleWindow.current)
+      throw new Error('Missing consoleWindow ref');
+    if (!inputElement.current)
+      throw new Error('Missing inputElement ref');
+
     this.consoleWindow = consoleWindow.current;
     this.inputElement = inputElement.current;
     this.addMesageHandler = addMesageHandler;
-    this.addEventListeners = this.addEventListeners.bind(this);
-    this.toggleConsole = this.toggleConsole.bind(this);
     this.gameEngine = gameEngine;
     this.consoleHistory = new Array<string>();
   }
 
-  public addEventListeners() {
-    document.addEventListener('keydown', event => {
-      if (event.code === 'Backquote') {
-        this.toggleConsole();
-      }
-    });
-
-    this.inputElement.addEventListener('keydown', event => {
-      if (event.key === 'Enter') {
-        const command = this.inputElement.value;
-        this.addToConsole(`> ${command}`);
-        this.executeCommand(command);
-        this.inputElement.value = '';
-      }
-    });
+  public addEventListeners = () => {
+    document.addEventListener('keydown', this.handleKeyPress);
+    this.inputElement.addEventListener('keydown', this.handleEnterPress);
 
     this.toggleConsole();
   }
 
-  private toggleConsole() {
+  public removeEventListeners = () => {
+    document.removeEventListener('keydown', this.handleKeyPress);
+    this.inputElement.removeEventListener('keydown', this.handleEnterPress);
+  }
+
+  private handleKeyPress = (event: KeyboardEvent) => {
+    if (event.code === 'Backquote') {
+      this.toggleConsole();
+    }
+  }
+
+  private handleEnterPress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      const command = this.inputElement.value;
+      this.addToConsole(`> ${command}`);
+      this.executeCommand(command);
+      this.inputElement.value = '';
+    }
+  }
+
+  private toggleConsole = () => {
     this.toggleVisibility(this.consoleWindow);
     this.inputElement.focus();
     this.inputElement.value = '';
