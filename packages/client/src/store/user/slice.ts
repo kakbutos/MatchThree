@@ -10,7 +10,7 @@ interface UserState {
 
 const initialState: UserState = {
   currentUser: null,
-  status: LoadingStatus.IDLE,
+  status: LoadingStatus.INITIAL,
 };
 
 export const fetchCurrentUser = createAsyncThunk(
