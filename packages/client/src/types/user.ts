@@ -15,3 +15,7 @@ export type ChangePasswordData = {
   oldPassword: string;
   newPassword: string;
 };
+
+export const isUserResponse = (value: unknown): value is User => {
+  return !!value && !!(value as User)?.id;
+};

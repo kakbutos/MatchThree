@@ -6,8 +6,7 @@ import styles from './registration-form.module.scss';
 import { Spinner } from '@/shared/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { getRouteLogin, getRouteMain } from '@/constants/router/router';
-import { AuthService } from '@/services/auth/auth';
-import { SignupRequest } from '@/types/auth/auth';
+import { SignupRequest, isSignupResponse } from '@/types/auth/auth';
 import { FormInputText } from '@/shared/form-fields/FormInputText';
 import {
   emailValidate,
@@ -19,6 +18,8 @@ import {
   loginValidate,
   nameValidate,
 } from '@/utils/validate';
+import { fetchCurrentUser } from '@/store/user/slice';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 
 interface RegistrationFormFields extends SignupRequest {
   confirm_password: string;
@@ -35,6 +36,7 @@ const INITIAL_VALUE = {
 };
 
 export const RegistrationForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { handleSubmit, control, watch } = useForm<RegistrationFormFields>({
     defaultValues: INITIAL_VALUE,
   });
@@ -52,8 +54,8 @@ export const RegistrationForm: React.FC = () => {
     ...formValue
   }: RegistrationFormFields) => {
     const res = await signup(formValue);
-    if (res?.id) {
-      AuthService.setLogged();
+    if (isSignupResponse(res) && res?.id) {
+      dispatch(fetchCurrentUser());
       navigate(getRouteMain(), {
         replace: true,
       });

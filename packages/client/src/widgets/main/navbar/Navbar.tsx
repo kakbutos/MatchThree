@@ -23,7 +23,9 @@ import {
 } from '@/constants/router/router';
 import { useApiCall } from '@/hooks/useApiCall';
 import { authApi } from '@/services/api/auth/auth-api';
-import { AuthService } from '@/services/auth/auth';
+import { UserStore } from '@/store/user';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 const pages = [
   { title: 'Игра', routeFn: getRouteGame },
@@ -32,6 +34,8 @@ const pages = [
 ];
 
 export const Navbar = () => {
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(UserStore.selectors.selectCurrentUser);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -40,7 +44,7 @@ export const Navbar = () => {
   const [logout] = useApiCall(authApi.logout);
   const exit = async () => {
     await logout();
-    AuthService.logout();
+    dispatch(UserStore.actions.clear());
     navigate(getRouteLogin(), {
       replace: true,
     });
@@ -162,7 +166,9 @@ export const Navbar = () => {
               <MenuItem
                 onClick={() => {
                   handleCloseUserMenu();
-                  navigate(getRouteProfile('1'));
+                  if (currentUser) {
+                    navigate(getRouteProfile(String(currentUser.id)));
+                  }
                 }}>
                 <Typography textAlign="center">Профиль</Typography>
               </MenuItem>

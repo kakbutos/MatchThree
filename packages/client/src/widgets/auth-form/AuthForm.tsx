@@ -6,11 +6,13 @@ import styles from './auth-form.module.scss';
 import { Spinner } from '@/shared/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import { getRouteMain, getRouteRegistration } from '@/constants/router/router';
-import { AuthService } from '@/services/auth/auth';
 import { FormInputText } from '@/shared/form-fields/FormInputText';
 import { AuthRequest } from '@/types/auth/auth';
+import { fetchCurrentUser } from '@/store/user/slice';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 
 export const AuthForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { handleSubmit, control } = useForm<AuthRequest>({
     defaultValues: {
       login: '',
@@ -23,7 +25,7 @@ export const AuthForm: React.FC = () => {
   const onSubmit = async (data: AuthRequest) => {
     const res = await signin(data);
     if (typeof res === 'string' && res === 'OK') {
-      AuthService.setLogged();
+      dispatch(fetchCurrentUser());
       navigate(getRouteMain(), {
         replace: true,
       });

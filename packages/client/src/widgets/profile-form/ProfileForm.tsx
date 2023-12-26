@@ -10,14 +10,15 @@ import {
   loginValidate,
   nameValidate,
 } from '@/utils/validate';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApiCall } from '@/hooks/useApiCall';
 import { userApi } from '@/services/api/user/user-api';
-import { ChangeProfileData, User } from '@/types/user';
+import { ChangeProfileData, User, isUserResponse } from '@/types/user';
 import { useParams } from 'react-router-dom';
-import { AuthUserContext } from '@/pages/profile/Profile';
 import { AvatarForm } from '@/widgets/avatar-from/AvatarForm';
 import { PasswordForm } from '@/widgets/password-form/PasswordForm';
+import { UserStore } from '@/store/user';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 const INITIAL_AUTH_USER = {
   first_name: '',
@@ -46,7 +47,7 @@ export const ProfileForm: React.FC = () => {
   const [canEdit, setCanEdit] = useState(false);
   const [changeProfile, isLoading] = useApiCall(userApi.changeProfile);
 
-  const authUser = useContext(AuthUserContext);
+  const authUser = useAppSelector(UserStore.selectors.selectCurrentUser);
   const { handleSubmit, control, reset } = useForm({
     defaultValues: INITIAL_AUTH_USER,
   });
@@ -56,7 +57,7 @@ export const ProfileForm: React.FC = () => {
       if (userId) {
         const res = await getUserApi(+userId);
 
-        if (res?.id) {
+        if (isUserResponse(res) && res?.id) {
           const data = sanitizeObject(res);
           setUserById(data);
           // заполняем данными форму
@@ -84,7 +85,7 @@ export const ProfileForm: React.FC = () => {
   const onSubmit = async (data: ChangeProfileData) => {
     delete data.second_name;
     const res = await changeProfile(data);
-    if (res?.id) {
+    if (isUserResponse(res) && res?.id) {
       setShowTip(true);
     }
   };

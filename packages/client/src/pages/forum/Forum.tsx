@@ -12,7 +12,7 @@ import {
   CreateThemeDialog,
   CreateThemeRequest,
 } from '@/widgets/create-theme-dialog/CreateThemeDialog';
-import { ITopic } from '@/types/topic';
+import { ITopic } from '@/types/forum/topic';
 
 export const Forum: React.FC = () => {
   const navigate = useNavigate();

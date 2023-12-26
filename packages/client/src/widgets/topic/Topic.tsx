@@ -3,7 +3,7 @@ import CommentIcon from '@/assets/icons/comment.svg?react';
 import { getRouteForumTopic } from '@/constants/router/router';
 import { useNavigate } from 'react-router-dom';
 import styles from './topic.module.scss';
-import { ITopic } from '@/types/topic';
+import { ITopic } from '@/types/forum/topic';
 
 interface TopicProps {
   topic: ITopic;

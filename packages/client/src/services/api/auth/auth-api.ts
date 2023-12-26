@@ -1,6 +1,7 @@
 import { BaseApi } from '@/utils/api/base-api';
-import { AuthRequest, SignupRequest } from '@/types/auth/auth';
+import { AuthRequest, SignupRequest, SignupResponse } from '@/types/auth/auth';
 import { User } from '@/types/user';
+import { AxiosResponse } from 'axios';
 
 class AuthApi extends BaseApi {
   constructor() {
@@ -8,13 +9,14 @@ class AuthApi extends BaseApi {
   }
 
   signIn = (data: AuthRequest) =>
-    this.http.post<AuthRequest, string>('signin', data);
+    this.http.post<AuthRequest, AxiosResponse<string>>('signin', data);
   signUp = (data: SignupRequest) =>
-    this.http.post<SignupRequest, { id: string }>('signup', data, {
-      withCredentials: false,
-    });
-  logout = () => this.http.post<undefined, string>('logout');
-  getCurrent = () => this.http.get<undefined, User>('user');
+    this.http.post<SignupRequest, AxiosResponse<SignupResponse>>(
+      'signup',
+      data
+    );
+  logout = () => this.http.post<undefined, AxiosResponse<string>>('logout');
+  getCurrent = () => this.http.get<undefined, AxiosResponse<User>>('user');
 }
 
 export const authApi = new AuthApi();
