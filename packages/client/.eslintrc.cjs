@@ -22,13 +22,14 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     semi: ['error', 'always'],
     'react/prop-types': 'off',
-    "@typescript-eslint/no-restricted-imports": [
-      "warn",
+    '@typescript-eslint/no-restricted-imports': [
+      'warn',
       {
-        "name": "react-redux",
-        "importNames": ["useSelector", "useDispatch"],
-        "message": "Use typed hooks `useAppDispatch` and `useAppSelector` instead."
-      }
+        name: 'react-redux',
+        importNames: ['useSelector', 'useDispatch'],
+        message:
+          'Use typed hooks `useAppDispatch` and `useAppSelector` instead.',
+      },
     ],
   },
 };

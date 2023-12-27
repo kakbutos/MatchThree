@@ -41,6 +41,7 @@ export class GameEngine {
 
   private animationState: AnimationState;
   private animationTime: number;
+  private showFps: boolean;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -52,11 +53,11 @@ export class GameEngine {
     this.moves = new Array<Move>();
     this.clusters = new Array<Cluster>();
     this.currentMove = new Move(0, 0, 0, 0);
-
     this.lastFrame = 0;
     this.fpsTime = 0;
     this.frameCount = 0;
     this.fps = 0;
+    this.showFps = true;
 
     this.animationState = AnimationState.FOUND_AND_REMOVED;
     this.animationTime = 0;
@@ -238,7 +239,6 @@ export class GameEngine {
 
     if (this.gameState === GameState.RESOLVE) {
       this.animationTime += dt;
-
       switch (this.animationState) {
         case AnimationState.FOUND_AND_REMOVED:
           this.updateFoundAndRemovedState();
@@ -937,35 +937,59 @@ export class GameEngine {
     this.context!.fillStyle = '#cfb499';
     this.context!.fillRect(1, 1, this.canvas.width - 2, this.canvas.height - 2);
 
-    // Отображение шапки игры
-    this.context!.fillStyle = '#303030';
-    this.context!.fillRect(0, 0, this.canvas.width, 25);
-
-    // Отображение фпс
-    this.context!.fillStyle = '#ffffff';
-    this.context!.font = '12px Verdana';
-    this.context!.fillText('Fps: ' + this.fps, 13, 16);
+    if (this.showFps) {
+      // Отображение шапки игры
+      this.context!.fillStyle = '#303030';
+      this.context!.fillRect(0, 0, this.canvas.width, 25);
+      // Отображение фпс
+      this.context!.fillStyle = '#ffffff';
+      this.context!.font = '12px Verdana';
+      this.context!.fillText('Fps: ' + this.fps, 13, 16);
+    }
   }
 
   // БОНУСЫ
-  public clearLine(row: number) {
-    // TODO: Доделать добавление очков и анимацию (сейчас линия удаляется без анимации)
+  public clearLine(position: 'row' | 'column' | string, index: number) {
     this.clusters.push({
       column: 0,
-      row: row,
+      row: 0,
       length: COUNT_COLUMN_TILES,
-      isHorizontal: true,
+      isHorizontal: position === 'row',
+      [position]: index,
     });
 
+    this.gameState = GameState.RESOLVE;
     while (this.clusters.length > 0) {
       // Удалить бонусный кластер
       this.removeClusters();
+      this.score += 100 * (this.clusters[0].length - 2);
 
-      // Сдвинуть клетки
-      this.shiftTiles();
+      this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
 
       // Проверка, если сформировались новые кластеры
       this.findClusters();
     }
+  }
+
+  public clearByColor(type: number) {
+    let count = 0;
+    // Поиск горизонтальных кластеров
+    for (let j = 0; j < this.levelSettings.rows; j++) {
+      for (let i = 0; i < this.levelSettings.columns; i++) {
+        if (this.levelSettings.tiles[i][j].type === type) {
+          this.levelSettings.tiles[i][j].type = -1;
+          count++;
+        }
+      }
+    }
+
+    this.context!.clearRect(0, 0, this.canvas.width, 25);
+    this.gameState = GameState.RESOLVE;
+    this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
+    this.score += 100 * count;
+  }
+
+  public toggleFps() {
+    this.showFps = !this.showFps;
   }
 }
