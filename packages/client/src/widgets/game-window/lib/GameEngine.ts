@@ -983,7 +983,6 @@ export class GameEngine {
       }
     }
 
-    this.context!.clearRect(0, 0, this.canvas.width, 25);
     this.gameState = GameState.RESOLVE;
     this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
     this.score += 100 * count;
