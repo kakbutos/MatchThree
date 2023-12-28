@@ -32,11 +32,14 @@ export const useApiCall = <F extends (...data: Parameters<F>) => ReturnType<F>>(
       setIsLoading(true);
 
       const response = await apiCall(...body);
-      res = isAxiosResponse(response) ? response.data : response as any;
+      res = isAxiosResponse(response) ? response.data : (response as any);
     } catch (error) {
       console.error(error);
-      if (error instanceof AxiosError && error.response?.status === 401 && window.location.pathname !== getRouteLogin())
-      {
+      if (
+        error instanceof AxiosError &&
+        error.response?.status === 401 &&
+        window.location.pathname !== getRouteLogin()
+      ) {
         navigate(getRouteLogin());
       } else if (error instanceof AxiosError) {
         res = error.response;
