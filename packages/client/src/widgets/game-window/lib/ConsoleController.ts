@@ -50,6 +50,24 @@ export class ConsoleController {
     }
   };
 
+  private handleArrowUp = () => {
+    if (this.currentConsoleHistory > 0) {
+      this.currentConsoleHistory--;
+      this.inputElement.value = this.consoleHistory[this.currentConsoleHistory];
+    }
+  };
+
+  handleArrowDown = () => {
+    if (this.currentConsoleHistory < this.consoleHistory.length - 1) {
+      this.currentConsoleHistory++;
+      this.inputElement.value = this.consoleHistory[this.currentConsoleHistory];
+      return;
+    }
+
+    this.currentConsoleHistory = this.consoleHistory.length;
+    this.inputElement.value = '';
+  };
+
   private handleEnterPress = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
       const command = this.inputElement.value;
@@ -59,26 +77,11 @@ export class ConsoleController {
     }
 
     if (event.key === 'ArrowUp') {
-      event.preventDefault();
-
-      if (this.currentConsoleHistory > 0) {
-        this.currentConsoleHistory--;
-        this.inputElement.value =
-          this.consoleHistory[this.currentConsoleHistory];
-      }
+      this.handleArrowUp();
     }
 
     if (event.key === 'ArrowDown') {
-      event.preventDefault();
-
-      if (this.currentConsoleHistory < this.consoleHistory.length - 1) {
-        this.currentConsoleHistory++;
-        this.inputElement.value =
-          this.consoleHistory[this.currentConsoleHistory];
-      } else {
-        this.currentConsoleHistory = this.consoleHistory.length;
-        this.inputElement.value = '';
-      }
+      this.handleArrowDown();
     }
   };
 

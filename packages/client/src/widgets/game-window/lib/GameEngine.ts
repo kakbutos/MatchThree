@@ -12,6 +12,7 @@ const TILE_HEIGHT = 70;
 const COUNT_COLUMN_TILES = 8;
 const COUNT_ROW_TILES = 8;
 
+const SCORE_PERCENT = 100;
 const TOTAL_TIME_ANIMATION = 0.3;
 
 const MATCH_HORIZONTAL_COLOR = '#000000';
@@ -160,7 +161,7 @@ export class GameEngine {
 
     if (this.clusters.length > 0) {
       for (let i = 0; i < this.clusters.length; i++) {
-        this.score += 100 * (this.clusters[i].length - 2);
+        this.score += SCORE_PERCENT * (this.clusters[i].length - 2);
       }
 
       this.removeClusters();
@@ -962,7 +963,7 @@ export class GameEngine {
     while (this.clusters.length > 0) {
       // Удалить бонусный кластер
       this.removeClusters();
-      this.score += 100 * (this.clusters[0].length - 2);
+      this.score += SCORE_PERCENT * (this.clusters[0].length - 2);
 
       this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
 
@@ -985,7 +986,7 @@ export class GameEngine {
 
     this.gameState = GameState.RESOLVE;
     this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
-    this.score += 100 * count;
+    this.score += SCORE_PERCENT * count;
   }
 
   public toggleFps() {
