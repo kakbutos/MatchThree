@@ -6,8 +6,7 @@ interface GameState {
 }
 
 const initialState: GameState = {
-  currentStatus: GameStatus.GAME,
-  // currentStatus: GameStatus.START,
+  currentStatus: GameStatus.START,
 };
 
 export const gameSlice = createSlice({

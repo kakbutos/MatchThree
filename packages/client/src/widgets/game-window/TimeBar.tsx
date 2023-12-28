@@ -15,7 +15,7 @@ export const TimeBar = () => {
         if (oldProgress > 100) {
           dispatch(GameStore.actions.changeStatus(GameStatus.OVER));
         }
-        return oldProgress + 3.33; // 1% от 30с
+        return oldProgress + 0.833; // 1% от 120с
       });
     }, 1000);
 
