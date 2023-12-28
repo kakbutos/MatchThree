@@ -1,8 +1,13 @@
 import s from './end-game.module.scss';
 import { FC } from 'react';
-import { Box, Typography, Zoom } from '@mui/material';
+import { Box, Button, Typography, Zoom } from '@mui/material';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { GameStore } from '@/store/game';
+import { GameStatus } from '@/types/game-status';
 
 export const EndGame: FC = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <Box className={s.wr}>
       <Box className={s.box}>
@@ -11,7 +16,13 @@ export const EndGame: FC = () => {
         </Box>
         <Zoom in={true}>
           <Box gridRow="3">
-            <Typography className={s.count}>Набранные очки: 125</Typography>
+            <Button
+              className={s.again}
+              onClick={() =>
+                dispatch(GameStore.actions.changeStatus(GameStatus.START))
+              }>
+              Начать сначала
+            </Button>
           </Box>
         </Zoom>
       </Box>

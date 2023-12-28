@@ -1,22 +1,17 @@
 import { EndGame } from '@/widgets/end-game/EndGame';
 import { Start } from '@/widgets/start/Start';
-import { useState } from 'react';
 import GameWindow from '@/widgets/game-window/GameWindow';
-
-enum GameStatus {
-  START = 'start',
-  GAME = 'game',
-  OVER = 'over',
-}
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { GameStore } from '@/store/game';
+import { GameStatus } from '@/types/game-status';
 
 export const GamePage: React.FC = () => {
-  const [gameStatus, setGameStatus] = useState(GameStatus.GAME);
-
+  const status = useAppSelector(GameStore.selectors.selectGameStatus);
   return (
     <>
-      {gameStatus === GameStatus.START && <Start />}
-      {gameStatus === GameStatus.GAME && <GameWindow />}
-      {gameStatus === GameStatus.OVER && <EndGame />}
+      {status === GameStatus.START && <Start />}
+      {status === GameStatus.GAME && <GameWindow />}
+      {status === GameStatus.OVER && <EndGame />}
     </>
   );
 };

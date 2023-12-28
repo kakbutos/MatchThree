@@ -1,6 +1,9 @@
 import s from './start.module.scss';
 import { FC, useEffect, useState } from 'react';
 import { Box, Button, Slide, Typography, Zoom } from '@mui/material';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { GameStore } from '@/store/game';
+import { GameStatus } from '@/types/game-status';
 
 export const Start: FC = () => {
   const [started, setStarted] = useState(false);
@@ -18,6 +21,8 @@ export const Start: FC = () => {
 };
 
 const CountDown: FC = () => {
+  const dispatch = useAppDispatch();
+
   const [over, setOver] = useState(false);
   const [time, setTime] = useState(3);
 
@@ -25,6 +30,9 @@ const CountDown: FC = () => {
     if (over) return;
     if (time === 1) {
       setOver(true);
+      setTimeout(() => {
+        dispatch(GameStore.actions.changeStatus(GameStatus.GAME));
+      }, 500);
     } else {
       setTime(time - 1);
     }

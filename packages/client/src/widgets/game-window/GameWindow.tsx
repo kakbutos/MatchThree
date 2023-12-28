@@ -9,6 +9,7 @@ import s from './game-window.module.scss';
 import { GameEngine } from './lib/GameEngine';
 import { ConsoleController } from './lib/ConsoleController';
 import { ConsoleMessageProps } from './ConsoleMessage';
+import { TimeBar } from './TimeBar';
 
 const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -54,6 +55,7 @@ const GameWindow: FC = () => {
         />
       </div>
       <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
+      <TimeBar />
     </div>
   );
 };
