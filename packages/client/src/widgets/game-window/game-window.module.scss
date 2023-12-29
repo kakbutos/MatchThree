@@ -27,6 +27,10 @@
   width: 640px;
   margin: auto;
   margin-top: 80px;
+
+  :global(.MuiLinearProgress-root) {
+    height: 9px;
+  }
 }
 
 .consoleText {
