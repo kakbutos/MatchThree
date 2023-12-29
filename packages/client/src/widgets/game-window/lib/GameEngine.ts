@@ -6,6 +6,8 @@ import { Move } from './move';
 import { SelectedTile } from './selected-tile';
 import { TilesThemes } from '../types/tiles-themes';
 import { Position } from './position';
+import SoundController from './SoundController';
+import { SoundTypes } from '../types/sound-types.enum';
 
 const TILE_WIDTH = 70;
 const TILE_HEIGHT = 70;
@@ -39,6 +41,7 @@ export class GameEngine {
   private tileColors: Array<Array<number>>;
   private isDrag: boolean;
   private currentMove: Move;
+  private soundController: SoundController;
 
   private animationState: AnimationState;
   private animationTime: number;
@@ -75,6 +78,8 @@ export class GameEngine {
       [],
       new SelectedTile(false, 0, 0)
     );
+
+    this.soundController = new SoundController();
 
     this.main = this.main.bind(this);
   }
@@ -165,7 +170,7 @@ export class GameEngine {
       }
 
       this.removeClusters();
-
+      this.soundController.playSound(SoundTypes.REMOVE);
       this.animationState = AnimationState.NEED_TO_BE_SHIFTED;
     } else {
       this.gameState = GameState.READY;
@@ -192,6 +197,7 @@ export class GameEngine {
   private updateSwappingState() {
     if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
+    this.soundController.playSound(SoundTypes.MOVE);
     this.swap(
       this.currentMove.columnFrom,
       this.currentMove.rowFrom,
@@ -218,6 +224,7 @@ export class GameEngine {
   private updateRewindSwappingState() {
     if (this.animationTime <= TOTAL_TIME_ANIMATION) return;
 
+    this.soundController.playSound(SoundTypes.WRONG_MOVE);
     this.swap(
       this.currentMove.columnFrom,
       this.currentMove.rowFrom,
@@ -228,14 +235,23 @@ export class GameEngine {
     this.gameState = GameState.READY;
   }
 
+  public setGameOverState() {
+    this.isGameover = true;
+    this.soundController.playSound(SoundTypes.GAME_OVER);
+  }
+
   public update(tframe: number) {
     const dt = (tframe - this.lastFrame) / 1000;
     this.lastFrame = tframe;
 
     this.updateFps(dt);
 
-    if (this.gameState === GameState.READY && this.moves.length <= 0) {
-      this.isGameover = true;
+    if (
+      this.gameState === GameState.READY &&
+      this.moves.length <= 0 &&
+      !this.isGameover
+    ) {
+      this.setGameOverState();
     }
 
     if (this.gameState === GameState.RESOLVE) {
@@ -559,8 +575,18 @@ export class GameEngine {
     }
   };
 
+  private isValidStateToMove(): boolean {
+    if (this.isGameover) return false;
+
+    if (this.gameState === GameState.RESOLVE) return false;
+
+    return true;
+  }
+
   private onMouseDown = (e: MouseEvent) => {
     const mousePosition = this.getMousePos(this.canvas, e);
+
+    if (!this.isValidStateToMove()) return;
 
     // Начало перемещения
     if (!this.isDrag) {
@@ -947,6 +973,27 @@ export class GameEngine {
       this.context!.font = '12px Verdana';
       this.context!.fillText('Fps: ' + this.fps, 13, 16);
     }
+  }
+
+  public increaseVolume() {
+    this.soundController.increaseVolume();
+  }
+
+  public decreaseVolume() {
+    this.soundController.decreaseVolume();
+  }
+
+  public setVolume(value: number) {
+    this.soundController.setVolume(value);
+  }
+
+  public disableMute() {
+    this.soundController.playSound(SoundTypes.TOGGLE_SOUND);
+    this.soundController.enableSound();
+  }
+
+  public enableMute() {
+    this.soundController.disableSound();
   }
 
   // БОНУСЫ

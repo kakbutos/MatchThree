@@ -124,8 +124,32 @@ export class ConsoleController {
 
     if (commandLowerCaseArray[0] === 'help') {
       this.cmdHelp();
-    } else if (commandLowerCaseArray[0] === 'toggle_movies') {
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` ===
+      'toggle_movies'
+    ) {
       this.cmdToggleMovies();
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` === 'end_game'
+    ) {
+      this.cmdEndGame();
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` === 'sound_mute'
+    ) {
+      this.cmdSoundMute();
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` ===
+      'sound_unmute'
+    ) {
+      this.cmdSoundUnmute();
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` === 'sound_dec'
+    ) {
+      this.cmdSoundDec();
+    } else if (
+      `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` === 'sound_inc'
+    ) {
+      this.cmdSoundInc();
     } else if (
       `${commandLowerCaseArray[0]}_${commandLowerCaseArray[1]}` === 'tile_theme'
     ) {
@@ -170,6 +194,11 @@ export class ConsoleController {
       'tile_theme_?',
       'clear_color_?',
       'toggle_fps',
+      'end_game',
+      'sound_mute',
+      'sound_unmute',
+      'sound_dec',
+      'sound_inc',
     ];
 
     this.addToConsole(
@@ -182,6 +211,48 @@ export class ConsoleController {
     this.gameEngine.toggleMovesVisibility();
     this.addToConsole(
       'The visibility mode of moves has been changed',
+      MessageTypes.SUCCESS
+    );
+  }
+
+  private cmdEndGame() {
+    this.gameEngine.setGameOverState();
+    this.addToConsole(
+      `╔═══╗╔══╗╔╗──╔╗╔═══╗──╔══╗╔╗╔╗╔═══╗╔═══╗
+      ║╔══╝║╔╗║║║──║║║╔══╝──║╔╗║║║║║║╔══╝║╔═╗║
+      ║║╔═╗║╚╝║║╚╗╔╝║║╚══╗──║║║║║║║║║╚══╗║╚═╝║
+      ║║╚╗║║╔╗║║╔╗╔╗║║╔══╝──║║║║║╚╝║║╔══╝║╔╗╔╝
+      ║╚═╝║║║║║║║╚╝║║║╚══╗──║╚╝║╚╗╔╝║╚══╗║║║║
+      ╚═══╝╚╝╚╝╚╝──╚╝╚═══╝──╚══╝─╚╝─╚═══╝╚╝╚╝`,
+      MessageTypes.ERROR
+    );
+  }
+
+  private cmdSoundMute() {
+    this.gameEngine.enableMute();
+    this.addToConsole('The sound in the game was muted', MessageTypes.SUCCESS);
+  }
+
+  private cmdSoundUnmute() {
+    this.gameEngine.disableMute();
+    this.addToConsole(
+      'The sound in the game was unmuted',
+      MessageTypes.SUCCESS
+    );
+  }
+
+  private cmdSoundDec() {
+    this.gameEngine.decreaseVolume();
+    this.addToConsole(
+      'The sound in the game was decreased by 10%',
+      MessageTypes.SUCCESS
+    );
+  }
+
+  private cmdSoundInc() {
+    this.gameEngine.increaseVolume();
+    this.addToConsole(
+      'The sound in the game was increased by 10%',
       MessageTypes.SUCCESS
     );
   }
