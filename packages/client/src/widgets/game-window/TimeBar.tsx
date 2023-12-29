@@ -5,6 +5,10 @@ import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useEffect, useState } from 'react';
 
+const gameSeconds = 120;
+const maxPercents = 100;
+const percentOfGameSeconds = maxPercents / gameSeconds;
+
 export const TimeBar = () => {
   const [progress, setProgress] = useState(0);
   const dispatch = useAppDispatch();
@@ -12,10 +16,10 @@ export const TimeBar = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setProgress(oldProgress => {
-        if (oldProgress > 100) {
+        if (oldProgress > maxPercents) {
           dispatch(GameStore.actions.changeStatus(GameStatus.OVER));
         }
-        return oldProgress + 0.833; // 1% от 120с
+        return oldProgress + percentOfGameSeconds;
       });
     }, 1000);
 
