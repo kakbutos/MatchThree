@@ -20,6 +20,11 @@ CACHE_ASSETS = new Set(CACHE_ASSETS);
 
 const URLS = Array.from(CACHE_ASSETS);
 
+// список урлов, ответы по которым необходимо сохранять в cache
+const NETWORK_FIRST_URLS = new Set([
+  'https://ya-praktikum.tech/api/v2/auth/user'
+]);
+
 this.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -35,33 +40,11 @@ this.addEventListener('install', event => {
 });
 
 this.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-
-        const fetchRequest = event.request.clone();
-        return fetch(fetchRequest)
-          .then(response => {
-            if (!response || response.status !== 200) {
-              return response;
-            }
-
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
-          })
-          .catch(err => {
-            console.log(err);
-            throw err;
-          });
-      })
-  );
+  if (NETWORK_FIRST_URLS.has(event.request.url)) {
+    fetchFirstStrategy(event);
+  } else {
+    cacheFirstStrategy(event);
+  }
 });
 
 this.addEventListener("activate", function (event) {
@@ -78,3 +61,55 @@ this.addEventListener("activate", function (event) {
     })
   );
 });
+
+function cacheFirstStrategy(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+
+        const fetchRequest = event.request.clone();
+        return fetch(fetchRequest)
+          .then(response => {
+            if (!response || response.status !== 20 || response.type !== 'basic') {
+              return response;
+            }
+
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseToCache);
+              });
+            return response;
+          })
+          .catch(err => {
+            console.log(err);
+            throw err;
+          });
+      })
+  );
+}
+
+function fetchFirstStrategy(event) {
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        if (!response || response.status !== 200) {
+          return response;
+        }
+
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+        return response;
+      })
+      .catch(() => {
+        return caches.match(event.request);
+      })
+  );
+}
+
