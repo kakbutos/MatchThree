@@ -19,4 +19,7 @@ export default defineConfig({
     },
   },
   plugins: [svgr(), react()],
+  build: {
+    manifest: true,
+  },
 });
