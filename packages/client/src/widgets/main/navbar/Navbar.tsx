@@ -26,6 +26,7 @@ import { authApi } from '@/services/api/auth/auth-api';
 import { UserStore } from '@/store/user';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { getResourceLink } from '@/constants';
 
 const pages = [
   { title: 'Игра', routeFn: getRouteGame },
@@ -145,7 +146,14 @@ export const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Открыть настройки">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="avatar"
+                  src={
+                    currentUser?.avatar
+                      ? getResourceLink(currentUser?.avatar)
+                      : ''
+                  }
+                />
               </IconButton>
             </Tooltip>
             <Menu
