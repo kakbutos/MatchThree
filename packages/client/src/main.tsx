@@ -6,6 +6,7 @@ import App from './app';
 import ErrorBoundary from './app/providers/error-boundary/ErrorBoundary';
 import { theme } from './theme';
 import { store } from '@/store';
+import { startServiceWorker } from './utils/start-service-worker';
 
 const container = document.getElementById('root');
 
@@ -29,23 +30,5 @@ root.render(
     </ThemeProvider>
   </BrowserRouter>
 );
-
-function startServiceWorker() {
-  if ('serviceWorker' in navigator && process.env.NODE_ENV !== 'development') {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/sw.js')
-        .then(registration => {
-          console.log(
-            'ServiceWorker registration successful with scope: ',
-            registration.scope
-          );
-        })
-        .catch((error: string) => {
-          console.log('ServiceWorker registration failed: ', error);
-        });
-    });
-  }
-}
 
 startServiceWorker();

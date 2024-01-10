@@ -14,7 +14,7 @@ const STATIC_ASSETS = [
   '/not_found',
 ];
 
-let CACHE_ASSETS = STATIC_ASSETS.concat(JSON.parse('%HASHURLS%'));
+let CACHE_ASSETS = [...STATIC_ASSETS, ...JSON.parse('%HASHURLS%')];
 
 CACHE_ASSETS = new Set(CACHE_ASSETS);
 
@@ -29,7 +29,7 @@ this.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log("Opened cache");
+        console.log('Opened cache');
         return cache.addAll(URLS);
       })
       .catch(err => {
@@ -47,14 +47,14 @@ this.addEventListener('fetch', event => {
   }
 });
 
-this.addEventListener("activate", function (event) {
+this.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames
           .filter(name => name !== CACHE_NAME)
           .map(name => {
-            console.log("Deleting out of date cache:", name);
+            console.log('Deleting out of date cache:', name);
             caches.delete(name);
           })
       );
@@ -73,7 +73,7 @@ function cacheFirstStrategy(event) {
         const fetchRequest = event.request.clone();
         return fetch(fetchRequest)
           .then(response => {
-            if (!response || response.status !== 20 || response.type !== 'basic') {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
