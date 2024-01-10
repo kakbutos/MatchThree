@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 
-type FormInputTextProps = TextFieldProps & {
+export type FormInputTextProps = TextFieldProps & {
   name: string;
   control: Control<FieldValues>;
   rules?: UseControllerOptions['rules'];
