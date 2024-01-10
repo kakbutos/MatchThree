@@ -44,18 +44,30 @@ const GameWindow: FC = () => {
   }, []);
 
   return (
-    <div className={s.gameWindow}>
-      <div className={s.console} ref={consoleRef}>
-        <ul className={s.gameWindow__messageList}>{messages}</ul>
-        <input
-          className={s.consoleInput}
-          ref={inputRef}
-          type="text"
-          autoComplete="off"
+    <div className={s.wrapper}>
+      <div className={s.gameWindow}>
+        <div className={s.console} ref={consoleRef}>
+          <ul className={s.gameWindow__messageList}>{messages}</ul>
+          <input
+            className={s.consoleInput}
+            ref={inputRef}
+            type="text"
+            autoComplete="off"
+          />
+        </div>
+        <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
+        <TimeBar />
+        <img
+          className={s.astronaut}
+          src="/src/assets/images/astronaut.png"
+          alt="Астронавт"
+        />
+        <img
+          className={s.astronaut}
+          src="/src/assets/images/astronaut.png"
+          alt="Астронавт"
         />
       </div>
-      <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
-      <TimeBar />
     </div>
   );
 };
