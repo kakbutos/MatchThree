@@ -6,6 +6,7 @@ import App from './app';
 import ErrorBoundary from './app/providers/error-boundary/ErrorBoundary';
 import { theme } from './theme';
 import { store } from '@/store';
+import { startServiceWorker } from './utils/start-service-worker';
 
 const container = document.getElementById('root');
 
@@ -29,3 +30,5 @@ root.render(
     </ThemeProvider>
   </BrowserRouter>
 );
+
+startServiceWorker();
