@@ -12,6 +12,8 @@
     "update-service-worker": "node scripts/update-service-worker.js"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
@@ -20,6 +22,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
     "dotenv": "^16.0.2",
+    "emoji-mart": "^5.5.2",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.7.1",
     "react": "^18.2.0",

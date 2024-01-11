@@ -1,8 +1,9 @@
-import { Box, Typography, Button, TextField } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import Reply from '@/assets/icons/reply.svg?react';
 import EmptyAvatarMan from '@/assets/images/empty-avatar-man.svg?react';
 import styles from './comment.module.scss';
 import { IComment } from '@/types/forum/comment';
+import { ReplyCommentForm } from './ReplyCommentForm';
 
 interface CommentProps {
   comment: IComment;
@@ -35,22 +36,6 @@ export const Comment: React.FC<CommentProps> = ({
         </Button>
       </Box>
     </Box>
-    {openedId === comment.id && (
-      <Box display="flex" gap="16px" alignItems="center">
-        <TextField
-          name="comment"
-          id="comment"
-          label="Комментарий"
-          color="secondary"
-          placeholder="Введите комментарий..."
-          size="small"
-        />
-        <div>
-          <Button color="secondary" size="small">
-            Отправить
-          </Button>
-        </div>
-      </Box>
-    )}
+    {openedId === comment.id && <ReplyCommentForm commentId={comment.id} />}
   </>
 );
