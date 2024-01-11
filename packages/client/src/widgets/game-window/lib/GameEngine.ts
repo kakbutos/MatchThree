@@ -9,6 +9,10 @@ import { Position } from './position';
 import SoundController from './SoundController';
 import { SoundTypes } from '../types/sound-types.enum';
 
+interface CanvasRenderingContext2DCustom extends CanvasRenderingContext2D {
+  roundRect(x: number, y: number, w: number, h: number, radius: number[]): void;
+}
+
 const TILE_WIDTH = 70;
 const TILE_HEIGHT = 70;
 const COUNT_COLUMN_TILES = 8;
@@ -24,7 +28,7 @@ const BORDER_BOARD_COLOR = '#000000';
 
 export class GameEngine {
   public canvas: HTMLCanvasElement;
-  public context: CanvasRenderingContext2D | null;
+  public context: CanvasRenderingContext2DCustom | null;
   public levelSettings: LevelSettings;
 
   private lastFrame: number;
@@ -50,7 +54,7 @@ export class GameEngine {
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
-    this.context = canvas.getContext('2d');
+    this.context = canvas.getContext('2d') as CanvasRenderingContext2DCustom;
     this.isGameover = false;
     this.score = 0;
     this.isShowMoves = false;
@@ -129,20 +133,24 @@ export class GameEngine {
   }
 
   public stopGame() {
+    if (this.context === null) {
+      return;
+    }
+
     const levelwidth =
       this.levelSettings.columns * this.levelSettings.tileWidth;
     const levelheight = this.levelSettings.rows * this.levelSettings.tileHeight;
 
-    this.context!.fillStyle = 'rgba(0, 0, 0, 0.8)';
-    this.context!.fillRect(
+    this.context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    this.context.fillRect(
       this.levelSettings.x,
       this.levelSettings.y,
       levelwidth,
       levelheight
     );
 
-    this.context!.fillStyle = '#ffffff';
-    this.context!.font = '24px Verdana';
+    this.context.fillStyle = '#ffffff';
+    this.context.font = '24px Verdana';
     this.drawCenterText(
       'Game Over!',
       this.levelSettings.x,
@@ -284,12 +292,16 @@ export class GameEngine {
   }
 
   private render() {
+    if (this.context === null) {
+      return;
+    }
+
     // Отрисовка кадра
     this.drawFrame();
 
     // Отрисовка счёта
-    this.context!.fillStyle = '#000000';
-    this.context!.font = 'bold 24px Verdana';
+    this.context.fillStyle = '#000000';
+    this.context.font = 'bold 24px Verdana';
     this.drawCenterText(
       'Score:',
       (this.canvas.width - 150) / 2,
@@ -307,8 +319,8 @@ export class GameEngine {
     const levelwidth =
       this.levelSettings.columns * this.levelSettings.tileWidth;
     const levelheight = this.levelSettings.rows * this.levelSettings.tileHeight;
-    this.context!.fillStyle = BORDER_BOARD_COLOR;
-    this.context!.fillRect(
+    this.context.fillStyle = BORDER_BOARD_COLOR;
+    this.context.fillRect(
       this.levelSettings.x - 4,
       this.levelSettings.y - 4,
       levelwidth + 8,
@@ -356,8 +368,12 @@ export class GameEngine {
     y: number,
     width: number
   ) {
-    const textdim = this.context!.measureText(text.toString());
-    this.context!.fillText(text.toString(), x + (width - textdim.width) / 2, y);
+    if (this.context === null) {
+      return;
+    }
+
+    const textdim = this.context.measureText(text.toString());
+    this.context.fillText(text.toString(), x + (width - textdim.width) / 2, y);
   }
 
   private renderTiles() {
@@ -448,7 +464,7 @@ export class GameEngine {
       this.drawTile(coord1.tilex, coord1.tiley, 0, 0, 0);
       this.drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
 
-      // Изменяем порядок в зависимости от состояния анимации
+      // Изменяем порядок
       this.drawTile(
         coord1shift.tilex,
         coord1shift.tiley,
@@ -491,6 +507,10 @@ export class GameEngine {
   }
 
   private renderMoves() {
+    if (this.context === null) {
+      return;
+    }
+
     for (let i = 0; i < this.moves.length; i++) {
       const coord1 = this.getTileCoordinate(
         this.moves[i].columnFrom,
@@ -505,21 +525,25 @@ export class GameEngine {
         0
       );
 
-      this.context!.strokeStyle = MOVE_HINT_COLOR;
-      this.context!.beginPath();
-      this.context!.moveTo(
+      this.context.strokeStyle = MOVE_HINT_COLOR;
+      this.context.beginPath();
+      this.context.moveTo(
         coord1.tilex + this.levelSettings.tileWidth / 2,
         coord1.tiley + this.levelSettings.tileHeight / 2
       );
-      this.context!.lineTo(
+      this.context.lineTo(
         coord2.tilex + this.levelSettings.tileWidth / 2,
         coord2.tiley + this.levelSettings.tileHeight / 2
       );
-      this.context!.stroke();
+      this.context.stroke();
     }
   }
 
   private renderClusters() {
+    if (this.context === null) {
+      return;
+    }
+
     for (let i = 0; i < this.clusters.length; i++) {
       const titleCoordinate = this.getTileCoordinate(
         this.clusters[i].column,
@@ -529,16 +553,16 @@ export class GameEngine {
       );
 
       if (this.clusters[i].isHorizontal) {
-        this.context!.fillStyle = MATCH_HORIZONTAL_COLOR;
-        this.context!.fillRect(
+        this.context.fillStyle = MATCH_HORIZONTAL_COLOR;
+        this.context.fillRect(
           titleCoordinate.tilex + this.levelSettings.tileWidth / 2,
           titleCoordinate.tiley + this.levelSettings.tileHeight / 2 - 4,
           (this.clusters[i].length - 1) * this.levelSettings.tileWidth,
           8
         );
       } else {
-        this.context!.fillStyle = MATCH_VERTICAL_COLOR;
-        this.context!.fillRect(
+        this.context.fillStyle = MATCH_VERTICAL_COLOR;
+        this.context.fillRect(
           titleCoordinate.tilex + this.levelSettings.tileWidth / 2 - 4,
           titleCoordinate.tiley + this.levelSettings.tileHeight / 2,
           8,
@@ -949,20 +973,23 @@ export class GameEngine {
     a = 1,
     type?: number
   ) {
-    this.context!.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ',' + a + ')';
-    this.context!.beginPath();
-    //@ts-ignore
-    this.context!.roundRect(
+    if (this.context === null) {
+      return;
+    }
+
+    this.context.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ',' + a + ')';
+    this.context.beginPath();
+    this.context.roundRect(
       x + 2,
       y + 2,
       this.levelSettings.tileWidth - 4,
       this.levelSettings.tileHeight - 4,
       [10, 10]
     );
-    this.context!.fill();
+    this.context.fill();
 
     if (type !== undefined) {
-      this.context!.drawImage(
+      this.context.drawImage(
         this.tileImages[type],
         x + 2,
         y + 2,
@@ -973,25 +1000,29 @@ export class GameEngine {
   }
 
   private drawFrame() {
-    // Отрисовка фона и границ
-    this.context!.fillStyle = 'black';
-    this.context!.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    if (this.context === null) {
+      return;
+    }
 
-    const gradient = this.context!.createLinearGradient(0, 0, 0, 700);
+    // Отрисовка фона и границ
+    this.context.fillStyle = 'black';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const gradient = this.context.createLinearGradient(0, 0, 0, 700);
     gradient.addColorStop(0, '#d6efff');
     gradient.addColorStop(1, '#2180a3');
-    this.context!.fillStyle = gradient;
+    this.context.fillStyle = gradient;
     // this.context!.fillStyle = '#cfb499';
-    this.context!.fillRect(1, 1, this.canvas.width - 2, this.canvas.height - 2);
+    this.context.fillRect(1, 1, this.canvas.width - 2, this.canvas.height - 2);
 
     if (this.showFps) {
       // Отображение шапки игры
-      this.context!.fillStyle = '#303030';
-      this.context!.fillRect(0, 0, this.canvas.width, 25);
+      this.context.fillStyle = '#303030';
+      this.context.fillRect(0, 0, this.canvas.width, 25);
       // Отображение фпс
-      this.context!.fillStyle = '#ffffff';
-      this.context!.font = '12px Verdana';
-      this.context!.fillText('Fps: ' + this.fps, 13, 16);
+      this.context.fillStyle = '#ffffff';
+      this.context.font = '12px Verdana';
+      this.context.fillText('Fps: ' + this.fps, 13, 16);
     }
   }
 
