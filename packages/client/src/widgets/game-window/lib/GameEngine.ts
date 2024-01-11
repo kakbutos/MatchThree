@@ -949,19 +949,28 @@ export class GameEngine {
     a = 1
   ) {
     this.context!.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ',' + a + ')';
-    this.context!.fillRect(
+    this.context!.beginPath();
+    //@ts-ignore
+    this.context!.roundRect(
       x + 2,
       y + 2,
       this.levelSettings.tileWidth - 4,
-      this.levelSettings.tileHeight - 4
+      this.levelSettings.tileHeight - 4,
+      [10, 10]
     );
+    this.context!.fill();
   }
 
   private drawFrame() {
     // Отрисовка фона и границ
     this.context!.fillStyle = 'black';
     this.context!.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context!.fillStyle = '#cfb499';
+
+    const gradient = this.context!.createLinearGradient(0, 0, 0, 700);
+    gradient.addColorStop(0, '#d6efff');
+    gradient.addColorStop(1, '#2180a3');
+    this.context!.fillStyle = gradient;
+    // this.context!.fillStyle = '#cfb499';
     this.context!.fillRect(1, 1, this.canvas.width - 2, this.canvas.height - 2);
 
     if (this.showFps) {
