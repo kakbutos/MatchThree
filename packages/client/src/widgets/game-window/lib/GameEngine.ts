@@ -39,6 +39,7 @@ export class GameEngine {
   private moves: Move[];
   private clusters: Cluster[];
   private tileColors: Array<Array<number>>;
+  private tileImages: HTMLImageElement[];
   private isDrag: boolean;
   private currentMove: Move;
   private soundController: SoundController;
@@ -65,6 +66,12 @@ export class GameEngine {
 
     this.animationState = AnimationState.FOUND_AND_REMOVED;
     this.animationTime = 0;
+
+    this.tileImages = TilesThemes.DEFAULT_IMAGES.map(src => {
+      const image = new Image();
+      image.src = src;
+      return image;
+    });
 
     this.isDrag = false;
     this.tileColors = TilesThemes.DEFAULT;
@@ -373,7 +380,9 @@ export class GameEngine {
             coord.tiley,
             rgbColor[0],
             rgbColor[1],
-            rgbColor[2]
+            rgbColor[2],
+            1,
+            this.levelSettings.tiles[i][j].type
           );
         }
 
@@ -440,37 +449,28 @@ export class GameEngine {
       this.drawTile(coord2.tilex, coord2.tiley, 0, 0, 0);
 
       // Изменяем порядок в зависимости от состояния анимации
-      if (this.animationState === AnimationState.SWAPPING) {
-        this.drawTile(
-          coord1shift.tilex,
-          coord1shift.tiley,
-          rgbColor1[0],
-          rgbColor1[1],
-          rgbColor1[2]
-        );
-        this.drawTile(
-          coord2shift.tilex,
-          coord2shift.tiley,
-          rgbColor2[0],
-          rgbColor2[1],
-          rgbColor2[2]
-        );
-      } else {
-        this.drawTile(
-          coord2shift.tilex,
-          coord2shift.tiley,
-          rgbColor2[0],
-          rgbColor2[1],
-          rgbColor2[2]
-        );
-        this.drawTile(
-          coord1shift.tilex,
-          coord1shift.tiley,
-          rgbColor1[0],
-          rgbColor1[1],
-          rgbColor1[2]
-        );
-      }
+      this.drawTile(
+        coord1shift.tilex,
+        coord1shift.tiley,
+        rgbColor1[0],
+        rgbColor1[1],
+        rgbColor1[2],
+        1,
+        this.levelSettings.tiles[this.currentMove.columnFrom][
+          this.currentMove.rowFrom
+        ].type
+      );
+      this.drawTile(
+        coord2shift.tilex,
+        coord2shift.tiley,
+        rgbColor2[0],
+        rgbColor2[1],
+        rgbColor2[2],
+        1,
+        this.levelSettings.tiles[this.currentMove.columnTo][
+          this.currentMove.rowTo
+        ].type
+      );
     }
   }
 
@@ -946,7 +946,8 @@ export class GameEngine {
     r: number,
     g: number,
     b: number,
-    a = 1
+    a = 1,
+    type?: number
   ) {
     this.context!.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ',' + a + ')';
     this.context!.beginPath();
@@ -959,6 +960,16 @@ export class GameEngine {
       [10, 10]
     );
     this.context!.fill();
+
+    if (type !== undefined) {
+      this.context!.drawImage(
+        this.tileImages[type],
+        x + 2,
+        y + 2,
+        this.levelSettings.tileWidth - 4,
+        this.levelSettings.tileHeight - 4
+      );
+    }
   }
 
   private drawFrame() {
