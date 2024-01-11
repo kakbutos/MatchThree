@@ -1,12 +1,30 @@
+import mercury from '../../../assets/images/mercury.png';
+import uranus from '../../../assets/images/uranus.png';
+import jupiter from '../../../assets/images/jupiter.png';
+import earth from '../../../assets/images/earth.png';
+import moon from '../../../assets/images/moon.png';
+import mars from '../../../assets/images/mars.png';
+import neptune from '../../../assets/images/neptune.png';
+
 export class TilesThemes {
   static readonly DEFAULT: number[][] = [
-    [229, 15, 1], // Красный
-    [53, 248, 28], // Зелёный
-    [2, 87, 250], // Синий
-    [248, 226, 21], // Жёлтый
-    [255, 0, 255], // Фиолетовый
-    [128, 255, 255], // Голубой
-    [255, 255, 255], // Белый
+    [219, 138, 110],
+    [77, 177, 120],
+    [225, 210, 150],
+    [66, 142, 211],
+    [166, 162, 162],
+    [174, 37, 48],
+    [151, 196, 235],
+  ];
+
+  static readonly DEFAULT_IMAGES: string[] = [
+    mercury,
+    uranus,
+    jupiter,
+    earth,
+    moon,
+    mars,
+    neptune,
   ];
 
   static readonly BLISS: number[][] = [
