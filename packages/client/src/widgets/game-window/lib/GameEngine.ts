@@ -894,6 +894,7 @@ export class GameEngine {
     for (let j = 0; j < this.levelSettings.rows; j++) {
       let matchLength = 1;
       let matchLengthWithDarkHole = 1;
+      let isIncludeDarkHole = false;
 
       for (let i = 0; i < this.levelSettings.columns; i++) {
         let isLastTile = false;
@@ -914,13 +915,14 @@ export class GameEngine {
             !this.isDeleted(this.levelSettings.tiles[i][j].type)
           ) {
             matchLengthWithDarkHole += 1;
+            isIncludeDarkHole = true;
           } else {
             isLastTile = true;
           }
         }
 
         if (isLastTile) {
-          if (matchLengthWithDarkHole >= 4) {
+          if (matchLengthWithDarkHole >= 4 && isIncludeDarkHole) {
             this.isExistBlackHole = false;
             this.clusters.push({
               column: 0,
@@ -939,6 +941,7 @@ export class GameEngine {
 
           matchLengthWithDarkHole = 1;
           matchLength = 1;
+          isIncludeDarkHole = false;
         }
       }
     }
@@ -947,6 +950,7 @@ export class GameEngine {
     for (let i = 0; i < this.levelSettings.columns; i++) {
       let matchLength = 1;
       let matchLengthWithDarkHole = 1;
+      let isIncludeDarkHole = false;
 
       for (let j = 0; j < this.levelSettings.rows; j++) {
         let isLastTile = false;
@@ -967,13 +971,14 @@ export class GameEngine {
             !this.isDeleted(this.levelSettings.tiles[i][j].type)
           ) {
             matchLengthWithDarkHole += 1;
+            isIncludeDarkHole = true;
           } else {
             isLastTile = true;
           }
         }
 
         if (isLastTile) {
-          if (matchLengthWithDarkHole >= 4) {
+          if (matchLengthWithDarkHole >= 4 && isIncludeDarkHole) {
             this.isExistBlackHole = false;
             this.clusters.push({
               column: i,
@@ -992,6 +997,7 @@ export class GameEngine {
 
           matchLength = 1;
           matchLengthWithDarkHole = 1;
+          isIncludeDarkHole = false;
         }
       }
     }
