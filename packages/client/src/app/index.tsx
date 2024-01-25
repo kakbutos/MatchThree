@@ -2,6 +2,9 @@ import { Suspense, useEffect } from 'react';
 import AppRouter from './providers/router/AppRouter';
 import './styles/index.scss';
 import './fonts/fonts';
+import ErrorBoundary from './providers/error-boundary/ErrorBoundary';
+import { theme } from '../theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 function App() {
   useEffect(() => {
@@ -15,9 +18,16 @@ function App() {
     fetchServerData();
   }, []);
   return (
-    <Suspense fallback="">
-      <AppRouter />
-    </Suspense>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary>
+        {/* <Provider store={store}> */}
+        <Suspense fallback="">
+          <AppRouter />
+        </Suspense>
+        {/* </Provider> */}
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 

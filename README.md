@@ -16,6 +16,23 @@
 1. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
 2. Выполните команду `yarn dev --scope=server` чтобы запустить только server
 
+### SSR
+
+Выполнить сборку клиента в директории package/client
+1. yarn build:ssr
+2. yarn build
+
+Добавить ссылку в сервере на client
+
+1. в package client - yarn link
+2. в packge server - yarn libk "client"
+
+Выполнить сборку server
+
+1. yarn build
+
+или запустить в dev режиме
+
 
 ### Как добавить зависимости?
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
