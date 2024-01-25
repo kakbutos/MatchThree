@@ -6,7 +6,7 @@ import type { ViteDevServer } from 'vite';
 dotenv.config();
 
 import * as fs from 'fs';
-import * as path from 'path';
+import { resolve, dirname } from 'path';
 import express from 'express';
 // import { createClientAndConnect } from './db';
 
@@ -21,8 +21,8 @@ async function startServer() {
   // createClientAndConnect();
 
   let vite: ViteDevServer | undefined;
-  const distPath = path.dirname(require.resolve('client/dist/index.html'));
-  const srcPath = path.dirname(require.resolve('client'));
+  const distPath = dirname(require.resolve('client/dist/index.html'));
+  const srcPath = dirname(require.resolve('client'));
   const ssrClientPath = require.resolve('client/dist-ssr/client.cjs');
 
   if (isDev()) {
@@ -40,26 +40,19 @@ async function startServer() {
   });
 
   if (!isDev()) {
-    app.use('/assets', express.static(path.resolve(distPath, 'assets')));
+    app.use('/assets', express.static(resolve(distPath, 'assets')));
   }
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl;
 
     try {
-      let template: string;
+      let template = fs.readFileSync(
+        resolve(!isDev() ? distPath : srcPath, 'index.html'),
+        'utf-8'
+      );
 
-      if (!isDev()) {
-        template = fs.readFileSync(
-          path.resolve(distPath, 'index.html'),
-          'utf-8'
-        );
-      } else {
-        template = fs.readFileSync(
-          path.resolve(srcPath, 'index.html'),
-          'utf-8'
-        );
-
+      if (isDev()) {
         template = await vite!.transformIndexHtml(url, template);
       }
 
@@ -68,7 +61,7 @@ async function startServer() {
       if (!isDev()) {
         render = (await import(ssrClientPath)).render;
       } else {
-        render = (await vite!.ssrLoadModule(path.resolve(srcPath, 'ssr.tsx')))
+        render = (await vite!.ssrLoadModule(resolve(srcPath, 'ssr.tsx')))
           .render;
       }
 

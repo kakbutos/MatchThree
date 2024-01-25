@@ -24,8 +24,8 @@
 
 Добавить ссылку в сервере на client
 
-1. в package client - yarn link
-2. в packge server - yarn libk "client"
+1. в package/client - yarn link
+2. в package/server - yarn link "client"
 
 Выполнить сборку server
 
