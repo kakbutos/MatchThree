@@ -13,7 +13,6 @@ if (!container) {
   );
 }
 
-// TODO COD-55 раскомментировать и вернуть настоящий App при подключении Router и Redux
 hydrateRoot(
   container,
   <BrowserRouter>
