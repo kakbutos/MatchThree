@@ -1,5 +1,5 @@
 import s from './start.module.scss';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Box, Button, Slide, Typography, Zoom } from '@mui/material';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { GameStore } from '@/store/game';

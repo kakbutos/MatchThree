@@ -1,12 +1,9 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
 import App from './app';
-import ErrorBoundary from './app/providers/error-boundary/ErrorBoundary';
-import { theme } from './theme';
-import { store } from '@/store';
 import { startServiceWorker } from './utils/start-service-worker';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 const container = document.getElementById('root');
 
@@ -16,18 +13,12 @@ if (!container) {
   );
 }
 
-const root = createRoot(container);
-
-root.render(
+hydrateRoot(
+  container,
   <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ErrorBoundary>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </ErrorBoundary>
-    </ThemeProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 );
 

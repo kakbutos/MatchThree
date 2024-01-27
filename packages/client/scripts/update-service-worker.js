@@ -6,9 +6,9 @@ import files from '../dist/manifest.json' assert { type: "json" };
  * с корректными наименованиями assets (c hash)
  */
 
-const urls = files['index.html'].assets
+const urls = (files['index.html'].assets || [])
   .concat(files['index.html'].file)
-  .concat(files['index.html'].css)
+  .concat((files['index.html'].css || []))
   .filter(name => !name.includes('.map'));
 
 readFile('dist/sw.js', (error, content) => {
