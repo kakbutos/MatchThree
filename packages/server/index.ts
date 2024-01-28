@@ -69,7 +69,7 @@ async function startServer() {
       const preloadedState = await getInitialState();
       const stateMarkup = `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
         preloadedState
-      )}</script>`;
+      ).replace(/</g, '\\u003c')}</script>`;
 
       const appHtml = await render(url, preloadedState);
 
