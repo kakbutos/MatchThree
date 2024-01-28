@@ -1,9 +1,9 @@
 import { authApi } from '@/services/api/auth/auth-api';
 import { LoadingStatus } from '@/types/loading-status';
-import { User } from '@/types/user';
+import type { User } from '@/types/user';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-interface UserState {
+export interface UserState {
   currentUser: User | null;
   status: LoadingStatus;
 }
