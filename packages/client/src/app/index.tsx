@@ -21,11 +21,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ErrorBoundary>
-        {/* <Provider store={store}> */}
         <Suspense fallback="">
           <AppRouter />
         </Suspense>
-        {/* </Provider> */}
       </ErrorBoundary>
     </ThemeProvider>
   );

@@ -13,10 +13,15 @@ if (!container) {
   );
 }
 
+const preloadState = window.__PRELOADED_STATE__;
+const storeProvider = store(preloadState);
+
+delete window.__PRELOADED_STATE__;
+
 hydrateRoot(
   container,
   <BrowserRouter>
-    <Provider store={store}>
+    <Provider store={storeProvider}>
       <App />
     </Provider>
   </BrowserRouter>

@@ -1,7 +1,7 @@
 import { GameStatus } from '@/types/game-status';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface GameState {
+export interface GameState {
   currentStatus: GameStatus;
 }
 

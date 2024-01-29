@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { getRouteLogin, getRouteMain } from '../../../constants/router/router';
 import { UserStore } from '@/store/user';
-import { Spinner } from '@/shared/spinner/Spinner';
+// import { Spinner } from '@/shared/spinner/Spinner';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from '@/store/user/slice';
 import { useAppSelector } from '@/hooks/useAppSelector';
@@ -24,9 +24,10 @@ export const RequireAuth: React.FC<RequireAuthProps> = ({
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
-  if (status === LoadingStatus.LOADING) {
-    return <Spinner />;
-  }
+  // тут уже есть статика и лоудер не нужен
+  // if (status === LoadingStatus.LOADING) {
+  //   return <Spinner />;
+  // }
 
   if (authOnly && status === LoadingStatus.FAILED) {
     return <Navigate to={getRouteLogin()} replace />;

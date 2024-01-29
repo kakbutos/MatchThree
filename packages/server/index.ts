@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import { resolve, dirname } from 'path';
 import express from 'express';
 // import { createClientAndConnect } from './db';
+import { getInitialState } from './store';
 
 const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -56,7 +57,7 @@ async function startServer() {
         template = await vite!.transformIndexHtml(url, template);
       }
 
-      let render: (url: string) => Promise<string>;
+      let render: (url: string, preloadedState: object) => Promise<string>;
 
       if (!isDev()) {
         render = (await import(ssrClientPath)).render;
@@ -65,9 +66,14 @@ async function startServer() {
           .render;
       }
 
-      const appHtml = await render(url);
+      const preloadedState = await getInitialState();
+      const stateMarkup = `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
+        preloadedState
+      ).replace(/</g, '\\u003c')}</script>`;
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+      const appHtml = await render(url, preloadedState);
+
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml + stateMarkup);
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e) {
