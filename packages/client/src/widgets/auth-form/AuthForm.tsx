@@ -10,6 +10,7 @@ import { FormInputText } from '@/shared/form-fields/FormInputText';
 import { AuthRequest } from '@/types/auth/auth';
 import { fetchCurrentUser } from '@/store/user/slice';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { OAuthButton } from './OAuth-button';
 
 export const AuthForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -68,6 +69,7 @@ export const AuthForm: React.FC = () => {
           />
         </Box>
         <Box display="flex" gap={1}>
+          <OAuthButton disabled={isLoading} />
           <Button type="submit" disabled={isLoading}>
             Авторизоваться
           </Button>
