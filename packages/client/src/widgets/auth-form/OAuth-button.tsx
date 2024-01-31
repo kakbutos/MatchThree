@@ -6,6 +6,7 @@ import { isOAuthServiceId } from '@/types/oauth/oauth';
 import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import YandexIcon from '@/assets/icons/yandex.svg?react';
+import { useLocation } from 'react-router-dom';
 
 type OAuthProps = { disabled: boolean };
 
@@ -17,6 +18,7 @@ export const OAuthButton = ({ disabled }: OAuthProps) => {
   const [serviceId, isLoading] = useApiCall(oauthApi.getServiceId);
   const [signin] = useApiCall(oauthApi.signinYandex);
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const handleOAuthRedirect = async () => {
     const res = await serviceId(REDIRECT_URI);
