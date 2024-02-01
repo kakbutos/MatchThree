@@ -22,7 +22,7 @@ export const OAuthButton = ({ disabled }: OAuthProps) => {
 
   const handleOAuthRedirect = async () => {
     const res = await serviceId(REDIRECT_URI);
-    if (isOAuthServiceId(res) && res?.service_id) {
+    if (isOAuthServiceId(res)) {
       window.location.href = getOAuthLink(res.service_id);
     }
   };
