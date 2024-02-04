@@ -20,5 +20,7 @@ export const store = (
     preloadedState,
   });
 
+// @ts-ignore
 export type RootState = ReturnType<typeof store.getState>;
+// @ts-ignore
 export type AppDispatch = typeof store.dispatch;

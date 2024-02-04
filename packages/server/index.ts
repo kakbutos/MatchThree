@@ -8,7 +8,7 @@ dotenv.config();
 import * as fs from 'fs';
 import { resolve, dirname } from 'path';
 import express from 'express';
-// import { createClientAndConnect } from './db';
+import { createClientAndConnect } from './db';
 import { getInitialState } from './store';
 
 const isDev = () => process.env.NODE_ENV === 'development';
@@ -19,7 +19,7 @@ async function startServer() {
   const port = Number(process.env.SERVER_PORT) || 3001;
 
   // TODO вернуть при подключении к БД
-  // createClientAndConnect();
+  createClientAndConnect();
 
   let vite: ViteDevServer | undefined;
   const distPath = dirname(require.resolve('client/dist/index.html'));
