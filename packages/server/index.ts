@@ -10,6 +10,7 @@ import { resolve, dirname } from 'path';
 import express from 'express';
 import { createClientAndConnect } from './db';
 import { getInitialState } from './store';
+import { initControllers } from './controllers/init';
 
 const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -17,9 +18,9 @@ async function startServer() {
   const app = express();
   app.use(cors());
   const port = Number(process.env.SERVER_PORT) || 3001;
-
+  app.use(express.json());
   // TODO вернуть при подключении к БД
-  createClientAndConnect();
+  await createClientAndConnect();
 
   let vite: ViteDevServer | undefined;
   const distPath = dirname(require.resolve('client/dist/index.html'));
@@ -43,6 +44,8 @@ async function startServer() {
   if (!isDev()) {
     app.use('/assets', express.static(resolve(distPath, 'assets')));
   }
+
+  app.use(initControllers());
 
   app.use('*', async (req, res, next) => {
     const url = req.originalUrl;

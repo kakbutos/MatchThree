@@ -4,32 +4,28 @@ import { Column, Model, Table, DataType } from 'sequelize-typescript';
 export class Topic extends Model<Topic> {
   @Column({
     type: DataType.INTEGER,
-    field: 'topic_id',
+    field: 'topicId',
     primaryKey: true,
     autoIncrement: true,
   })
-  // @ts-ignore
-  id: number;
+  override id!: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  // @ts-ignore
-  title: string;
+  title!: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: false,
   })
-  // @ts-ignore
-  description: string;
+  description!: string;
 
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
-    field: 'user_id',
+    field: 'userId',
   })
-  // @ts-ignore
-  userId: number;
+  userId!: number;
 }
