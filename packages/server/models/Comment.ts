@@ -5,10 +5,19 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Topic } from './Topic';
+import { Reply } from './Reply';
 
-@Table
+@Table({
+  indexes: [
+    {
+      name: 'topicIdIndex',
+      fields: ['topicId'],
+    },
+  ],
+})
 export class Comment extends Model<Comment> {
   @Column({
     type: DataType.INTEGER,
@@ -38,6 +47,9 @@ export class Comment extends Model<Comment> {
     allowNull: false,
   })
   content!: string;
+
+  @HasMany(() => Reply, 'commentId')
+  replies!: Reply[];
 
   @BelongsTo(() => Topic)
   topic!: Topic;

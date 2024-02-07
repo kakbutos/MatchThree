@@ -1,6 +1,13 @@
 import { Column, Model, Table, DataType } from 'sequelize-typescript';
 
-@Table
+@Table({
+  indexes: [
+    {
+      name: 'titleIndex',
+      fields: ['title'],
+    },
+  ],
+})
 export class Topic extends Model<Topic> {
   @Column({
     type: DataType.INTEGER,

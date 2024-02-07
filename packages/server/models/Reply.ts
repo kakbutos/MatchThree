@@ -39,6 +39,6 @@ export class Reply extends Model<Reply> {
   })
   content!: string;
 
-  @BelongsTo(() => Comment)
+  @BelongsTo(() => Comment, { foreignKey: 'commentId' })
   comment!: Comment;
 }
