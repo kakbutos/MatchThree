@@ -8,10 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { getRouteMain } from '@/constants/router/router';
 import { Topic } from '@/widgets/topic/Topic';
 import { ForumLayout } from '@/widgets/forum-layout/ForumLayout';
-import {
-  CreateThemeDialog,
-  CreateThemeRequest,
-} from '@/widgets/create-theme-dialog/CreateThemeDialog';
+import { CreateThemeDialog } from '@/widgets/create-theme-dialog/CreateThemeDialog';
 import { ITopic } from '@/types/forum/topic';
 
 export const Forum: React.FC = () => {
@@ -22,9 +19,7 @@ export const Forum: React.FC = () => {
     setIsOpenDialog(true);
   };
 
-  const handleCloseDialog = (value?: CreateThemeRequest) => {
-    // TODO добавить запрос на создание топика
-    console.log(value);
+  const handleCloseDialog = () => {
     setIsOpenDialog(false);
   };
 
