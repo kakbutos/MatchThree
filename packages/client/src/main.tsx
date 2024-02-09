@@ -13,9 +13,11 @@ if (!container) {
   );
 }
 
+// @ts-ignore
 const preloadState = window.__PRELOADED_STATE__;
 const storeProvider = store(preloadState);
 
+// @ts-ignore
 delete window.__PRELOADED_STATE__;
 
 hydrateRoot(
