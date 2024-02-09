@@ -12,7 +12,7 @@ import { useApiCall } from '@/hooks/useApiCall';
 import { forumApi } from '@/services/api/forum/forum-api';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { UserStore } from '@/store/user';
-import { isTopicResponse } from '@/types/forum/api';
+import { SearchData, isTopicResponse } from '@/types/forum/api';
 
 export interface CreateThemeRequest {
   name: string;
@@ -22,11 +22,13 @@ export interface CreateThemeRequest {
 interface CreateThemeDialogProps {
   open: boolean;
   onClose: (value?: CreateThemeRequest) => void;
+  fetchTopics: (value?: SearchData) => void;
 }
 
 export const CreateThemeDialog: React.FC<CreateThemeDialogProps> = ({
   open,
   onClose,
+  fetchTopics,
 }) => {
   const [createTopic] = useApiCall(forumApi.createTopic);
   const authUser = useAppSelector(UserStore.selectors.selectCurrentUser);
@@ -42,6 +44,7 @@ export const CreateThemeDialog: React.FC<CreateThemeDialogProps> = ({
     try {
       const res = await createTopic(data);
       if (isTopicResponse(res)) {
+        fetchTopics();
         handleClose();
       }
     } catch (error) {

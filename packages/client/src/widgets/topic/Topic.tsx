@@ -3,10 +3,11 @@ import CommentIcon from '@/assets/icons/comment.svg?react';
 import { getRouteForumTopic } from '@/constants/router/router';
 import { useNavigate } from 'react-router-dom';
 import styles from './topic.module.scss';
-import { ITopic } from '@/types/forum/topic';
+import { TopicResponse } from '@/types/forum/api';
+import moment from 'moment';
 
 interface TopicProps {
-  topic: ITopic;
+  topic: TopicResponse;
 }
 
 export const Topic: React.FC<TopicProps> = ({ topic }) => {
@@ -18,18 +19,18 @@ export const Topic: React.FC<TopicProps> = ({ topic }) => {
 
   return (
     <Box
-      key={topic.name}
+      key={topic.title}
       className={styles.themeContainer}
-      onClick={() => goToTopic('id')}>
+      onClick={() => goToTopic(`${topic.id}`)}>
       <Box className={styles.themeInfoBlock}>
-        <div>{topic.name}</div>
+        <div>{topic.title}</div>
         <div>{topic.description}</div>
       </Box>
       <Box className={styles.themeInfoBlock}>
-        <div>{topic.created}</div>
+        <div>{`${moment(topic.createdAt).format('l')}`}</div>
         <div className={styles.comment}>
           <CommentIcon />
-          <div>{topic.commentCount}</div>
+          {/* <div>{topic.commentCount}</div> */}
         </div>
       </Box>
     </Box>

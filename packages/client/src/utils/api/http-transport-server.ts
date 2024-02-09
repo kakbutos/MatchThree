@@ -25,7 +25,7 @@ class HTTPTransportServer extends HTTPTransport {
 
   get = <Data, Response>(url: string, data?: Data) =>
     HTTPTransportServer.instance.get<Data, Response>(`${this.endpoint}${url}`, {
-      data,
+      params: data,
     });
 }
 
