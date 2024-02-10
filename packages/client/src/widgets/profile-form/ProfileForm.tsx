@@ -29,7 +29,7 @@ const INITIAL_AUTH_USER = {
   phone: '',
 };
 
-export const sanitizeObject = (obj: object) =>
+const sanitizeObject = (obj: object) =>
   Object.fromEntries(
     Object.entries(obj).map(([key, value]) => [
       key,
