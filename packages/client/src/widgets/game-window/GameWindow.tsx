@@ -15,6 +15,9 @@ const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fullscreenRef = useRef<HTMLImageElement>(null);
+  const pageWrapper = useRef<HTMLDivElement>(null);
+
   const [messages, setMessages] = useState<
     FunctionComponentElement<ConsoleMessageProps>[]
   >([]);
@@ -37,14 +40,30 @@ const GameWindow: FC = () => {
       gameEngine
     );
     consoleController.addEventListeners();
+    fullscreenRef.current?.addEventListener('click', fullscreenHandler);
 
     return () => {
       consoleController.removeEventListeners();
+      fullscreenRef.current?.removeEventListener('click', fullscreenHandler);
     };
   }, []);
 
+  const fullscreenHandler = (): void => {
+    if (!document.fullscreenEnabled) return;
+
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      pageWrapper.current!.style.overflow = 'hidden';
+      pageWrapper.current!.scrollTo(0, 0);
+      return;
+    }
+
+    document.exitFullscreen();
+    pageWrapper.current!.style.overflow = 'auto';
+  };
+
   return (
-    <div className={s.wrapper}>
+    <div className={s.wrapper} ref={pageWrapper}>
       <div className={s.gameWindow}>
         <div className={s.console} ref={consoleRef}>
           <ul className={s.gameWindow__messageList}>{messages}</ul>
@@ -55,6 +74,13 @@ const GameWindow: FC = () => {
             autoComplete="off"
           />
         </div>
+        <img
+          className={s.fullscreenIcon}
+          src="/src/assets/icons/fullscreen.svg"
+          alt="Полный экран"
+          ref={fullscreenRef}
+          title="Полноэкранный режим"
+        />
         <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
         <TimeBar />
         <img
