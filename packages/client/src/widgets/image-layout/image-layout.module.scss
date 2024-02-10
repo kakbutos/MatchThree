@@ -15,16 +15,10 @@
   }
 }
 
-.emptyBackground {
-  width: 20%;
-  height: 100%;
-  float: right;
-  background-color: white;
-}
-
 .formContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  position: relative;
 }

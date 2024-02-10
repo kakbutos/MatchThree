@@ -5,6 +5,7 @@ import {
   TextField,
   Box,
   Button,
+  Typography,
 } from '@mui/material';
 import { FormEvent } from 'react';
 import styles from './crate-theme-dialog.module.scss';
@@ -58,7 +59,11 @@ export const CreateThemeDialog: React.FC<CreateThemeDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Создание темы</DialogTitle>
+      <DialogTitle>
+        <Typography color="white" variant="h5">
+          Создание темы
+        </Typography>
+      </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -68,6 +73,7 @@ export const CreateThemeDialog: React.FC<CreateThemeDialogProps> = ({
             label="Наименование"
             name="title"
             autoFocus
+            color="secondary"
           />
           <TextField
             margin="normal"
@@ -77,7 +83,7 @@ export const CreateThemeDialog: React.FC<CreateThemeDialogProps> = ({
             name="description"
             multiline
             rows={2}
-            autoFocus
+            color="secondary"
           />
           <Box className={styles.actionGroup}>
             <Button variant="outlined" color="secondary" onClick={handleClose}>

@@ -10,6 +10,16 @@ import { GameEngine } from './lib/GameEngine';
 import { ConsoleController } from './lib/ConsoleController';
 import { ConsoleMessageProps } from './ConsoleMessage';
 import { TimeBar } from './TimeBar';
+import { styled } from '@mui/material';
+import { ThemeButton } from '../theme-button/ThemeButton';
+
+const BackgroundDiv = styled('div')(({ theme }) => ({
+  height: '100vh',
+  minWidth: 'max - content',
+  paddingTop: '80px',
+  overflowX: 'hidden',
+  backgroundColor: theme.palette.background.paper,
+}));
 
 const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -44,7 +54,8 @@ const GameWindow: FC = () => {
   }, []);
 
   return (
-    <div className={s.wrapper}>
+    <BackgroundDiv>
+      <ThemeButton isAbsolutePosition />
       <div className={s.gameWindow}>
         <div className={s.console} ref={consoleRef}>
           <ul className={s.gameWindow__messageList}>{messages}</ul>
@@ -68,7 +79,7 @@ const GameWindow: FC = () => {
           alt="Астронавт"
         />
       </div>
-    </div>
+    </BackgroundDiv>
   );
 };
 
