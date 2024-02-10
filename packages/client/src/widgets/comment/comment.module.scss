@@ -17,4 +17,8 @@
   & span {
     font-size: 12px;
   }
+  :global(.MuiAvatar-root) {
+    width: 25px;
+    height: 25px;
+  }
 }

@@ -1,51 +1,34 @@
 import { Box, Typography, Avatar } from '@mui/material';
 import EmptyAvatarMan from '@/assets/images/empty-avatar-man.svg?react';
 import styles from './comment.module.scss';
-import { FC, useEffect, useState } from 'react';
+import { FC, useMemo } from 'react';
 import moment from 'moment';
-import { useApiCall } from '@/hooks/useApiCall';
-import { userApi } from '@/services/api/user/user-api';
-import { User, isUserResponse } from '@/types/user';
+import { User } from '@/types/user';
 import { getResourceLink } from '@/constants';
 import { ReplyResponse } from '@/types/forum/api';
 
 interface ReplyProps {
   reply: ReplyResponse;
+  users: Array<User | Record<string, string>>;
 }
 
-export const Reply: FC<ReplyProps> = ({ reply }) => {
-  const [userById, setUserById] = useState<User | Record<string, string>>({});
-  const [getUserApi] = useApiCall(userApi.getUser);
-
-  const getUserById = async () => {
-    if (reply.userId) {
-      const res = await getUserApi(+reply.userId);
-
-      if (isUserResponse(res)) {
-        setUserById(res);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getUserById();
-  }, []);
+export const Reply: FC<ReplyProps> = ({ reply, users }) => {
+  const replyUser = useMemo(
+    () => users.find(user => user.id === reply.userId),
+    [reply, users]
+  );
 
   return (
     <>
       <Box className={styles.replyContainer}>
         <Box display="flex" gap="6px">
-          {userById?.avatar ? (
-            <Avatar
-              style={{ width: '25px', height: '25px' }}
-              alt="avatar"
-              src={getResourceLink(userById?.avatar)}
-            />
+          {replyUser?.avatar ? (
+            <Avatar alt="avatar" src={getResourceLink(replyUser?.avatar)} />
           ) : (
             <EmptyAvatarMan width={25} />
           )}
           <Box className={styles.commentInfo}>
-            <Typography component="span">{userById.first_name}</Typography>
+            <Typography component="span">{replyUser?.first_name}</Typography>
             <Typography component="span">{reply.content}</Typography>
           </Box>
         </Box>

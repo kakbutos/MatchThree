@@ -2,7 +2,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './forum.module.scss';
 import AustronautWithLaptop from '@/assets/images/austronaut-with-laptop.svg?react';
 import LeftArrow from '@/assets/icons/arrow-left.svg?react';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRouteMain } from '@/constants/router/router';
 import { Topic } from '@/widgets/topic/Topic';
@@ -40,7 +40,7 @@ export const Forum: React.FC = () => {
     navigate(getRouteMain());
   };
 
-  const fetchTopics = async (data?: SearchData) => {
+  const fetchTopics = useCallback(async (data?: SearchData) => {
     try {
       const res = await topics(data);
       if (isTopicArrayResponse(res)) {
@@ -49,7 +49,7 @@ export const Forum: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   const handleResetSearch = () => {
     setSearch('');

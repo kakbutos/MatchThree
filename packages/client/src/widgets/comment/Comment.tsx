@@ -4,11 +4,9 @@ import EmptyAvatarMan from '@/assets/images/empty-avatar-man.svg?react';
 import styles from './comment.module.scss';
 import { ReplyCommentForm } from './ReplyCommentForm';
 import { CommentResponse, ReplyResponse } from '@/types/forum/api';
-import { FC, useEffect, useState } from 'react';
+import { FC, useMemo } from 'react';
 import moment from 'moment';
-import { useApiCall } from '@/hooks/useApiCall';
-import { userApi } from '@/services/api/user/user-api';
-import { User, isUserResponse } from '@/types/user';
+import { User } from '@/types/user';
 import { getResourceLink } from '@/constants';
 import { Reply } from './Reply';
 
@@ -20,6 +18,7 @@ interface CommentProps {
   openedId: string | null;
   onOpenReply: (id: string) => void;
   fetchTopic: () => void;
+  users: Array<User | Record<string, string>>;
 }
 
 export const Comment: FC<CommentProps> = ({
@@ -27,36 +26,28 @@ export const Comment: FC<CommentProps> = ({
   openedId,
   onOpenReply,
   fetchTopic,
+  users,
 }) => {
-  const [userById, setUserById] = useState<User | Record<string, string>>({});
+  const commentUser = useMemo(
+    () => users.find(user => user.id === comment.userId),
+    [users, comment]
+  );
 
-  const [getUserApi] = useApiCall(userApi.getUser);
-
-  const getUserById = async () => {
-    if (comment.userId) {
-      const res = await getUserApi(+comment.userId);
-
-      if (isUserResponse(res)) {
-        setUserById(res);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getUserById();
-  }, []);
-
+  const sortedReplies = useMemo(
+    () => comment.replies?.sort(sortByDate),
+    [comment]
+  );
   return (
     <>
       <Box className={styles.commentContainer}>
         <Box display="flex" gap="16px">
-          {userById?.avatar ? (
-            <Avatar alt="avatar" src={getResourceLink(userById?.avatar)} />
+          {commentUser?.avatar ? (
+            <Avatar alt="avatar" src={getResourceLink(commentUser?.avatar)} />
           ) : (
             <EmptyAvatarMan width={40} />
           )}
           <Box className={styles.commentInfo}>
-            <Typography component="span">{userById.first_name}</Typography>
+            <Typography component="span">{commentUser?.first_name}</Typography>
             <Typography component="span">{comment.content}</Typography>
           </Box>
         </Box>
@@ -76,8 +67,8 @@ export const Comment: FC<CommentProps> = ({
       {openedId === comment.id && (
         <ReplyCommentForm fetchTopic={fetchTopic} commentId={comment.id} />
       )}
-      {comment.replies?.sort(sortByDate).map(reply => (
-        <Reply key={reply.id} reply={reply} />
+      {sortedReplies.map(reply => (
+        <Reply users={users} key={reply.id} reply={reply} />
       ))}
     </>
   );
