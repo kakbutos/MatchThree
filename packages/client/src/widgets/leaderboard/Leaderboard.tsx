@@ -1,9 +1,13 @@
 import s from './leaderboard.module.scss';
 import { FC, useMemo } from 'react';
-import { Avatar, Badge, Box, Typography } from '@mui/material';
-import Crown from '../../assets/icons/crown.svg?react';
+import { Avatar, Badge, Box, Button, Typography, styled } from '@mui/material';
+import LeftArrow from '@/assets/icons/arrow-left.svg?react';
+import Crown from '@/assets/icons/crown.svg?react';
 import TableRating from './TableRating';
 import { Player } from '@/types/player';
+import { ThemeButton } from '../theme-button/ThemeButton';
+import { getRouteMain } from '@/constants/router/router';
+import { useNavigate } from 'react-router-dom';
 
 const leaderboardData: Player[] = [
   { name: 'Player 2', score: 90, avatar: '' },
@@ -18,14 +22,37 @@ const leaderboardData: Player[] = [
   { name: 'Player 10', score: 40, avatar: '' },
 ];
 
+const BackgroundDiv = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '5vw',
+  backgroundColor: theme.palette.background.default,
+  position: 'relative',
+}));
+
 export const LeaderBoard: FC = () => {
+  const navigate = useNavigate();
   const data = useMemo(
     () => leaderboardData.sort((a, b) => b.score - a.score),
     [leaderboardData]
   );
 
+  const goToMenu = () => {
+    navigate(getRouteMain());
+  };
+
   return (
-    <Box className={s.wr}>
+    <BackgroundDiv>
+      <ThemeButton isAbsolutePosition />
+      <Button
+        variant="outlined"
+        color="secondary"
+        startIcon={<LeftArrow />}
+        onClick={goToMenu}
+        className={s.linkBtn}>
+        Меню
+      </Button>
       <Typography fontSize={'2rem'} variant="h1">
         Доска лучших
       </Typography>
@@ -49,6 +76,6 @@ export const LeaderBoard: FC = () => {
       </Box>
 
       <TableRating rows={data.slice(3)} />
-    </Box>
+    </BackgroundDiv>
   );
 };

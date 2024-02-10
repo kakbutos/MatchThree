@@ -3,13 +3,13 @@ import AppRouter from './providers/router/AppRouter';
 import './styles/index.scss';
 import './fonts/fonts';
 import ErrorBoundary from './providers/error-boundary/ErrorBoundary';
-import { theme } from '../theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
+import { ThemeWrapper } from './providers/theme';
 
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`;
+      const url = `http://localhost:${__SERVER_PORT__}/api`;
       const response = await fetch(url);
       const data = await response.json();
       console.log(data);
@@ -17,15 +17,16 @@ function App() {
 
     fetchServerData();
   }, []);
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeWrapper>
       <CssBaseline />
       <ErrorBoundary>
         <Suspense fallback="">
           <AppRouter />
         </Suspense>
       </ErrorBoundary>
-    </ThemeProvider>
+    </ThemeWrapper>
   );
 }
 
