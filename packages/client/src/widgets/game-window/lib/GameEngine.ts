@@ -47,6 +47,10 @@ export class GameEngine {
   private isDrag: boolean;
   private currentMove: Move;
   private soundController: SoundController;
+  private isExistBlackHole = false;
+  private removedClustersCount = 0;
+  private prevRemovedClustersCount = 0;
+  private rotation = 0;
 
   private animationState: AnimationState;
   private animationTime: number;
@@ -179,6 +183,7 @@ export class GameEngine {
 
     this.findClusters();
 
+    this.removedClustersCount += this.clusters.length;
     if (this.clusters.length > 0) {
       for (let i = 0; i < this.clusters.length; i++) {
         this.score += SCORE_PERCENT * (this.clusters[i].length - 2);
@@ -388,7 +393,7 @@ export class GameEngine {
         );
 
         // Проверка, есть ли плитка
-        if (this.levelSettings.tiles[i][j].type >= 0) {
+        if (!this.isDeleted(this.levelSettings.tiles[i][j].type)) {
           const rgbColor = this.tileColors[this.levelSettings.tiles[i][j].type];
 
           this.drawTile(
@@ -503,7 +508,20 @@ export class GameEngine {
   }
 
   private getRandomTile() {
-    return Math.floor(Math.random() * this.tileColors.length);
+    const length =
+      this.isExistBlackHole ||
+      this.removedClustersCount - this.prevRemovedClustersCount < 10
+        ? this.tileColors.length - 1
+        : this.tileColors.length;
+
+    const randomTile = Math.floor(Math.random() * length);
+
+    if (randomTile === this.tileColors.length - 1) {
+      this.isExistBlackHole = true;
+      this.prevRemovedClustersCount = this.removedClustersCount;
+    }
+
+    return randomTile;
   }
 
   private renderMoves() {
@@ -752,7 +770,7 @@ export class GameEngine {
   private shiftTiles() {
     for (let i = 0; i < this.levelSettings.columns; i++) {
       for (let j = this.levelSettings.rows - 1; j >= 0; j--) {
-        if (this.levelSettings.tiles[i][j].type === -1) {
+        if (this.isDeleted(this.levelSettings.tiles[i][j].type)) {
           this.levelSettings.tiles[i][j].type = this.getRandomTile();
         } else {
           const shift = this.levelSettings.tiles[i][j].shift;
@@ -779,7 +797,7 @@ export class GameEngine {
     for (let i = 0; i < this.levelSettings.columns; i++) {
       let shift = 0;
       for (let j = this.levelSettings.rows - 1; j >= 0; j--) {
-        if (this.levelSettings.tiles[i][j].type === -1) {
+        if (this.isDeleted(this.levelSettings.tiles[i][j].type)) {
           shift++;
           this.levelSettings.tiles[i][j].shift = 0;
         } else {
@@ -861,12 +879,22 @@ export class GameEngine {
     this.clusters = [];
   }
 
+  private isDarkHole(type: number) {
+    return type === this.tileColors.length - 1;
+  }
+
+  private isDeleted(type: number) {
+    return type === -1;
+  }
+
   private findClusters() {
     this.clusters = [];
 
     // Поиск горизонтальных кластеров
     for (let j = 0; j < this.levelSettings.rows; j++) {
       let matchLength = 1;
+      let matchLengthWithDarkHole = 1;
+      let isIncludeDarkHole = false;
 
       for (let i = 0; i < this.levelSettings.columns; i++) {
         let isLastTile = false;
@@ -877,16 +905,32 @@ export class GameEngine {
           if (
             this.levelSettings.tiles[i][j].type ===
               this.levelSettings.tiles[i + 1][j].type &&
-            this.levelSettings.tiles[i][j].type != -1
+            !this.isDeleted(this.levelSettings.tiles[i][j].type)
           ) {
             matchLength += 1;
+            matchLengthWithDarkHole += 1;
+          } else if (
+            (this.isDarkHole(this.levelSettings.tiles[i][j].type) ||
+              this.isDarkHole(this.levelSettings.tiles[i + 1][j].type)) &&
+            !this.isDeleted(this.levelSettings.tiles[i][j].type)
+          ) {
+            matchLengthWithDarkHole += 1;
+            isIncludeDarkHole = true;
           } else {
             isLastTile = true;
           }
         }
 
         if (isLastTile) {
-          if (matchLength >= 3) {
+          if (matchLengthWithDarkHole >= 4 && isIncludeDarkHole) {
+            this.isExistBlackHole = false;
+            this.clusters.push({
+              column: 0,
+              row: j,
+              length: this.levelSettings.columns,
+              isHorizontal: true,
+            });
+          } else if (matchLength >= 3) {
             this.clusters.push({
               column: i + 1 - matchLength,
               row: j,
@@ -895,7 +939,9 @@ export class GameEngine {
             });
           }
 
+          matchLengthWithDarkHole = 1;
           matchLength = 1;
+          isIncludeDarkHole = false;
         }
       }
     }
@@ -903,6 +949,8 @@ export class GameEngine {
     // Поиск вертикальных кластеров
     for (let i = 0; i < this.levelSettings.columns; i++) {
       let matchLength = 1;
+      let matchLengthWithDarkHole = 1;
+      let isIncludeDarkHole = false;
 
       for (let j = 0; j < this.levelSettings.rows; j++) {
         let isLastTile = false;
@@ -913,16 +961,32 @@ export class GameEngine {
           if (
             this.levelSettings.tiles[i][j].type ===
               this.levelSettings.tiles[i][j + 1].type &&
-            this.levelSettings.tiles[i][j].type != -1
+            !this.isDeleted(this.levelSettings.tiles[i][j].type)
           ) {
             matchLength += 1;
+            matchLengthWithDarkHole += 1;
+          } else if (
+            (this.isDarkHole(this.levelSettings.tiles[i][j].type) ||
+              this.isDarkHole(this.levelSettings.tiles[i][j + 1].type)) &&
+            !this.isDeleted(this.levelSettings.tiles[i][j].type)
+          ) {
+            matchLengthWithDarkHole += 1;
+            isIncludeDarkHole = true;
           } else {
             isLastTile = true;
           }
         }
 
         if (isLastTile) {
-          if (matchLength >= 3) {
+          if (matchLengthWithDarkHole >= 4 && isIncludeDarkHole) {
+            this.isExistBlackHole = false;
+            this.clusters.push({
+              column: i,
+              row: 0,
+              length: this.levelSettings.rows,
+              isHorizontal: false,
+            });
+          } else if (matchLength >= 3) {
             this.clusters.push({
               column: i,
               row: j + 1 - matchLength,
@@ -932,6 +996,8 @@ export class GameEngine {
           }
 
           matchLength = 1;
+          matchLengthWithDarkHole = 1;
+          isIncludeDarkHole = false;
         }
       }
     }
@@ -989,14 +1055,50 @@ export class GameEngine {
     this.context.fill();
 
     if (type !== undefined) {
-      this.context.drawImage(
-        this.tileImages[type],
-        x + 2,
-        y + 2,
-        this.levelSettings.tileWidth - 4,
-        this.levelSettings.tileHeight - 4
-      );
+      if (this.isDarkHole(type)) {
+        this.drawRotated(
+          this.tileImages[type],
+          x + 2,
+          y + 2,
+          this.rotation,
+          this.levelSettings.tileWidth - 4,
+          this.levelSettings.tileHeight - 4
+        );
+        this.rotation++;
+      } else {
+        this.context.drawImage(
+          this.tileImages[type],
+          x + 2,
+          y + 2,
+          this.levelSettings.tileWidth - 4,
+          this.levelSettings.tileHeight - 4
+        );
+      }
     }
+  }
+
+  private drawRotated(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    degrees: number,
+    width: number,
+    height: number
+  ) {
+    if (!this.context) {
+      return;
+    }
+
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+    const centreX = x + halfWidth;
+    const centreY = y + halfHeight;
+
+    this.context.save();
+    this.context.translate(centreX, centreY);
+    this.context.rotate((degrees * Math.PI) / 180);
+    this.context.drawImage(image, -halfWidth, -halfHeight, width, height);
+    this.context.restore();
   }
 
   private drawFrame() {

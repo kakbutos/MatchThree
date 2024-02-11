@@ -5,6 +5,7 @@ import earth from '../../../assets/images/earth.png';
 import moon from '../../../assets/images/moon.png';
 import mars from '../../../assets/images/mars.png';
 import neptune from '../../../assets/images/neptune.png';
+import blackHole from '../../../assets/images/black-hole.png';
 
 export class TilesThemes {
   static readonly DEFAULT: number[][] = [
@@ -15,6 +16,7 @@ export class TilesThemes {
     [166, 162, 162],
     [174, 37, 48],
     [151, 196, 235],
+    [21, 34, 81],
   ];
 
   static readonly DEFAULT_IMAGES: string[] = [
@@ -25,6 +27,7 @@ export class TilesThemes {
     moon,
     mars,
     neptune,
+    blackHole,
   ];
 
   static readonly BLISS: number[][] = [
