@@ -30,7 +30,9 @@ export const Team = () => {
                 borderColor: theme => theme.palette.text.secondary,
               }}>
               <CardContent sx={{ pb: 1 }}>
-                <Typography sx={{ fontSize: 18, textAlign: 'center' }}>
+                <Typography
+                  sx={{ fontSize: 18, textAlign: 'center' }}
+                  color="white">
                   {member.name}
                 </Typography>
               </CardContent>

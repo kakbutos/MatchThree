@@ -2,6 +2,7 @@ import { authApi } from '@/services/api/auth/auth-api';
 import { LoadingStatus } from '@/types/loading-status';
 import type { User } from '@/types/user';
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { fetchCurrentMode } from '../theme/slice';
 
 export interface UserState {
   currentUser: User | null;
@@ -15,8 +16,9 @@ const initialState: UserState = {
 
 export const fetchCurrentUser = createAsyncThunk(
   'user/fetchCurrentUser',
-  async () => {
+  async (_, { dispatch }) => {
     const response = await authApi.getCurrent();
+    dispatch(fetchCurrentMode());
     return response.data;
   }
 );

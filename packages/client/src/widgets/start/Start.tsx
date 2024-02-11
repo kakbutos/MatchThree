@@ -1,14 +1,33 @@
 import s from './start.module.scss';
 import { FC, useEffect, useState } from 'react';
-import { Box, Button, Slide, Typography, Zoom } from '@mui/material';
+import { Box, Button, Slide, Typography, Zoom, styled } from '@mui/material';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { GameStore } from '@/store/game';
 import { GameStatus } from '@/types/game-status';
+import { ThemeButton } from '../theme-button/ThemeButton';
+
+const BackgroundDiv = styled('div')<{
+  started: boolean;
+}>(({ theme, started }) => ({
+  width: '100%',
+  height: '100vh',
+  backgroundImage: 'url("/src/assets/images/start-bg.png")',
+  backgroundColor: theme.palette.background.paper,
+  backgroundSize: 'auto 90vh',
+  backgroundRepeat: 'repeat no-repeat',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  transition: 'background-position-y 1s',
+  backgroundPositionY: started ? '' : '-200%',
+}));
 
 export const Start: FC = () => {
   const [started, setStarted] = useState(false);
   return (
-    <Box className={`${s.wr} ${started && s.wr_started}`}>
+    <BackgroundDiv started>
+      <ThemeButton isAbsolutePosition />
       {started ? (
         <CountDown />
       ) : (
@@ -16,7 +35,7 @@ export const Start: FC = () => {
           НАЧАТЬ ИГРУ
         </Button>
       )}
-    </Box>
+    </BackgroundDiv>
   );
 };
 

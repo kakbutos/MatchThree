@@ -1,10 +1,18 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
+import { styled } from '@mui/system';
 import styles from './image-layout.module.scss';
 
 interface ImageLayoutProps {
   BackgroundImage: React.FC;
 }
+
+const EmptyBackgroundDiv = styled('div')(({ theme }) => ({
+  width: '20%',
+  height: '100%',
+  float: 'right',
+  backgroundColor: theme.palette.background.default,
+}));
 
 export const ImageLayout: React.FC<
   React.PropsWithChildren<ImageLayoutProps>
@@ -14,7 +22,7 @@ export const ImageLayout: React.FC<
       <div className={styles.imageContainer}>
         <BackgroundImage />
       </div>
-      <div className={styles.emptyBackground} />
+      <EmptyBackgroundDiv />
     </Grid>
     <Grid item xs={12} sm={8} className={styles.formContainer}>
       {children}

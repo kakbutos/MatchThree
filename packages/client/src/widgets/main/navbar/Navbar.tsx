@@ -27,6 +27,7 @@ import { UserStore } from '@/store/user';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { getResourceLink } from '@/constants';
+import { ThemeButton } from '@/widgets/theme-button/ThemeButton';
 
 const pages = [
   { title: 'Игра', routeFn: getRouteGame },
@@ -143,7 +144,8 @@ export const Navbar = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', gap: 1 }}>
+            <ThemeButton />
             <Tooltip title="Открыть настройки">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
