@@ -22,39 +22,18 @@ import { User, isUserResponse } from '@/types/user';
 const sortByDate = (a: CommentResponse, b: CommentResponse) =>
   a.createdAt < b.createdAt ? 1 : -1;
 
-const getUniqueUsersId = (comments: Array<CommentResponse>) => {
-  const commentUsers: Set<number> = new Set();
-  comments.forEach(comment => {
-    commentUsers.add(comment.userId);
-    comment.replies.forEach(reply => commentUsers.add(+reply.userId));
-  });
-  return commentUsers;
-};
-
 export const TopicPage: FC = () => {
   const navigate = useNavigate();
   const [openedId, setOpenedId] = useState<string | null>(null);
   const [topic, setTopic] = useState<TopicWithComments | null>(null);
-  const [usersById, setUsersById] = useState<
-    Array<User | Record<string, string>>
-  >([]);
 
   const { id } = useParams();
 
   const [getTopic] = useApiCall(forumApi.getTopicById);
   const [getComments] = useApiCall(forumApi.getComments);
-  const [getUserApi] = useApiCall(userApi.getUser);
 
   const goToList = () => {
     navigate(getRouteForum());
-  };
-
-  const getUserById = async (userId: number) => {
-    const res = await getUserApi(userId);
-
-    if (isUserResponse(res)) {
-      setUsersById([...usersById, res]);
-    }
   };
 
   const fetchTopic = useCallback(async () => {
@@ -63,8 +42,6 @@ export const TopicPage: FC = () => {
       const comments = await getComments({ topicId: id as string });
       if (isTopicResponse(res) && isCommentArrayResponse(comments)) {
         setTopic({ ...res, comments: comments.sort(sortByDate) });
-        const commentUsers = getUniqueUsersId(comments);
-        commentUsers.forEach(user => getUserById(user));
       }
     } catch (error) {
       console.log(error);
@@ -102,7 +79,6 @@ export const TopicPage: FC = () => {
                 <Comment
                   fetchTopic={fetchTopic}
                   comment={comment}
-                  users={usersById}
                   key={comment.id}
                   onOpenReply={setOpenedId}
                   openedId={openedId}

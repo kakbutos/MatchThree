@@ -1,13 +1,10 @@
 import { Box, Typography, Button, Avatar } from '@mui/material';
 import ReplyIcon from '@/assets/icons/reply.svg?react';
-import EmptyAvatarMan from '@/assets/images/empty-avatar-man.svg?react';
 import styles from './comment.module.scss';
 import { ReplyCommentForm } from './ReplyCommentForm';
 import { CommentResponse, ReplyResponse } from '@/types/forum/api';
 import { FC, useMemo } from 'react';
 import moment from 'moment';
-import { User } from '@/types/user';
-import { getResourceLink } from '@/constants';
 import { Reply } from './Reply';
 
 const sortByDate = (a: ReplyResponse, b: ReplyResponse) =>
@@ -18,7 +15,6 @@ interface CommentProps {
   openedId: string | null;
   onOpenReply: (id: string) => void;
   fetchTopic: () => void;
-  users: Array<User | Record<string, string>>;
 }
 
 export const Comment: FC<CommentProps> = ({
@@ -26,13 +22,7 @@ export const Comment: FC<CommentProps> = ({
   openedId,
   onOpenReply,
   fetchTopic,
-  users,
 }) => {
-  const commentUser = useMemo(
-    () => users.find(user => user.id === comment.userId),
-    [users, comment]
-  );
-
   const sortedReplies = useMemo(
     () => comment.replies?.sort(sortByDate),
     [comment]
@@ -41,13 +31,14 @@ export const Comment: FC<CommentProps> = ({
     <>
       <Box className={styles.commentContainer}>
         <Box display="flex" gap="16px">
-          {commentUser?.avatar ? (
-            <Avatar alt="avatar" src={getResourceLink(commentUser?.avatar)} />
-          ) : (
-            <EmptyAvatarMan width={40} />
-          )}
+          <Avatar
+            alt="avatar"
+            src={`https://ui-avatars.com/api/?name=${comment.userId}`}
+          />
           <Box className={styles.commentInfo}>
-            <Typography component="span">{commentUser?.first_name}</Typography>
+            <Typography component="span">
+              Пользователь {comment.userId}
+            </Typography>
             <Typography component="span">{comment.content}</Typography>
           </Box>
         </Box>
@@ -68,7 +59,7 @@ export const Comment: FC<CommentProps> = ({
         <ReplyCommentForm fetchTopic={fetchTopic} commentId={comment.id} />
       )}
       {sortedReplies.map(reply => (
-        <Reply users={users} key={reply.id} reply={reply} />
+        <Reply key={reply.id} reply={reply} />
       ))}
     </>
   );
