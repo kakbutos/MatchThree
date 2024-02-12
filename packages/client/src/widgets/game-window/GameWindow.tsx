@@ -25,8 +25,7 @@ const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const fullscreenRef = useRef<HTMLImageElement>(null);
-  const pageWrapper = useRef<HTMLDivElement>(null);
+  const pageWrapperRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<
     FunctionComponentElement<ConsoleMessageProps>[]
@@ -51,11 +50,9 @@ const GameWindow: FC = () => {
       gameEngineRef.current
     );
     consoleController.addEventListeners();
-    fullscreenRef.current?.addEventListener('click', fullscreenHandler);
 
     return () => {
       consoleController.removeEventListeners();
-      fullscreenRef.current?.removeEventListener('click', fullscreenHandler);
     };
   }, []);
 
@@ -64,17 +61,17 @@ const GameWindow: FC = () => {
 
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      pageWrapper.current!.style.overflow = 'hidden';
-      pageWrapper.current!.scrollTo(0, 0);
+      pageWrapperRef.current!.style.overflow = 'hidden';
+      pageWrapperRef.current!.scrollTo(0, 0);
       return;
     }
 
     document.exitFullscreen();
-    pageWrapper.current!.style.overflow = 'auto';
+    pageWrapperRef.current!.style.overflow = 'auto';
   };
 
   return (
-    <BackgroundDiv ref={pageWrapper}>
+    <BackgroundDiv ref={pageWrapperRef}>
       <ThemeButton isAbsolutePosition />
       <div className={s.gameWindow}>
         <div className={s.console} ref={consoleRef}>
@@ -90,7 +87,7 @@ const GameWindow: FC = () => {
           className={s.fullscreenIcon}
           src="/src/assets/icons/fullscreen.svg"
           alt="Полный экран"
-          ref={fullscreenRef}
+          onClick={fullscreenHandler}
           title="Полноэкранный режим"
         />
         <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
