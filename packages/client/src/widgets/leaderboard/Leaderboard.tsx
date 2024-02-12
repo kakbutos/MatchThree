@@ -1,26 +1,21 @@
 import s from './leaderboard.module.scss';
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Avatar, Badge, Box, Button, Typography, styled } from '@mui/material';
 import LeftArrow from '@/assets/icons/arrow-left.svg?react';
 import Crown from '@/assets/icons/crown.svg?react';
 import TableRating from './TableRating';
-import { Player } from '@/types/player';
 import { ThemeButton } from '../theme-button/ThemeButton';
 import { getRouteMain } from '@/constants/router/router';
 import { useNavigate } from 'react-router-dom';
-
-const leaderboardData: Player[] = [
-  { name: 'Player 2', score: 90, avatar: '' },
-  { name: 'Player 1', score: 100, avatar: '' },
-  { name: 'Player 3', score: 80, avatar: '' },
-  { name: 'Player 4', score: 150, avatar: '' },
-  { name: 'Player 5', score: 20, avatar: '' },
-  { name: 'Player 6', score: 0, avatar: '' },
-  { name: 'Player 7', score: 40, avatar: '' },
-  { name: 'Player 8', score: 40, avatar: '' },
-  { name: 'Player 9', score: 20, avatar: '' },
-  { name: 'Player 10', score: 40, avatar: '' },
-];
+import { useApiCall } from '@/hooks/useApiCall';
+import { leaderboardApi } from '@/services/api/leaderboard/leaderboard-api';
+import {
+  GetLeaderboardRequest,
+  LeaderboardData,
+  isGetLeaderboardResponse,
+} from '@/types/leaderboard/leaderboard';
+import { Spinner } from '@/shared/spinner/Spinner';
+import { RATING_FIELD_NAME } from '@/constants';
 
 const BackgroundDiv = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,14 +28,47 @@ const BackgroundDiv = styled('div')(({ theme }) => ({
 
 export const LeaderBoard: FC = () => {
   const navigate = useNavigate();
-  const data = useMemo(
-    () => leaderboardData.sort((a, b) => b.score - a.score),
-    [leaderboardData]
-  );
+
+  const [data, setData] = useState<LeaderboardData[]>([]);
+  const [getLeaderboard, isLoading] = useApiCall(leaderboardApi.getLeaderboard);
+
+  const onGetLeaderboard = async (data: GetLeaderboardRequest) => {
+    const res = await getLeaderboard(data);
+
+    if (isGetLeaderboardResponse(res)) {
+      setData(
+        res.map(item => ({
+          userName: item.data.userName,
+          score: item.data[RATING_FIELD_NAME],
+          gameMode: item.data.gameMode,
+          avatar: item.data.avatar,
+        }))
+      );
+    }
+  };
+
+  const getPositionColor = (position: number) => {
+    switch (position) {
+      case 0:
+        return '#FF0000';
+      case 1:
+        return '#ff8c00';
+      case 2:
+        return '#ff1493';
+    }
+  };
 
   const goToMenu = () => {
     navigate(getRouteMain());
   };
+
+  useEffect(() => {
+    onGetLeaderboard({
+      ratingFieldName: RATING_FIELD_NAME,
+      cursor: 0,
+      limit: 10,
+    } as GetLeaderboardRequest);
+  }, []);
 
   return (
     <BackgroundDiv>
@@ -56,6 +84,7 @@ export const LeaderBoard: FC = () => {
       <Typography fontSize={'2rem'} variant="h1">
         Доска лучших
       </Typography>
+      {isLoading && <Spinner />}
       <Box className={s.avatarStack}>
         {data.slice(0, 3).map((player, i) => (
           <Box key={i}>
@@ -64,13 +93,22 @@ export const LeaderBoard: FC = () => {
                 className={s.avatar}
                 sx={{
                   backgroundColor: theme => theme.palette.primary.main,
+                  boxShadow: `0 0 20px ${getPositionColor(i)}`,
                 }}
                 style={{ animationDelay: `${i}s` }}
-                alt={player.name}
+                alt={player.userName}
                 src={player.avatar}
               />
             </Badge>
-            <Typography textAlign={'center'}>{player.name}</Typography>
+            <Typography marginTop={2} textAlign={'center'}>
+              {player.userName}
+            </Typography>
+            <Typography
+              fontWeight={i === 0 ? 'bolder' : 'bold'}
+              color={getPositionColor(i)}
+              textAlign={'center'}>
+              {player.score}
+            </Typography>
           </Box>
         ))}
       </Box>
