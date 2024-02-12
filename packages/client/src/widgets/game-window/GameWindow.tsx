@@ -25,6 +25,8 @@ const GameWindow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const consoleRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pageWrapperRef = useRef<HTMLDivElement>(null);
+
   const [messages, setMessages] = useState<
     FunctionComponentElement<ConsoleMessageProps>[]
   >([]);
@@ -54,8 +56,22 @@ const GameWindow: FC = () => {
     };
   }, []);
 
+  const fullscreenHandler = (): void => {
+    if (!document.fullscreenEnabled) return;
+
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      pageWrapperRef.current!.style.overflow = 'hidden';
+      pageWrapperRef.current!.scrollTo(0, 0);
+      return;
+    }
+
+    document.exitFullscreen();
+    pageWrapperRef.current!.style.overflow = 'auto';
+  };
+
   return (
-    <BackgroundDiv>
+    <BackgroundDiv ref={pageWrapperRef}>
       <ThemeButton isAbsolutePosition />
       <div className={s.gameWindow}>
         <div className={s.console} ref={consoleRef}>
@@ -67,6 +83,13 @@ const GameWindow: FC = () => {
             autoComplete="off"
           />
         </div>
+        <img
+          className={s.fullscreenIcon}
+          src="/src/assets/icons/fullscreen.svg"
+          alt="Полный экран"
+          onClick={fullscreenHandler}
+          title="Полноэкранный режим"
+        />
         <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
         <TimeBar
           endGameHandler={() => {
