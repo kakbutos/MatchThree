@@ -8,6 +8,7 @@ import { TilesThemes } from '../types/tiles-themes';
 import { Position } from './position';
 import SoundController from './SoundController';
 import { SoundTypes } from '../types/sound-types.enum';
+import { GameStore } from '@/store/game';
 
 interface CanvasRenderingContext2DCustom extends CanvasRenderingContext2D {
   roundRect(x: number, y: number, w: number, h: number, radius: number[]): void;
@@ -130,6 +131,10 @@ export class GameEngine {
 
     this.update(tframe);
     this.render();
+  }
+
+  public getScore(): number {
+    return this.score;
   }
 
   public stopGame() {
