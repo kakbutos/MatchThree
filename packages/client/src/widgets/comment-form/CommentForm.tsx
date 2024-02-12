@@ -3,16 +3,48 @@ import { useForm } from 'react-hook-form';
 import styles from './comment-form.module.scss';
 import { EmojiFormInputText } from '@/shared/form-fields/EmojiFormInputText';
 import { ICreateComment } from '@/types/forum/create-comment';
+import { useApiCall } from '@/hooks/useApiCall';
+import { forumApi } from '@/services/api/forum/forum-api';
+import { useParams } from 'react-router-dom';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { UserStore } from '@/store/user';
+import { isCommentResponse } from '@/types/forum/api';
 
-export const CommentForm = () => {
-  const { handleSubmit, control } = useForm<ICreateComment>({
+interface CommentFormProps {
+  fetchTopic: () => void;
+}
+
+export const CommentForm = ({ fetchTopic }: CommentFormProps) => {
+  const { handleSubmit, control, reset } = useForm<ICreateComment>({
     defaultValues: {
-      comment: '',
+      content: '',
     },
   });
 
-  const onSubmit = (values: ICreateComment) => {
-    console.log(values);
+  const [createComment] = useApiCall(forumApi.createComment);
+
+  const authUser = useAppSelector(UserStore.selectors.selectCurrentUser);
+
+  const { id } = useParams();
+
+  const onSubmit = async (values: ICreateComment) => {
+    try {
+      const data = {
+        ...values,
+        topicId: id as string,
+        userId: authUser.id as string,
+      };
+
+      const res = await createComment(data);
+      if (isCommentResponse(res)) {
+        reset({
+          content: '',
+        });
+        fetchTopic();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -21,7 +53,7 @@ export const CommentForm = () => {
       <form className={styles.commentForm} onSubmit={handleSubmit(onSubmit)}>
         <EmojiFormInputText
           control={control}
-          name="comment"
+          name="content"
           label="Комментарий"
           color="secondary"
           placeholder="Введите комментарий..."

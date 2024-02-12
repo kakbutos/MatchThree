@@ -1,4 +1,3 @@
 export interface ICreateComment {
-  commentId?: string;
-  comment: string;
+  content: string;
 }

@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { API_URL } from '@/constants';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 class HTTPTransport {
   static instance: AxiosInstance;
