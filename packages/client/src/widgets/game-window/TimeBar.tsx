@@ -29,7 +29,7 @@ export const TimeBar: React.FC<TimeBarProps> = ({ endGameHandler }) => {
   const currentUser = useAppSelector(UserStore.selectors.selectCurrentUser);
 
   const onUpdateLeaderboard = async (data: UpdateLeaderboardRequest) => {
-    const res = await updateLeaderboard(data);
+    return await updateLeaderboard(data);
   };
 
   useEffect(() => {
