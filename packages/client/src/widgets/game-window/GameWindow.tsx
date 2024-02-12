@@ -31,6 +31,7 @@ const GameWindow: FC = () => {
   const [messages, setMessages] = useState<
     FunctionComponentElement<ConsoleMessageProps>[]
   >([]);
+  const gameEngineRef = useRef<GameEngine | null>(null);
 
   const addMessageHandler = (
     message: FunctionComponentElement<ConsoleMessageProps>
@@ -40,14 +41,14 @@ const GameWindow: FC = () => {
 
   useEffect(() => {
     const canvas = document.getElementById('viewport') as HTMLCanvasElement;
-    const gameEngine = new GameEngine(canvas);
-    gameEngine.init();
+    gameEngineRef.current = new GameEngine(canvas);
+    gameEngineRef.current.init();
 
     const consoleController = new ConsoleController(
       consoleRef,
       inputRef,
       addMessageHandler,
-      gameEngine
+      gameEngineRef.current
     );
     consoleController.addEventListeners();
     fullscreenRef.current?.addEventListener('click', fullscreenHandler);
@@ -93,7 +94,12 @@ const GameWindow: FC = () => {
           title="Полноэкранный режим"
         />
         <canvas ref={canvasRef} id="viewport" width="640" height="680"></canvas>
-        <TimeBar />
+        <TimeBar
+          endGameHandler={() => {
+            gameEngineRef.current!.stopGame();
+            return gameEngineRef.current!.getScore();
+          }}
+        />
         <img
           className={s.astronaut}
           src="/src/assets/images/astronaut.png"

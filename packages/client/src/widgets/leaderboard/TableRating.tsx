@@ -15,7 +15,8 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import s from './leaderboard.module.scss';
-import { Player } from '@/types/player';
+import { LeaderboardData } from '@/types/leaderboard/leaderboard';
+import { Typography } from '@mui/material';
 
 interface TablePaginationActionsProps {
   count: number;
@@ -97,7 +98,7 @@ function defaultLabelDisplayedRows({ from, to, count }: any) {
   return `${from}–${to} из ${count !== -1 ? count : `Больше, чем ${to}`}`;
 }
 
-export default function TableRating({ rows }: { rows: Player[] }) {
+export default function TableRating({ rows }: { rows: LeaderboardData[] }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -120,56 +121,62 @@ export default function TableRating({ rows }: { rows: Player[] }) {
 
   return (
     <TableContainer className={s.table} component={Paper}>
-      <Table
-        sx={{
-          minWidth: 500,
-        }}
-        aria-label="custom pagination table">
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row, i) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {i + 4}
-              </TableCell>
-              <TableCell style={{ width: '40%' }} align="left">
-                {row.name}
-              </TableCell>
-              <TableCell style={{ width: '40%' }} align="left">
-                {row.score}
-              </TableCell>
+      {rows.length ? (
+        <Table
+          sx={{
+            minWidth: 500,
+          }}
+          aria-label="custom pagination table">
+          <TableBody>
+            {(rowsPerPage > 0
+              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : rows
+            ).map((row, i) => (
+              <TableRow key={row.userName}>
+                <TableCell component="th" scope="row">
+                  {i + 4}
+                </TableCell>
+                <TableCell style={{ width: '40%' }} align="left">
+                  {row.userName}
+                </TableCell>
+                <TableCell style={{ width: '40%' }} align="left">
+                  {row.score}
+                </TableCell>
+              </TableRow>
+            ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
+                colSpan={3}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                labelDisplayedRows={defaultLabelDisplayedRows}
+                labelRowsPerPage={'Отобразить строк:'}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              labelDisplayedRows={defaultLabelDisplayedRows}
-              labelRowsPerPage={'Отобразить строк:'}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+          </TableFooter>
+        </Table>
+      ) : (
+        <Typography color={'white'} textAlign={'center'}>
+          Нет данных
+        </Typography>
+      )}
     </TableContainer>
   );
 }
