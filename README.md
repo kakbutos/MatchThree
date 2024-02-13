@@ -1,38 +1,30 @@
 ### Демонстрация проекта
 
 - [Ссылка на видео-демонстрацию проекта за 5 и 6 спринт](https://disk.yandex.ru/i/HC82x2siFWV9LQ)
+- [Ссылка на видео-демонстрацию проекта за 7 и 8 спринт](https://disk.yandex.ru/i/7wwh-6SfH7UwYQ)
 
 ### Документация игры
 - [Ссылка на документацию по игре "3 в ряд"](GAMEDOC.md)
 
-### Запуск проекта
+### Запуск client
 
 1. Убедитесь что у вас установлен `node` и `docker`
 2. Выполните команду `yarn bootstrap` - это обязательный шаг, без него ничего работать не будет :)
-3. Выполните команду `yarn dev`
+3. `yarn dev --scope=client`
+
+### Запуск server
+
+1. В папке **package/client** выполнить - `yarn link`
+2. В папке **package/server** выполнить - `yarn link "client"`
+3. Выполните команду `yarn build:ssr` (в этой и дальше команде выполняем из корня проекта)
+4. Выполните команду `yarn build`
+5. В первом терминале запустить `docker compose up` - бдшка
+6. Во втором терминале уже проект `yarn dev --scope=server`
 
 #### Опционально:
 
 1. Выполните команду `yarn dev --scope=client` чтобы запустить только клиент
 2. Выполните команду `yarn dev --scope=server` чтобы запустить только server
-
-### SSR
-
-Выполнить сборку клиента в директории package/client
-1. yarn build:ssr
-2. yarn build
-
-Добавить ссылку в сервере на client
-
-1. в package/client - yarn link
-2. в package/server - yarn link "client"
-
-Выполнить сборку server
-
-1. yarn build
-
-или запустить в dev режиме
-
 
 ### Как добавить зависимости?
 В этом проекте используется `monorepo` на основе [`lerna`](https://github.com/lerna/lerna)
