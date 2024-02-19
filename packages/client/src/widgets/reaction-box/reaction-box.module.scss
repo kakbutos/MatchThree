@@ -1,0 +1,13 @@
+.reaction {
+    border: 1px solid white;
+    border-radius: 6px;
+    background-color: rgba(127, 205, 255, .3);
+    padding: 2px;
+    display: flex;
+    gap: 2px;
+    cursor: pointer;
+  }
+  
+  .reactionActive {
+    background-color: rgba(127, 205, 255, 1);
+  }
