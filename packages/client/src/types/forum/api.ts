@@ -30,6 +30,12 @@ export type CommentResponse = {
   updatedAt: string;
   id: string;
   replies: Array<ReplyResponse>;
+  reactions: Array<ReactionData>;
+};
+
+export type ReactionData = {
+  reaction: string;
+  users: Array<number>;
 };
 
 export type CommentData = {
@@ -51,6 +57,7 @@ export type ReplyResponse = {
   id: string;
   updatedAt: string;
   userId: string;
+  reactions: Array<ReactionData>;
 };
 
 export const isTopicResponse = (value: unknown): value is TopicResponse => {
