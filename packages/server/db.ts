@@ -10,7 +10,7 @@ export const createClientAndConnect = async (): Promise<Sequelize | null> => {
   try {
     const sequelizeOptions: SequelizeOptions = {
       username: String(POSTGRES_USER),
-      host: 'localhost',
+      host: 'postgres',
       database: String(POSTGRES_DB),
       password: String(POSTGRES_PASSWORD),
       port: Number(POSTGRES_PORT),
