@@ -1,19 +1,19 @@
 version: "3.9"
 
 services:
-    nginx:
-      container_name: match-nginx
-      image: match-nginx
-      build: ./nginx
-      restart: always
-      ports:
-        - "8080:80"
-      networks:
-        - awesome
-      command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-      depends_on:
+#    nginx:
+#      container_name: match-nginx
+#      image: match-nginx
+#      build: ./nginx
+#      restart: always
+#      ports:
+#        - "8080:80"
+#      networks:
+#        - awesome
+#      command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+#      depends_on:
 #        - client
-        - server
+#        - server
 #        - postgres
 
 #    client:
