@@ -15,8 +15,4 @@ COPY . .
 RUN yarn lerna bootstrap
 RUN rm -rf /app/packages/server/dist/ && yarn build --scope=server
 
-COPY ./packages/client/dist /app/client
-COPY ./packages/client/dist-ssr /app/client
-
 EXPOSE $SERVER_PORT
-CMD [ "node", "/app/packages/server/dist/index.js" ]
