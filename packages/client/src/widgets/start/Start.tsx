@@ -5,13 +5,14 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { GameStore } from '@/store/game';
 import { GameStatus } from '@/types/game-status';
 import { ThemeButton } from '../theme-button/ThemeButton';
+import bg from '@/assets/images/start-bg.png';
 
 const BackgroundDiv = styled('div')<{
   started: boolean;
 }>(({ theme, started }) => ({
   width: '100%',
   height: '100vh',
-  backgroundImage: 'url("/src/assets/images/start-bg.png")',
+  backgroundImage: `url(${bg})`,
   backgroundColor: theme.palette.background.paper,
   backgroundSize: 'auto 90vh',
   backgroundRepeat: 'repeat no-repeat',
