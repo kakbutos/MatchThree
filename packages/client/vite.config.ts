@@ -11,8 +11,7 @@ export default defineConfig({
     port: Number(process.env.CLIENT_PORT) || 3000,
   },
   define: {
-    __SERVER_PORT__: process.env.SERVER_PORT || 3001,
-    __NODE_ENV__: `'${process.env.NODE_ENV || 'development'}'`,
+    __SERVER_PORT__: process.env.SERVER_PORT || 3001
   },
   resolve: {
     alias: {

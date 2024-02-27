@@ -1,4 +1,5 @@
-const isDev = __NODE_ENV__ === 'development';
+// const isDev = __NODE_ENV__ === 'development';
+const isDev = false;
 const IP = '51.250.109.189';
 
 export const API_URL = 'https://ya-praktikum.tech/api/v2';
