@@ -1,4 +1,4 @@
-// const isDev = __NODE_ENV__ === 'development';
+// TODO надо брать из NODE_ENV
 const isDev = false;
 const IP = '51.250.109.189';
 
