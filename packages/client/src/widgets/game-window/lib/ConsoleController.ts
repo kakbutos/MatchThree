@@ -74,6 +74,15 @@ export class ConsoleController {
       this.addToConsole(`> ${command}`);
       this.executeCommand(command);
       this.inputElement.value = '';
+
+      // возвращаем скролл в конец
+      setTimeout(() => {
+        if (this.consoleWindow && this.consoleWindow.children[0]) {
+          const scroll = this.consoleWindow.children[0];
+
+          scroll.scrollTop = scroll.scrollHeight;
+        }
+      }, 10);
     }
 
     if (event.key === 'ArrowUp') {
@@ -201,10 +210,9 @@ export class ConsoleController {
       'sound_inc',
     ];
 
-    this.addToConsole(
-      `Available commands: ${availableCommands.join(', ')}`,
-      MessageTypes.INFO
-    );
+    availableCommands.forEach(name => {
+      this.addToConsole(name, MessageTypes.INFO);
+    });
   }
 
   private cmdToggleMovies() {

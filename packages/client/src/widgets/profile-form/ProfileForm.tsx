@@ -61,7 +61,14 @@ export const ProfileForm: React.FC = () => {
           const data = sanitizeObject(res);
           setUserById(data);
           // заполняем данными форму
-          reset(data);
+          if (authUser) {
+            sanitizeObject({
+              ...data,
+              ...authUser,
+            });
+          } else {
+            reset(data);
+          }
         }
       }
     };

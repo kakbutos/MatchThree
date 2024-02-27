@@ -2,6 +2,7 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/system';
 import styles from './image-layout.module.scss';
+import { Button } from '@mui/material';
 
 interface ImageLayoutProps {
   BackgroundImage: React.FC;
@@ -21,6 +22,11 @@ export const ImageLayout: React.FC<
     <Grid item xs={false} sm={4} className={styles.backgroundContainer}>
       <div className={styles.imageContainer}>
         <BackgroundImage />
+        <Grid>
+          <Button href="/" color="secondary" variant="outlined">
+            Выйти на главную
+          </Button>
+        </Grid>
       </div>
       <EmptyBackgroundDiv />
     </Grid>
