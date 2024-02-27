@@ -5,13 +5,15 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { GameStore } from '@/store/game';
 import { GameStatus } from '@/types/game-status';
 import { ThemeButton } from '../theme-button/ThemeButton';
+import bg from '@/assets/images/start-bg.png';
+import astronaut from '@/assets/images/astronaut.png';
 
 const BackgroundDiv = styled('div')<{
   started: boolean;
 }>(({ theme, started }) => ({
   width: '100%',
   height: '100vh',
-  backgroundImage: 'url("/src/assets/images/start-bg.png")',
+  backgroundImage: `url(${bg})`,
   backgroundColor: theme.palette.background.paper,
   backgroundSize: 'auto 90vh',
   backgroundRepeat: 'repeat no-repeat',
@@ -78,7 +80,7 @@ const CountDown: FC = () => {
       </Zoom>
       <Box className={s.astronaut}>
         <Slide direction="down" in={true} timeout={700}>
-          <img src="/src/assets/images/astronaut.png" alt="Астронавт" />
+          <img src={astronaut} alt="Астронавт" />
         </Slide>
       </Box>
     </Box>

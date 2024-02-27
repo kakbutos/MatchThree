@@ -12,6 +12,8 @@ import { ConsoleMessageProps } from './ConsoleMessage';
 import { TimeBar } from './TimeBar';
 import { styled } from '@mui/material';
 import { ThemeButton } from '../theme-button/ThemeButton';
+import astronaut from '@/assets/images/astronaut.png';
+import fullscren from '@/assets/icons/fullscreen.svg';
 
 const BackgroundDiv = styled('div')(({ theme }) => ({
   height: '100vh',
@@ -85,7 +87,7 @@ const GameWindow: FC = () => {
         </div>
         <img
           className={s.fullscreenIcon}
-          src="/src/assets/icons/fullscreen.svg"
+          src={fullscren}
           alt="Полный экран"
           onClick={fullscreenHandler}
           title="Полноэкранный режим"
@@ -97,16 +99,8 @@ const GameWindow: FC = () => {
             return gameEngineRef.current!.getScore();
           }}
         />
-        <img
-          className={s.astronaut}
-          src="/src/assets/images/astronaut.png"
-          alt="Астронавт"
-        />
-        <img
-          className={s.astronaut}
-          src="/src/assets/images/astronaut.png"
-          alt="Астронавт"
-        />
+        <img className={s.astronaut} src={astronaut} alt="Астронавт" />
+        <img className={s.astronaut} src={astronaut} alt="Астронавт" />
       </div>
     </BackgroundDiv>
   );

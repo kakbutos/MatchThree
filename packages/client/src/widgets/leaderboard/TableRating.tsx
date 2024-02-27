@@ -161,6 +161,9 @@ export default function TableRating({ rows }: { rows: LeaderboardData[] }) {
                 labelDisplayedRows={defaultLabelDisplayedRows}
                 labelRowsPerPage={'Отобразить строк:'}
                 SelectProps={{
+                  sx: {
+                    width: 'auto',
+                  },
                   inputProps: {
                     'aria-label': 'rows per page',
                   },

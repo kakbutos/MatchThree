@@ -15,7 +15,7 @@ export const ReactionBox: React.FC<ReactionBoxProps> = ({
 }) => {
   return (
     <>
-      {reactions.map((reaction, index) => (
+      {reactions?.map((reaction, index) => (
         <Box
           className={`${styles.reaction} ${
             isUserInReaction(index) ? styles.reactionActive : ''

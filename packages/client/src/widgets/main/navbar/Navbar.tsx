@@ -138,7 +138,13 @@ export const Navbar = () => {
                   handleCloseNavMenu();
                   navigate(page.routeFn());
                 }}
-                sx={{ my: 2, color: 'white', display: 'block' }}>
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  display: 'block',
+                  boxShadow: 'none',
+                  backgroundColor: 'transparent',
+                }}>
                 {page.title}
               </Button>
             ))}
