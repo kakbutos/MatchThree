@@ -7,10 +7,11 @@ import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import YandexIcon from '@/assets/icons/yandex.svg?react';
 import { useLocation } from 'react-router-dom';
+import { SERVER_API_URL } from '@/constants';
 
 type OAuthProps = { disabled: boolean };
 
-const REDIRECT_URI = 'http://localhost:3000/login';
+const REDIRECT_URI = `${SERVER_API_URL}/login`;
 const getOAuthLink = (id: string) =>
   `https://oauth.yandex.ru/authorize?response_type=code&client_id=${id}&redirect_uri=${REDIRECT_URI}`;
 

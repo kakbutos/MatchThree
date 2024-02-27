@@ -5,11 +5,12 @@ import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { GameStore } from '@/store/game';
 import { GameStatus } from '@/types/game-status';
 import { ThemeButton } from '../theme-button/ThemeButton';
+import astronaut from '@/assets/images/astronaut.png';
 
 const BackgroundDiv = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100vh',
-  backgroundImage: 'url("/src/assets/images/start-bg.png")',
+  backgroundImage: `url(${astronaut})`,
   backgroundSize: 'auto 90vh',
   backgroundRepeat: 'repeat no-repeat',
   display: 'flex',

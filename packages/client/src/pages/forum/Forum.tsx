@@ -2,7 +2,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './forum.module.scss';
 import AustronautWithLaptop from '@/assets/images/austronaut-with-laptop.svg?react';
 import LeftArrow from '@/assets/icons/arrow-left.svg?react';
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getRouteMain } from '@/constants/router/router';
 import { Topic } from '@/widgets/topic/Topic';
