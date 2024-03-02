@@ -1,4 +1,4 @@
-name: YC CI
+name: YCloud CI
 
 on:
   push:
