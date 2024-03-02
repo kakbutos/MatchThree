@@ -1,28 +1,35 @@
-import { Client } from 'pg'
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import { Topic } from './models/Topic';
+import { Reply } from './models/Reply';
+import { Comment } from './models/Comment';
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
-  process.env
+  process.env;
 
-export const createClientAndConnect = async (): Promise<Client | null> => {
+export const createClientAndConnect = async (): Promise<Sequelize | null> => {
   try {
-    const client = new Client({
-      user: POSTGRES_USER,
-      host: 'localhost',
-      database: POSTGRES_DB,
-      password: POSTGRES_PASSWORD,
+    const isDev = process.env.NODE_ENV === 'development';
+    const sequelizeOptions: SequelizeOptions = {
+      username: String(POSTGRES_USER),
+      host: isDev ? 'localhost' : 'postgres',
+      database: String(POSTGRES_DB),
+      password: String(POSTGRES_PASSWORD),
       port: Number(POSTGRES_PORT),
-    })
+      dialect: 'postgres',
+    };
+    const sequelize = new Sequelize(sequelizeOptions);
 
-    await client.connect()
+    sequelize.addModels([Topic, Reply, Comment]);
 
-    const res = await client.query('SELECT NOW()')
-    console.log('  ➜ 🎸 Connected to the database at:', res?.rows?.[0].now)
-    client.end()
+    await sequelize.authenticate();
+    await sequelize.sync(); //{force: true}
 
-    return client
+    console.log('  ➜ 🎸 Connected to the database success');
+
+    return sequelize;
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
 
-  return null
-}
+  return null;
+};

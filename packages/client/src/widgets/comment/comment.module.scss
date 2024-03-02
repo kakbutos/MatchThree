@@ -1,0 +1,62 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.smileyIcon {
+  margin: 0;
+  padding: 0;
+  margin-top: -10px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.smileyReplyIcon {
+  transform: scale(.8);
+  margin: 0;
+  padding: 0;
+  margin-top: -12px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.reactionBox {
+  display: flex;
+  gap: 8px;
+  margin-left: 56px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.commentContainer {
+  display: flex;
+  padding: 16px 0px;
+  justify-content: space-between;
+}
+
+.commentContainer:hover {
+  opacity: 0.8;
+}
+
+.commentInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.replyContainer {
+  display: flex;
+  padding: 6px 0px 0px 10%;
+  justify-content: space-between;
+  & span {
+    font-size: 12px;
+  }
+  :global(.MuiAvatar-root) {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.replyContainer:hover {
+  opacity: 0.8;
+}

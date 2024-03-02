@@ -1,0 +1,24 @@
+.backgroundContainer {
+  background-color: var(--primary-color);
+  position: relative;
+}
+
+.imageContainer {
+  padding: 10% 0px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.formContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}

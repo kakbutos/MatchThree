@@ -1,0 +1,39 @@
+.box {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 2;
+  text-align: center;
+  position: relative;
+}
+
+p.end {
+  color: #fff;
+  font-size: 100px;
+  text-align: center;
+  font-weight: 500;
+  animation: rotate 1s ease-in-out infinite alternate;
+}
+button.again {
+  border-radius: 72px;
+  padding: 36px 44px;
+  background-color: #fff;
+  color: var(--primary-color);
+  font-size: 32px;
+  font-weight: 500;
+  &:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+}

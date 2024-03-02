@@ -1,0 +1,56 @@
+.avatarStack {
+  width: 50%;
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-rows: auto;
+  align-items: center;
+  column-gap: 5vw;
+  :global(.MuiBadge-badge) {
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+  }
+  & > div {
+    grid-row: 1;
+
+    &:first-of-type {
+      :global(.MuiBadge-badge) {
+        border: none;
+        max-width: 60%;
+      }
+      grid-column: 2;
+    }
+  }
+
+  & .avatar {
+    animation: scale 1.5s ease-in infinite alternate;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+  }
+}
+
+div.table {
+  :global(.MuiTableCell-root) {
+    color: #fff;
+    font-size: 1rem;
+  }
+  :global(.MuiTableRow-root) {
+    background-color: var(--primary-color);
+  }
+}
+
+.linkBtn {
+  position: absolute !important;
+  top: 8px;
+  left: 8px;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}

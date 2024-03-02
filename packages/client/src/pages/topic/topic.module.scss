@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 700px;
+  background-color: rgba($color: #ffffff, $alpha: 0.1);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 16px 22px;
+}
+
+.linkBtn {
+  align-self: flex-start;
+}
