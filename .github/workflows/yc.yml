@@ -19,6 +19,4 @@ jobs:
           CR_REGISTRY: crpn9mnggobsk72cbsih
           CR_REPO: matchthree
           IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG .
-          docker push cr.yandex/$CR_REGISTRY/$CR_REPO:$IMAGE_TAG
+        run: docker-compose -f "docker-compose.yml" up -d --build
