@@ -5,6 +5,7 @@ import {
   getAllCommentsWithRepliesByTopicId,
 } from './CommentController';
 import { createReply } from './ReplyController';
+import { changeTheme, getThemeByUserId } from './UserThemeController';
 
 export const initControllers = () => {
   const router = express.Router();
@@ -15,6 +16,9 @@ export const initControllers = () => {
 
   router.get('/api/comment', getAllCommentsWithRepliesByTopicId);
   router.post('/api/comment', createComment);
+
+  router.get('/api/theme/:userId', getThemeByUserId);
+  router.post('/api/theme', changeTheme);
 
   router.post('/api/reply', createReply);
 

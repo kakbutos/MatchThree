@@ -18,7 +18,9 @@ export const fetchCurrentUser = createAsyncThunk(
   'user/fetchCurrentUser',
   async (_, { dispatch }) => {
     const response = await authApi.getCurrent();
-    dispatch(fetchCurrentMode());
+    if (response.data?.id) {
+      dispatch(fetchCurrentMode(response.data?.id));
+    }
     return response.data;
   }
 );
