@@ -1,5 +1,7 @@
 import { ThemeMode } from './mode';
 
-export interface ThemeResonse {
-  mode: ThemeMode;
+export interface ThemeRequest {
+  theme: ThemeMode;
+  userId: number;
+  id?: number;
 }

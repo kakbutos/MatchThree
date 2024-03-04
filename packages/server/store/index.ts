@@ -14,6 +14,9 @@ export const getInitialState = async (
     game: {
       currentStatus: 'start',
     },
+    theme: {
+      mode: 'light',
+    },
     ...loadedState,
   };
 };

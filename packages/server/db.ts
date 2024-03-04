@@ -2,6 +2,7 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { Topic } from './models/Topic';
 import { Reply } from './models/Reply';
 import { Comment } from './models/Comment';
+import { UserTheme } from './models/UserTheme';
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env;
@@ -19,7 +20,7 @@ export const createClientAndConnect = async (): Promise<Sequelize | null> => {
     };
     const sequelize = new Sequelize(sequelizeOptions);
 
-    sequelize.addModels([Topic, Reply, Comment]);
+    sequelize.addModels([Topic, Reply, Comment, UserTheme]);
 
     await sequelize.authenticate();
     await sequelize.sync(); //{force: true}

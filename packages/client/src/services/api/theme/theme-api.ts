@@ -1,15 +1,24 @@
-import { BaseApi } from '@/utils/api/base-api';
+import { ThemeRequest } from '@/types/theme/theme';
+import { BaseServerApi } from '@/utils/api/base-api';
 import { AxiosResponse } from 'axios';
-import { ThemeResonse } from '@/types/theme/theme';
 
-class ThemeApi extends BaseApi {
+class ThemeApi extends BaseServerApi {
   constructor() {
-    super('theme/');
+    super('api/');
   }
 
-  getMode = () => this.http.get<undefined, AxiosResponse<ThemeResonse>>('mode');
-  toggleMode = () =>
-    this.http.post<undefined, AxiosResponse<ThemeResonse>>('toggleMode');
+  getMode = (userId: number) =>
+    this.http.get<number, AxiosResponse<ThemeRequest>>(`theme/${userId}`);
+
+  toggleMode = (data: ThemeRequest) =>
+    this.http.post<ThemeRequest, AxiosResponse<void>>('theme/toggle', data, {});
+
+  createMode = (data: ThemeRequest) =>
+    this.http.post<ThemeRequest, AxiosResponse<ThemeRequest>>(
+      'theme/create',
+      data,
+      {}
+    );
 }
 
 export const themeApi = new ThemeApi();
