@@ -6,6 +6,7 @@ import { RootState } from '..';
 
 export interface ThemeState {
   mode: ThemeMode;
+  id?: number;
 }
 
 const initialState: ThemeState = {
@@ -28,9 +29,15 @@ export const fetchToggleCurrentMode = createAsyncThunk(
       userId: state.user.currentUser.id as number,
       theme:
         state.theme.mode === ThemeMode.Light ? ThemeMode.Dark : ThemeMode.Light,
+      id: state.theme.id,
     };
-    await themeApi.toggleMode(data);
-    return data;
+    if (data.id) {
+      await themeApi.toggleMode(data);
+      return data;
+    } else {
+      const res = await themeApi.createMode(data);
+      return res.data;
+    }
   }
 );
 
@@ -50,12 +57,14 @@ export const themeSlice = createSlice({
         fetchCurrentMode.fulfilled,
         (state, action: PayloadAction<ThemeRequest | null>) => {
           state.mode = action.payload?.theme || ThemeMode.Light;
+          state.id = action.payload?.id;
         }
       )
       .addCase(
         fetchToggleCurrentMode.fulfilled,
         (state, action: PayloadAction<ThemeRequest>) => {
           state.mode = action.payload.theme;
+          state.id = action.payload.id;
         }
       );
   },

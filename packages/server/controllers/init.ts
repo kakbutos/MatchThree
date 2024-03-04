@@ -5,7 +5,11 @@ import {
   getAllCommentsWithRepliesByTopicId,
 } from './CommentController';
 import { createReply } from './ReplyController';
-import { changeTheme, getThemeByUserId } from './UserThemeController';
+import {
+  changeTheme,
+  createTheme,
+  getThemeByUserId,
+} from './UserThemeController';
 
 export const initControllers = () => {
   const router = express.Router();
@@ -18,7 +22,8 @@ export const initControllers = () => {
   router.post('/api/comment', createComment);
 
   router.get('/api/theme/:userId', getThemeByUserId);
-  router.post('/api/theme', changeTheme);
+  router.post('/api/theme/create', createTheme);
+  router.post('/api/theme/toggle', changeTheme);
 
   router.post('/api/reply', createReply);
 

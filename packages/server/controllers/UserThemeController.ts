@@ -27,6 +27,7 @@ export const changeTheme = async (req: Request, res: Response) => {
     const data = req.body as {
       theme: string;
       userId: number;
+      userThemeId: number;
     } & any;
 
     if (!data) {
@@ -34,29 +35,34 @@ export const changeTheme = async (req: Request, res: Response) => {
       return;
     }
 
-    const existedTheme = await UserTheme.findOne({
+    await UserTheme.update(data, {
       where: {
         userId: +data.userId,
       },
     });
 
-    if (existedTheme) {
-      await UserTheme.update(
-        {
-          ...existedTheme,
-          theme: data.theme,
-        },
-        {
-          where: {
-            userId: +data.userId,
-          },
-        }
-      );
-    } else {
-      await UserTheme.create(data);
+    res.status(200).send('OK');
+  } catch (error) {
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+export const createTheme = async (req: Request, res: Response) => {
+  try {
+    const data = req.body as {
+      theme: string;
+      userId: number;
+      id: number;
+    } & any;
+
+    if (!data) {
+      res.status(404).send('Empty body');
+      return;
     }
 
-    res.status(200).send('OK');
+    const created = await UserTheme.create(data);
+
+    res.status(200).json(created);
   } catch (error) {
     res.status(500).send('Internal Server Error');
   }

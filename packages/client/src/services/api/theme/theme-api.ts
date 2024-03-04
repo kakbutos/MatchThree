@@ -11,7 +11,14 @@ class ThemeApi extends BaseServerApi {
     this.http.get<number, AxiosResponse<ThemeRequest>>(`theme/${userId}`);
 
   toggleMode = (data: ThemeRequest) =>
-    this.http.post<ThemeRequest, AxiosResponse<void>>('theme', data, {});
+    this.http.post<ThemeRequest, AxiosResponse<void>>('theme/toggle', data, {});
+
+  createMode = (data: ThemeRequest) =>
+    this.http.post<ThemeRequest, AxiosResponse<ThemeRequest>>(
+      'theme/create',
+      data,
+      {}
+    );
 }
 
 export const themeApi = new ThemeApi();
